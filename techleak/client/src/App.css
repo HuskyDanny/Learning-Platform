@@ -1,0 +1,49 @@
+/* Icon information */
+.img__wrap {
+  position: relative;
+}
+
+.img__description {
+  position: absolute;
+  top: 100%;
+
+  font-size: 10px;
+  color: black;
+  visibility: hidden;
+  opacity: 0;
+  transform: translate(-8%);
+
+  /* transition effect. not necessary */
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+/* Spinner Loader */
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 320px;
+  height: 320px;
+  animation: spin 2s linear infinite;
+  margin: auto auto auto auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.img__wrap:hover .img__description {
+  visibility: visible;
+  opacity: 1;
+}
+
+.box:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+}
+
+/* For search bar */

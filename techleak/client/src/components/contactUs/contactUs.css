@@ -1,0 +1,167 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700");
+
+.btn-success {
+  border-radius: 20px;
+}
+
+.contact-container {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-form {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 43px 88px 57px 190px;
+}
+
+.contact-input {
+  padding-top: 5px;
+  height: 35px;
+  width: 100%;
+
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.2;
+
+  background: transparent;
+  padding: 0 5px;
+
+  outline: none;
+  border: none;
+}
+
+.contact-input.placeholder {
+  text-align: center;
+}
+
+.contact-input-textarea {
+  width: 100%;
+  height: 100px;
+  line-height: 2.2;
+}
+
+.contact-page-wrap {
+  position: relative;
+  z-index: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.contact-page-wrap:after {
+  content: "";
+  position: absolute;
+  background-image: url("../../assets/img/techleak.jpg");
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.contact-title-1 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  line-height: 1.2;
+  text-align: center;
+  padding-bottom: 7px;
+}
+
+.contact-title-2 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.contact-title-wrap {
+  width: 100%;
+  position: relative;
+  z-index: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.8);
+
+  padding: 64px 15px 64px 15px;
+}
+
+.contact-title-wrap:after {
+  content: "";
+  position: absolute;
+  background-image: url("https://ak5.picdn.net/shutterstock/videos/14485015/thumb/1.jpg");
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 0.5;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.contact-window-wrap {
+  width: 570px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.form-group {
+  width: 100%;
+  border-bottom: 1px solid #b2b2b2;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.form-label {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  color: black;
+  text-align: right;
+  position: absolute;
+  top: 5px;
+  left: -125px;
+  width: 105px;
+}
