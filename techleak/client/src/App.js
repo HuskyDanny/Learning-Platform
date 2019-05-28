@@ -6,6 +6,7 @@ import Navbar from "./components/navbar";
 import Blog from "./components/Blog";
 import ContactUs from "./components/contactUs/contactUs";
 import ErrorBoundary from "./components/UI/ErrorHandler/ErrorHandler";
+import Comment from "./components/comment/comment";
 
 class App extends Component {
   state = {
@@ -91,6 +92,7 @@ class App extends Component {
           )}
         />
         <Route path="/contact" exact component={ContactUs} />
+        <Route path="/test" exact component={Comment} />
       </React.Fragment>
     );
   }

@@ -1,5 +1,6 @@
 import algoliasearch from "algoliasearch";
 import React, { Component } from "react";
+import "instantsearch.css/themes/algolia.css";
 import {
   InstantSearch,
   SearchBox,
