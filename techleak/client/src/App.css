@@ -45,20 +45,3 @@
 .box:hover {
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
-
-/* For search bar */
-.ais-SearchBox {
-  position: absolute;
-  width: 280px;
-  height: 33px;
-  white-space: nowrap;
-  box-sizing: border-box;
-  font-size: 14px;
-  left: 205px;
-  top: 20px;
-}
-.ais-SearchBox-body,
-.ais-SearchBox-form {
-  width: 100%;
-  height: 100%;
-}

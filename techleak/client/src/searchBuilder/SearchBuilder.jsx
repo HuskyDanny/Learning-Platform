@@ -22,19 +22,11 @@ class SearchBuilder extends Component {
     return (
       <div>
         <InstantSearch indexName="Test" searchClient={searchClient}>
-          <div>
-            <div
-              style={{
-                position: "absolute",
-                left: "45%",
-                marginBottom: "2%"
-              }}
-            >
-              <SearchBox />
-            </div>
-            <CustomHits />
-            <Pagination />
+          <div style={{ justifyContent: "center", display: "flex" }}>
+            <SearchBox />
           </div>
+          <CustomHits />
+          <Pagination />
         </InstantSearch>
       </div>
     );

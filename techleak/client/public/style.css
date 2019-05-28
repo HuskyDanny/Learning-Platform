@@ -1,0 +1,71 @@
+/* GENERAL */
+* {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+html {
+  overflow-y: scroll;
+  background: #fff;
+}
+main {
+  min-height: 160px;
+}
+
+/* PAGINATION */
+.ais-Pagination {
+  margin-top: 5%;
+}
+
+.ais-Pagination__root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  box-shadow: none;
+  text-align: center;
+}
+.ais-Pagination__itemLink {
+  padding: 10px 5px;
+  text-decoration: none;
+  border: 1px solid #eee;
+}
+.ais-Pagination__itemLink:hover {
+  background: #f5f5f5;
+  color: #000;
+}
+.ais-Pagination__item:hover .ais-Pagination__itemLink {
+  color: #000;
+}
+.ais-Pagination__item {
+  display: inline;
+  padding: 10px;
+}
+.ais-Pagination__item:hover {
+  background: transparent;
+  color: #000;
+}
+.ais-Pagination__item:first-child .ais-Pagination__itemLink {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.ais-Pagination__item:last-child .ais-Pagination__itemLink {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.ais-Pagination__itemSelected .ais-Pagination__itemLink {
+  color: white;
+  border-color: #ed5565;
+  background: #ed5565;
+}
+.ais-Pagination__itemSelected {
+  border: none;
+  background: transparent;
+}
+.ais-Pagination__itemSelected .ais-Pagination__itemLink:hover {
+  cursor: default;
+}
+.ais-Pagination__itemDisabled .ais-Pagination__itemLink:hover {
+  background: none;
+}
+.ais-Pagination__itemDisabled .ais-Pagination__itemLink {
+  cursor: not-allowed;
+}
