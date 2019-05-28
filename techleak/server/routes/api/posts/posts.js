@@ -34,9 +34,10 @@ router.post("/", auth.required, async (req, res) => {
       title: req.body.title,
       author: req.body.author,
       content: req.body.content,
-      datePosted: new Date(now.getTime() - now.getTimezoneOffset() * 60000),
+      post_date: new Date(now.getTime() - now.getTimezoneOffset() * 60000),
+      post_date_timestamp: now.getTime() - now.getTimezoneOffset() * 60000,
       tags: req.body.tags,
-      likes: 0
+      likes: req.body.likes ? req.body.likes : 0
     };
     let post = new Post(dbSchema);
     post = await post.save();

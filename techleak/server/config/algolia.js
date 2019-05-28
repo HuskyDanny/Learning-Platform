@@ -9,7 +9,14 @@ const client = algoliasearch(
 );
 
 const index = client.initIndex("Test");
-const algoliaSchema = ["title", "tags", "author", "likes", "datePosted"];
+const algoliaSchema = [
+  "title",
+  "tags",
+  "author",
+  "likes",
+  "post_date",
+  "post_date_timestamp"
+];
 
 index.setSettings({
   searchableAttributes: ["title", "tags"]

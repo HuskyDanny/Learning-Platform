@@ -14,7 +14,8 @@ const Posts = props => {
           className="columns"
           style={{
             width: "78%",
-            margin: "auto auto auto auto"
+
+            margin: "auto 10% auto 10%"
           }}
         >
           {posts.slice(index * 3, index * 3 + 3).map((post, position) => (

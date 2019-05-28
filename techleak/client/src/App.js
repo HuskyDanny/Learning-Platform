@@ -7,6 +7,8 @@ import Blog from "./components/Blog";
 import ContactUs from "./components/contactUs/contactUs";
 import ErrorBoundary from "./components/UI/ErrorHandler/ErrorHandler";
 import Comment from "./components/comment/comment";
+import Footer from "./components/footer/footer";
+import About from "./components/about/about";
 
 class App extends Component {
   state = {
@@ -58,7 +60,7 @@ class App extends Component {
         />
         <Route
           path="/index"
-          render={props => (
+          component={props => (
             <ErrorBoundary>
               <Navbar
                 onOpenModal={this.onOpenModal}
@@ -71,6 +73,8 @@ class App extends Component {
                 contactUsOpen={contactUsOpen}
               />
               <Search />
+              <About />
+              <Footer />
             </ErrorBoundary>
           )}
         />

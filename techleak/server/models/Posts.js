@@ -3,29 +3,38 @@ const mongoose = require("mongoose");
 
 const Joi = require("joi");
 
+const availableTags = [
+  "python",
+  "javascript",
+  "java",
+  "golang",
+  "interview",
+  "database",
+  "10xcoder",
+  "network",
+  "database",
+  "compiler",
+  "concurrency"
+];
+
 const postSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     tags: {
       type: [String],
-      enum: [
-        "python",
-        "javascript",
-        "java",
-        "interview",
-        "database",
-        "10xcoder"
-      ],
+      enum: availableTags,
       required: true,
       lowercase: true
     },
     likes: { type: Number },
-    datePosted: {
+    post_date: {
       type: Date
     },
+    post_date_timestamp: {
+      type: Number
+    },
     author: { type: String, require: true },
-    content: { type: String, required: true },
-    offset: { type: Number }
+    content: { type: String, required: true }
   },
   { timestamps: true }
 );
@@ -40,7 +49,8 @@ const validatePost = post => {
       .max(50),
     author: Joi.string().required(),
     content: Joi.string().required(),
-    tags: Joi.array()
+    tags: Joi.array(),
+    likes: Joi.number()
   };
   return Joi.validate(post, joiPostSchema);
 };

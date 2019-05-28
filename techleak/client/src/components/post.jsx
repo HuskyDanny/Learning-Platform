@@ -3,7 +3,7 @@ import Tag from "./commons/tag";
 import Likes from "./commons/likes";
 import { Link } from "react-router-dom";
 const Post = props => {
-  const { author, title, tags, likes, datePosted, objectID } = props.post;
+  const { author, title, tags, likes, post_date, objectID } = props.post;
   const contentStyles = {
     padding: "3% 1% 2% 1%",
     height: "100%"
@@ -41,7 +41,7 @@ const Post = props => {
             >
               <div>
                 <span style={{ color: "black", fontSize: "12px" }}>
-                  {datePosted.slice(0, 10)}
+                  {post_date.slice(0, 10)}
                 </span>
               </div>
 

@@ -5,10 +5,9 @@ import {
   InstantSearch,
   SearchBox,
   Pagination,
-  ClearRefinements,
-  RefinementList,
-  Configure,
-  connectHits
+  SortBy,
+  connectHits,
+  Configure
 } from "react-instantsearch-dom";
 import Posts from "../components/posts";
 
@@ -22,11 +21,30 @@ class SearchBuilder extends Component {
     return (
       <div>
         <InstantSearch indexName="Test" searchClient={searchClient}>
+          <Configure hitsPerPage={6} analytics={true} distinct />
           <div style={{ justifyContent: "center", display: "flex" }}>
+            <SortBy
+              defaultRefinement="Test"
+              items={[
+                { value: "Test", label: "Featured" },
+                { value: "Test_post_date_decs", label: "Date desc." },
+                { value: "Test_posts_date_asc", label: "Date asc." },
+                { value: "Test_likes_desc", label: "Likes desc." },
+                { value: "Test_likes_asc", label: "Likes asc." }
+              ]}
+            />
             <SearchBox />
           </div>
           <CustomHits />
-          <Pagination />
+          <Pagination
+            defaultRefinement={1}
+            showFirst={true}
+            showPrevious={true}
+            showNext={true}
+            showLast
+            padding={3}
+            totalPages={10}
+          />
         </InstantSearch>
       </div>
     );
