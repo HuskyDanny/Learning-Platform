@@ -4,6 +4,20 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 
+const availableTags = [
+  "python",
+  "javascript",
+  "java",
+  "golang",
+  "interview",
+  "database",
+  "10xcoder",
+  "network",
+  "database",
+  "compiler",
+  "concurrency"
+];
+
 const UsersSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -25,10 +39,18 @@ const UsersSchema = new mongoose.Schema({
       }
     }
   },
-  tags: [String],
+  tags: {
+    type: [String],
+    enum: availableTags,
+    lowercase: true
+  },
   hash: String,
   salt: String,
-  kll: [String]
+  confirmed: {
+    type: Boolean,
+    default: false,
+    required: true
+  }
 });
 
 UsersSchema.methods.setPassword = function(password) {

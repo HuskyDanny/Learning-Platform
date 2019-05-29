@@ -79,6 +79,10 @@ class App extends Component {
           )}
         />
         <Route
+          path="/designer"
+          component={() => (window.location = "https://zhuorandeng.com")}
+        />
+        <Route
           path="/blog/:id"
           exact
           component={props => (

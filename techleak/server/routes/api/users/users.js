@@ -3,8 +3,20 @@ const { Router } = require("express");
 const passport = require("passport");
 const auth = require("../../auth");
 const sgMail = require("../../../config/sgMail");
-
+const jwt = require("jsonwebtoken");
 const router = Router();
+
+router.get("/comfirmation/:token", auth.optional, async (req, res) => {
+  const secret = process.env.JWT_SECRET;
+  try {
+    const { _id } = jwt.verify(req.params.token, secret);
+    await User.findOneAndUpdate({ _id: _id }, { confirmed: true });
+    res.json({ message: "verified" });
+  } catch (error) {
+    res.json(error.message);
+  }
+  return res.redirect("http://localhost:3001/index");
+});
 
 router.get("/all", auth.required, async (req, res) => {
   try {
@@ -65,15 +77,21 @@ router.post("/signup", auth.optional, async (req, res) => {
   //save to mongodb
   try {
     newUser = await newUser.save();
+    res.status(201).json({ message: "Created Account" });
+
+    const url = "http://localhost:3000/comfirmation/" + newUser.generateJWT();
     const msg = {
       to: newUser.email,
-      from: "junchenp1018@gmail.com",
-      subject: "Welcome to TechLeak, Enjoy Learning",
-      text: "and easy to do anywhere, even with Node.js",
-      html: "<strong>and easy to do anywhere, even with Node.js</strong>"
+      from: "welcome@techleak.com",
+      templateId: "d-55aeeafbdc834ef7879e7f33c5726199",
+      subject: "Welcome To Techleak, Enjoy Learning",
+      dynamic_template_data: {
+        username: newUser.username,
+        url: url
+      }
     };
+
     await sgMail.send(msg);
-    return res.status(201).json(newUser.toAuthJSON());
   } catch (error) {
     //duplicate error return to user
     if (error.code === 11000) {
@@ -100,6 +118,9 @@ router.post("/login", (req, res) => {
     }
     if (user) {
       return res.json(user.toAuthJSON());
+    }
+    if (!user.confirmed) {
+      return res.json({ message: "Please verify first" });
     }
     return res.status(400).json(info);
   })(req, res);

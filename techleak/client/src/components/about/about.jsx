@@ -22,6 +22,12 @@ const About = props => {
         <img src={image3} width="382" height="200" alt="logo" />
         <img src={image4} width="132" height="200" alt="logo" />
         <img src={image2} width="160" height="200" alt="logo" />
+        <br />
+        <p className="is-size-4 is-uppercase" style={{ marginTop: "10%" }}>
+          Special Thanks
+        </p>
+        Special thanks to <a href="/designer">Zhuoran Deng</a>, who designed our
+        logo, checkout her website if you want some UI/UX design
       </div>
     </article>
   );

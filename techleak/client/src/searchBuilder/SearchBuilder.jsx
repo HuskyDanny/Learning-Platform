@@ -26,7 +26,7 @@ class SearchBuilder extends Component {
             <SortBy
               defaultRefinement="Test"
               items={[
-                { value: "Test", label: "Featured" },
+                { value: "Test", label: "Sorted By" },
                 { value: "Test_post_date_decs", label: "Date desc." },
                 { value: "Test_posts_date_asc", label: "Date asc." },
                 { value: "Test_likes_desc", label: "Likes desc." },

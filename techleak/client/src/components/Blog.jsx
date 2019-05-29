@@ -8,7 +8,7 @@ class Blog extends Component {
     author: "",
     content: "",
     likes: "",
-    datePosted: "",
+    post_date: "",
     loaded: false
   };
   render() {
@@ -19,7 +19,7 @@ class Blog extends Component {
           this.setState({
             title: res.data.title,
             author: res.data.author,
-            datePosted: res.data.datePosted,
+            post_date: res.data.post_date,
             content: res.data.content,
             likes: res.data.likes,
             loaded: true
@@ -67,7 +67,7 @@ class Blog extends Component {
                           DatePosted@
                         </span>
                         <span className="tag is-rounded">
-                          {this.state.datePosted.slice(0, 10)}
+                          {this.state.post_date.slice(0, 10)}
                         </span>
                       </div>
                     </div>
