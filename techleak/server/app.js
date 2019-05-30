@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const passport = require("passport");
+const cors = require("cors");
 const session = require("express-session");
 require("./config/passport");
 require("dotenv").config();
@@ -18,6 +18,7 @@ mongoose
   .catch(error => console.error(error));
 
 app = express();
+app.use(cors());
 app.use(express.json());
 app.use(
   session({

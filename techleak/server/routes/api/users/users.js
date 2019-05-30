@@ -11,11 +11,10 @@ router.get("/comfirmation/:token", auth.optional, async (req, res) => {
   try {
     const { _id } = jwt.verify(req.params.token, secret);
     await User.findOneAndUpdate({ _id: _id }, { confirmed: true });
-    res.json({ message: "verified" });
+    res.redirect("http://localhost:3001/index");
   } catch (error) {
     res.json(error.message);
   }
-  return res.redirect("http://localhost:3001/index");
 });
 
 router.get("/all", auth.required, async (req, res) => {
@@ -79,7 +78,8 @@ router.post("/signup", auth.optional, async (req, res) => {
     newUser = await newUser.save();
     res.status(201).json({ message: "Created Account" });
 
-    const url = "http://localhost:3000/comfirmation/" + newUser.generateJWT();
+    const url =
+      "http://localhost:3000/api/users/comfirmation/" + newUser.generateJWT();
     const msg = {
       to: newUser.email,
       from: "welcome@techleak.com",

@@ -6,7 +6,7 @@ import Navbar from "./components/navbar";
 import Blog from "./components/Blog";
 import ContactUs from "./components/contactUs/contactUs";
 import ErrorBoundary from "./components/UI/ErrorHandler/ErrorHandler";
-import Comment from "./components/comment/comment";
+import Publish from "./components/publish/Publish";
 import Footer from "./components/footer/footer";
 import About from "./components/about/about";
 
@@ -14,9 +14,10 @@ class App extends Component {
   state = {
     signupOpen: false,
     loginOpen: false,
-    loggedIn: false,
+    loggedIn: true,
     username: "",
     token: "",
+    isPaneOpen: false,
     contactUsOpen: false,
     tags: ["Python", "Interview", "10XCoder", "Interview", "Leetcode"]
   };
@@ -27,6 +28,10 @@ class App extends Component {
 
   onCloseModal = type => {
     this.setState({ [type]: false });
+  };
+
+  onPaneOpen = () => {
+    this.setState({ isPaneOpen: !this.state.isPaneOpen });
   };
 
   likeHandler = id => {
@@ -71,6 +76,11 @@ class App extends Component {
                 logHandler={this.logHandler}
                 username={username}
                 contactUsOpen={contactUsOpen}
+                onPaneOpen={this.onPaneOpen}
+              />
+              <Publish
+                isPaneOpen={this.state.isPaneOpen}
+                onPaneOpen={this.onPaneOpen}
               />
               <Search />
               <About />
@@ -100,7 +110,7 @@ class App extends Component {
           )}
         />
         <Route path="/contact" exact component={ContactUs} />
-        <Route path="/test" exact component={Comment} />
+        <Route path="/test" exact component={Publish} />
       </React.Fragment>
     );
   }
