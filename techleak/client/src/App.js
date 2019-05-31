@@ -17,7 +17,6 @@ class App extends Component {
     loggedIn: true,
     username: "",
     token: "",
-    isPaneOpen: false,
     contactUsOpen: false,
     tags: ["Python", "Interview", "10XCoder", "Interview", "Leetcode"]
   };
@@ -28,10 +27,6 @@ class App extends Component {
 
   onCloseModal = type => {
     this.setState({ [type]: false });
-  };
-
-  onPaneOpen = () => {
-    this.setState({ isPaneOpen: !this.state.isPaneOpen });
   };
 
   likeHandler = id => {
@@ -78,10 +73,6 @@ class App extends Component {
                 contactUsOpen={contactUsOpen}
                 onPaneOpen={this.onPaneOpen}
               />
-              <Publish
-                isPaneOpen={this.state.isPaneOpen}
-                onPaneOpen={this.onPaneOpen}
-              />
               <Search />
               <About />
               <Footer />
@@ -110,7 +101,13 @@ class App extends Component {
           )}
         />
         <Route path="/contact" exact component={ContactUs} />
-        <Route path="/test" exact component={Publish} />
+        <Route
+          path="/publish"
+          exact
+          component={props => (
+            <Publish {...props} loggedIn={loggedIn} username={username} />
+          )}
+        />
       </React.Fragment>
     );
   }

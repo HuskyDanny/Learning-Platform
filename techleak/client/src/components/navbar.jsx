@@ -13,8 +13,7 @@ const Navbar = props => {
     loggedIn,
     logHandler,
     username,
-    contactUsOpen,
-    onPaneOpen
+    contactUsOpen
   } = props;
 
   let status = (
@@ -43,15 +42,14 @@ const Navbar = props => {
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <button className="button is-primary" onClick={onPaneOpen}>
-              <strong>Post</strong>
-            </button>
-
-            <Link to={"/profile/" + username}>
-              <div className="button is-primary">
-                <strong>Welcome, {username} </strong>
-              </div>
+            <Link className="button is-primary" to="/publish">
+              <i class="fas fa-plus-circle" /> <strong> New Post</strong>
             </Link>
+
+            <div className="button is-primary">
+              <strong>My Profile </strong>
+            </div>
+
             <Link>
               <div
                 className="button is-primary"
