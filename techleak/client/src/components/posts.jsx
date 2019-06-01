@@ -14,7 +14,6 @@ const Posts = props => {
           className="columns"
           style={{
             width: "78%",
-
             margin: "auto 10% auto 10%"
           }}
         >

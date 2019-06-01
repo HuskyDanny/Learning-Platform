@@ -45,6 +45,7 @@ class Singup extends Component {
             passwordAgain: "",
             email: ""
           });
+          localStorage.setItem("token", res.data.token);
           this.props.onCloseModal("signupOpen");
           this.props.logHandler(res.data.username, res.data.token);
         })

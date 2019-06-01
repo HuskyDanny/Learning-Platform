@@ -35,7 +35,7 @@ class Login extends Component {
         this.setState({ loading: false, email: "", password: "" });
         this.props.logHandler(res.data.username, res.data.token);
         this.props.onCloseModal("loginOpen");
-        console.log(res);
+        localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
         console.log(err);

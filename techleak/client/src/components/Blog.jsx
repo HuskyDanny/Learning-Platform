@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Navbar from "./navbar";
 import axios from "axios";
+import ReactHtmlParser from "react-html-parser";
+import Comment from "./comment/comment";
 
 class Blog extends Component {
   state = {
@@ -27,7 +29,7 @@ class Blog extends Component {
         })
         .catch(err => console.log(err));
     }
-
+    const { content } = this.state;
     return (
       <React.Fragment>
         <Navbar
@@ -73,8 +75,9 @@ class Blog extends Component {
                     </div>
                   </div>
                   <div className="content article-body">
-                    {this.state.content}
+                    {ReactHtmlParser(this.state.content)}
                   </div>
+                  <Comment />
                 </div>
               </div>
             </div>

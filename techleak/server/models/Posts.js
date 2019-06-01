@@ -23,7 +23,6 @@ const postSchema = new mongoose.Schema(
     tags: {
       type: [String],
       enum: availableTags,
-      required: true,
       lowercase: true
     },
     likes: { type: Number },
@@ -54,6 +53,5 @@ const validatePost = post => {
   };
   return Joi.validate(post, joiPostSchema);
 };
-
 module.exports.Post = Post;
 module.exports.postValidator = validatePost;

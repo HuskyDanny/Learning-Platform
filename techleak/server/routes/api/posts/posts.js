@@ -23,21 +23,21 @@ router.get("/:id", auth.optional, async (req, res) => {
   }
 });
 
-router.post("/", auth.required, async (req, res) => {
-  const { error } = postValidator(req.body);
-  if (error) return res.status(400).send(error.message);
+router.post("/", auth.optional, async (req, res, next) => {
+  const result = await postValidator(req.body.post);
+  if (result.error) return res.status(400).send(error.message);
 
   try {
     //save to db
     const now = new Date();
     const dbSchema = {
-      title: req.body.title,
-      author: req.body.author,
-      content: req.body.content,
+      title: result.title,
+      author: result.author,
+      content: result.content,
       post_date: new Date(now.getTime() - now.getTimezoneOffset() * 60000),
       post_date_timestamp: now.getTime() - now.getTimezoneOffset() * 60000,
-      tags: req.body.tags,
-      likes: req.body.likes ? req.body.likes : 0
+      tags: result.tags ? result.tags : [],
+      likes: result.likes ? result.likes : 0
     };
     let post = new Post(dbSchema);
     post = await post.save();
@@ -49,7 +49,7 @@ router.post("/", auth.required, async (req, res) => {
 
     res.status(201).send(post);
   } catch (error) {
-    return res.status(400).send(error.message);
+    return res.status(400).send(error);
   }
 });
 

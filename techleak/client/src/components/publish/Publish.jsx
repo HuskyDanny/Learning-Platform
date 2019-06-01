@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 import Editor from "../editor/Editor";
 import { Link } from "react-router-dom";
@@ -10,16 +11,45 @@ class Publish extends Component {
 
     this.state = {
       loading: false,
-      posted: false
+      posted: false,
+      content: "",
+      author: "Allen",
+      title: "How to construct a class in python",
+      tags: ["Python", "Interview"]
     };
 
     this.handlePost = this.handlePost.bind(this);
     this.successPosted = this.successPosted.bind(this);
+    this.updateContent = this.updateContent.bind(this);
   }
 
   handlePost() {
+    const token = localStorage.getItem("token");
+
+    const post = {
+      author: this.state.author,
+      title: this.state.title,
+      content: this.state.content
+    };
+    axios
+      .post("http://localhost:3000/api/posts", {
+        headers: {
+          Authorization: "Token " + token
+        },
+        post
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     this.setState({ posted: true });
   }
+
+  updateContent = value => {
+    this.setState({ content: value });
+  };
 
   successPosted() {
     return (
@@ -84,16 +114,31 @@ class Publish extends Component {
             </div>
           </nav>
         </div>
-        {this.state.posted ? (
-          this.successPosted()
-        ) : (
-          <React.Fragment>
-            <Editor />
-            <button className="button is-primary" onClick={this.handlePost}>
-              Post
-            </button>
-          </React.Fragment>
-        )}
+        <div style={{ width: "80%", margin: "auto auto" }}>
+          {this.state.posted ? (
+            this.successPosted()
+          ) : (
+            <React.Fragment>
+              <input
+                className="input is-rounded"
+                type="text"
+                placeholder="Enter Your Title..."
+              />
+              <input
+                className="input is-rounded"
+                type="text"
+                placeholder="Enter Your Tags..."
+              />
+              <Editor
+                updateContent={this.updateContent}
+                value={this.state.content}
+              />
+              <button className="button is-primary" onClick={this.handlePost}>
+                Post
+              </button>
+            </React.Fragment>
+          )}
+        </div>
       </React.Fragment>
     );
   }

@@ -60,7 +60,7 @@ class App extends Component {
         />
         <Route
           path="/index"
-          component={props => (
+          render={props => (
             <ErrorBoundary>
               <Navbar
                 onOpenModal={this.onOpenModal}
