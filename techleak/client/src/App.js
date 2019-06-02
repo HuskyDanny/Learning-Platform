@@ -14,7 +14,7 @@ class App extends Component {
   state = {
     signupOpen: false,
     loginOpen: false,
-    loggedIn: true,
+    loggedIn: false,
     username: "",
     token: "",
     contactUsOpen: false,

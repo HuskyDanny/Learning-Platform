@@ -23,7 +23,6 @@ class ContactUs extends React.Component {
 
   handleSubmit(e) {
     alert("Your message is sent successfully, " + this.state.firstname);
-    console.log(this.state.message);
     e.preventDefault();
   }
 

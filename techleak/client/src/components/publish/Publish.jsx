@@ -15,7 +15,7 @@ class Publish extends Component {
       content: "",
       author: "Allen",
       title: "How to construct a class in python",
-      tags: ["Python", "Interview"]
+      tags: ["python", "interview"]
     };
 
     this.handlePost = this.handlePost.bind(this);
@@ -29,28 +29,41 @@ class Publish extends Component {
     const post = {
       author: this.state.author,
       title: this.state.title,
-      content: this.state.content
+      content: this.state.content,
+      tags: this.state.tags || []
+    };
+    this.setState({ loading: true });
+
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + token
+      }
     };
     axios
-      .post("http://localhost:3000/api/posts", {
-        headers: {
-          Authorization: "Token " + token
-        },
-        post
-      })
+      .post("http://localhost:3000/api/posts", post, headers)
       .then(res => {
         console.log(res);
       })
       .catch(err => {
         console.log(err);
       });
-    this.setState({ posted: true });
+    this.setState({ posted: true, loading: false });
   }
 
   updateContent = value => {
     this.setState({ content: value });
   };
 
+  // handleTags = e => {
+  //   e.preventDefault();
+  //   this.setState({ tags: e.target.value });
+  // };
+
+  handleTitle = e => {
+    e.preventDefault();
+    this.setState({ title: e.target.value });
+  };
   successPosted() {
     return (
       <div
@@ -115,7 +128,9 @@ class Publish extends Component {
           </nav>
         </div>
         <div style={{ width: "80%", margin: "auto auto" }}>
-          {this.state.posted ? (
+          {this.state.loading ? (
+            <Spinner />
+          ) : this.state.posted ? (
             this.successPosted()
           ) : (
             <React.Fragment>
@@ -123,6 +138,8 @@ class Publish extends Component {
                 className="input is-rounded"
                 type="text"
                 placeholder="Enter Your Title..."
+                value={this.state.title}
+                onChange={this.handleTitle}
               />
               <input
                 className="input is-rounded"

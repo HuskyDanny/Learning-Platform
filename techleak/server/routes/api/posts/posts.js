@@ -23,8 +23,8 @@ router.get("/:id", auth.optional, async (req, res) => {
   }
 });
 
-router.post("/", auth.optional, async (req, res, next) => {
-  const result = await postValidator(req.body.post);
+router.post("/", auth.required, async (req, res, next) => {
+  const result = await postValidator(req.body);
   if (result.error) return res.status(400).send(error.message);
 
   try {
@@ -39,9 +39,9 @@ router.post("/", auth.optional, async (req, res, next) => {
       tags: result.tags ? result.tags : [],
       likes: result.likes ? result.likes : 0
     };
+
     let post = new Post(dbSchema);
     post = await post.save();
-
     //save to algolia
     let algoSchema = _.pick(dbSchema, algoliaSchema);
     algoSchema["objectID"] = post._id;
@@ -49,7 +49,7 @@ router.post("/", auth.optional, async (req, res, next) => {
 
     res.status(201).send(post);
   } catch (error) {
-    return res.status(400).send(error);
+    return res.status(400).json(error.message);
   }
 });
 
