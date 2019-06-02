@@ -9,7 +9,7 @@ app.get("/load_images", auth.required, function(req, res) {
     if (err) {
       return res.status(404).end(JSON.stringify(err));
     }
-
+    console.log("loading");
     return res.send(data);
   });
 });

@@ -25,6 +25,7 @@ passport.use(
   )
 );
 
+//Instead I uses JWT
 // passport.serializeUser(function(user, done) {
 //   done(null, user._id);
 // });
