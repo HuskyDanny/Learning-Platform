@@ -29,11 +29,32 @@ const EditorComponent = props => {
 
   const config = {
     height: 300,
-    imageUploadURL: YOURSERVER + "/api/uploads/images",
+    imageUploadURL: `${YOURSERVER}/api/uploads/images`,
     requestHeaders: {
-      Authorization: "Token " + localStorage.getItem("token")
+      Authorization: `Token ${localStorage.getItem("token")}`
     },
     events: {
+      "image.removed": function($img) {
+        console.log($img.attr("src").slice(YOURSERVER.length + 1));
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          // Image was removed.
+          if (this.readyState == 4 && this.status == 200) {
+            console.log("image was deleted");
+          }
+        };
+        xhttp.open("POST", `${YOURSERVER}/api/uploads/delete_image`, true);
+        xhttp.setRequestHeader(
+          "Content-Type",
+          "application/json;charset=UTF-8"
+        );
+        xhttp.send(
+          JSON.stringify({
+            //Here use slice to exclude http://localhost:3000
+            src: $img.attr("src").slice(YOURSERVER.length + 1)
+          })
+        );
+      },
       "image.beforeUpload": function(images) {
         // Return false if you want to stop the image upload.
       },
@@ -47,7 +68,6 @@ const EditorComponent = props => {
       },
       "image.inserted": function($img, response) {
         // Image was inserted in the editor.
-        console.log(response, "inserted");
       },
       "image.replaced": function($img, response) {
         // Image was replaced in the editor.

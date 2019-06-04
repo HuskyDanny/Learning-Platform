@@ -26,7 +26,7 @@ class Blog extends Component {
     };
     axios
       .patch(
-        "http://localhost:3000/api/posts/likes/5cf44b45ecd000fe540a43c1",
+        "http://localhost:3000/api/posts/likes/" + this.props.match.params.id,
         null,
         headers
       )
@@ -54,7 +54,6 @@ class Blog extends Component {
     }
     let { liked, shared, saved } = this.state;
 
-    console.log(shared, liked, saved);
     return (
       <React.Fragment>
         <Navbar
@@ -100,54 +99,53 @@ class Blog extends Component {
                     {ReactHtmlParser(this.state.content)}
                   </div>
                   <hr />
-                  <div>
-                    <div
-                      class="level-left"
-                      style={{
-                        justifyContent: "space-between",
-                        width: "80%",
-                        margin: "3% auto 3% auto"
-                      }}
+
+                  <div
+                    class="level-left"
+                    style={{
+                      justifyContent: "space-between",
+                      width: "80%",
+                      margin: "3% auto 3% auto"
+                    }}
+                  >
+                    <button
+                      class="level-item button "
+                      onClick={() => this.handleLike("shared")}
                     >
-                      <button
-                        class="level-item button "
-                        onClick={() => this.handleLike("shared")}
-                      >
-                        <span class="icon is-small">
-                          <i class="far fa-share-square" aria-hidden="true" />
-                        </span>
-                      </button>
-                      <button
-                        class={
-                          saved
-                            ? "level-item button is-success"
-                            : "level-item button"
-                        }
-                        aria-label="retweet"
-                        onClick={() => this.handleLike("saved")}
-                      >
-                        <span class="icon is-small">
-                          <i class="far fa-save" aria-hidden="true" />
-                        </span>
-                      </button>
-                      <button
-                        class={
-                          liked
-                            ? "level-item button is-success"
-                            : "level-item button"
-                        }
-                        aria-label="like"
-                        onClick={() => this.handleLike("liked")}
-                      >
-                        <span class="icon is-small">
-                          <i class="far fa-thumbs-up" aria-hidden="true" />
-                        </span>
-                      </button>
-                    </div>
-                    <hr />
+                      <span class="icon is-small">
+                        <i class="far fa-share-square" aria-hidden="true" />
+                      </span>
+                    </button>
+                    <button
+                      class={
+                        saved
+                          ? "level-item button is-success"
+                          : "level-item button"
+                      }
+                      aria-label="retweet"
+                      onClick={() => this.handleLike("saved")}
+                    >
+                      <span class="icon is-small">
+                        <i class="far fa-save" aria-hidden="true" />
+                      </span>
+                    </button>
+                    <button
+                      class={
+                        liked
+                          ? "level-item button is-success"
+                          : "level-item button"
+                      }
+                      aria-label="like"
+                      onClick={() => this.handleLike("liked")}
+                    >
+                      <span class="icon is-small">
+                        <i class="far fa-thumbs-up" aria-hidden="true" />
+                      </span>
+                    </button>
                   </div>
-                  <Comment />
+                  <hr />
                 </div>
+                <Comment />
               </div>
             </div>
           </section>

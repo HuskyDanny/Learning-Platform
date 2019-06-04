@@ -5,11 +5,14 @@ import { Link } from "react-router-dom";
 import image from "../../assets/img/logo.jpg";
 import DropDown from "../dropdown/dropdown";
 import Spinner from "../UI/Spinner/Spinner";
+import Modal from "react-responsive-modal";
+
 class Publish extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      warning: false,
       loading: false,
       posted: false,
       content: "",
@@ -55,6 +58,13 @@ class Publish extends Component {
     this.setState({ content: value });
   };
 
+  handleCancel = () => {
+    this.setState({ warning: true });
+  };
+
+  onCloseModal = () => {
+    this.setState({ warning: false });
+  };
   // handleTags = e => {
   //   e.preventDefault();
   //   this.setState({ tags: e.target.value });
@@ -150,12 +160,39 @@ class Publish extends Component {
                 updateContent={this.updateContent}
                 value={this.state.content}
               />
-              <button className="button is-primary" onClick={this.handlePost}>
-                Post
-              </button>
+              <div class="level-left">
+                <button
+                  className="button is-primary level-item"
+                  onClick={this.handlePost}
+                >
+                  Post
+                </button>
+                <button
+                  className="button is-primary level-item"
+                  onClick={this.handleCancel}
+                >
+                  Cancel
+                </button>
+              </div>
             </React.Fragment>
           )}
         </div>
+        <Modal
+          className="modal-lg"
+          open={this.state.warning}
+          onClose={this.onCloseModal}
+          center
+        >
+          <div>
+            <h1>
+              <strong>Warning</strong>
+            </h1>
+            <p style={{ color: "red" }}>Your Post Will Not Be Saved</p>
+            <Link className="button is-link" to="/index">
+              Okay, I Got It
+            </Link>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }
