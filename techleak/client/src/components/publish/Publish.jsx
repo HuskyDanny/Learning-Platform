@@ -17,7 +17,7 @@ class Publish extends Component {
       posted: false,
       content: "",
       author: "Allen",
-      title: "How to construct a class in python",
+      title: "",
       tags: ["python", "interview"]
     };
 
