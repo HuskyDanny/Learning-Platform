@@ -26,12 +26,13 @@ import FroalaEditorComponent from "react-froala-wysiwyg";
 
 const EditorComponent = props => {
   const YOURSERVER = "http://localhost:3000";
+  const TOKEN = localStorage.getItem("token");
 
   const config = {
     height: 300,
     imageUploadURL: `${YOURSERVER}/api/uploads/images`,
     requestHeaders: {
-      Authorization: `Token ${localStorage.getItem("token")}`
+      Authorization: `Token ${TOKEN}`
     },
     events: {
       "image.removed": function($img) {
@@ -48,6 +49,7 @@ const EditorComponent = props => {
           "Content-Type",
           "application/json;charset=UTF-8"
         );
+        xhttp.setRequestHeader("Authorization", `Token ${TOKEN}`);
         xhttp.send(
           JSON.stringify({
             //Here use slice to exclude http://localhost:3000
