@@ -5,7 +5,7 @@ const { index, algoliaSchema } = require("../../../config/algolia");
 const router = Router();
 const _ = require("lodash");
 
-router.get("/", auth.optional, async (req, res) => {
+router.get("/", auth.required, async (req, res) => {
   try {
     const posts = await Post.find();
     return res.send(posts);
@@ -42,6 +42,7 @@ router.post("/", auth.required, async (req, res, next) => {
 
     let post = new Post(dbSchema);
     post = await post.save();
+
     //save to algolia
     let algoSchema = _.pick(dbSchema, algoliaSchema);
     algoSchema["objectID"] = post._id;
@@ -53,25 +54,42 @@ router.post("/", auth.required, async (req, res, next) => {
   }
 });
 
-router.patch("/like/:id", auth.required, async (req, res) => {
-  try {
-    const post = await Post.findOneAndUpdate(
-      { _id: req.params.id },
-      { $inc: { likes: 1 } },
-      { new: true }
-    );
+router.delete("/:id", (req, res) => {
+  const promiseAlgolia = index.deleteObject(req.params.id);
 
-    if (!post) return res.status(400).send("Post not Found");
+  const promiseMongo = Post.findOneAndDelete({ _id: req.params.id });
 
-    return res.send(post);
-  } catch (error) {
-    return res.send(error);
-  }
+  Promise.all([promiseAlgolia, promiseMongo])
+    .then(content => res.json(content))
+    .catch(err => res.status(500).json(err.message));
 });
 
-router.patch("/tags/:id", auth.required, async (req, res) => {
+router.patch("/likes/:id", auth.required, (req, res) => {
+  const promiseMongo = Post.findOneAndUpdate(
+    { _id: req.params.id },
+    { $inc: { likes: 1 } },
+    { new: true }
+  );
+
+  const promiseAlgolia = index
+    .getObject(req.params.id, ["likes"])
+    .then(content =>
+      index.partialUpdateObject({
+        likes: content.likes + 1,
+        objectID: req.params.id
+      })
+    )
+    .catch(err => res.status(500).json(err.message));
+
+  //only fetching the first object returned by algolia
+  Promise.all([promiseAlgolia, promiseMongo])
+    .then(content => res.json(content[0]))
+    .catch(err => res.status(500).json(err.message));
+});
+
+router.patch("/tags/:id", auth.required, (req, res) => {
   try {
-    const post = await Post.findOneAndUpdate(
+    const post = Post.findOneAndUpdate(
       { _id: req.params.id },
       { tags: req.body.tags },
       { new: true }

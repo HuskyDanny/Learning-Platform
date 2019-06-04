@@ -9,10 +9,33 @@ class Blog extends Component {
     title: "",
     author: "",
     content: "",
-    likes: "",
+    liked: false,
+    saved: false,
+    shared: false,
     post_date: "",
     loaded: false
   };
+
+  handleLike = type => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + token
+      }
+    };
+    axios
+      .patch(
+        "http://localhost:3000/api/posts/likes/5cf44b45ecd000fe540a43c1",
+        null,
+        headers
+      )
+      .then(res => {
+        this.setState({ [type]: !this.state[type] });
+      })
+      .catch(err => err);
+  };
+
   render() {
     if (!this.state.loaded) {
       axios
@@ -29,7 +52,9 @@ class Blog extends Component {
         })
         .catch(err => console.log(err));
     }
-    const { content } = this.state;
+    let { liked, shared, saved } = this.state;
+
+    console.log(shared, liked, saved);
     return (
       <React.Fragment>
         <Navbar
@@ -46,24 +71,18 @@ class Blog extends Component {
         <section className="hero is-info is-medium is-bold">
           <div className="hero-body">
             <div className="container has-text-centered">
-              <h1 className="title">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-              </h1>
+              <h1 className="title">{this.state.title}</h1>
             </div>
           </div>
         </section>
 
         <div className="container">
           <section className="articles">
-            <div className="column is-8 is-offset-2">
+            <div className="column is-10 is-offset-1">
               <div className="card article ">
                 <div className="card-content">
                   <div className="media">
                     <div className="media-content has-text-centered">
-                      <h1 className="has-text-centered is-size-4">
-                        <strong>{this.state.title}</strong>
-                      </h1>
-
                       <div className="tags has-addons level-item">
                         <span className="tag is-rounded is-info">
                           DatePosted@
@@ -74,8 +93,58 @@ class Blog extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="content article-body">
+                  <div
+                    className="content article-body"
+                    style={{ marginBottom: "10%" }}
+                  >
                     {ReactHtmlParser(this.state.content)}
+                  </div>
+                  <hr />
+                  <div>
+                    <div
+                      class="level-left"
+                      style={{
+                        justifyContent: "space-between",
+                        width: "80%",
+                        margin: "3% auto 3% auto"
+                      }}
+                    >
+                      <button
+                        class="level-item button "
+                        onClick={() => this.handleLike("shared")}
+                      >
+                        <span class="icon is-small">
+                          <i class="far fa-share-square" aria-hidden="true" />
+                        </span>
+                      </button>
+                      <button
+                        class={
+                          saved
+                            ? "level-item button is-success"
+                            : "level-item button"
+                        }
+                        aria-label="retweet"
+                        onClick={() => this.handleLike("saved")}
+                      >
+                        <span class="icon is-small">
+                          <i class="far fa-save" aria-hidden="true" />
+                        </span>
+                      </button>
+                      <button
+                        class={
+                          liked
+                            ? "level-item button is-success"
+                            : "level-item button"
+                        }
+                        aria-label="like"
+                        onClick={() => this.handleLike("liked")}
+                      >
+                        <span class="icon is-small">
+                          <i class="far fa-thumbs-up" aria-hidden="true" />
+                        </span>
+                      </button>
+                    </div>
+                    <hr />
                   </div>
                   <Comment />
                 </div>

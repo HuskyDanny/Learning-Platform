@@ -116,13 +116,20 @@ router.post("/login", (req, res) => {
     if (err) {
       next(err);
     }
-    if (user) {
-      return res.json(user.toAuthJSON());
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Account does not exist, please sign up" });
+    }
+    if (info) {
+      return res.status(400).json(info);
     }
     if (!user.confirmed) {
-      return res.json({ message: "Please verify first" });
+      return res
+        .status(400)
+        .json({ message: "Please verify your email first" });
     }
-    return res.status(400).json(info);
+    return res.json(user.toAuthJSON());
   })(req, res);
 });
 
