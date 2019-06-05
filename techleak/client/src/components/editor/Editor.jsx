@@ -30,6 +30,7 @@ const EditorComponent = props => {
 
   const config = {
     height: 300,
+    width: 775.98,
     imageUploadURL: `${YOURSERVER}/api/uploads/images`,
     requestHeaders: {
       Authorization: `Token ${TOKEN}`
@@ -57,6 +58,7 @@ const EditorComponent = props => {
           })
         );
       },
+
       "image.beforeUpload": function(images) {
         // Return false if you want to stop the image upload.
       },

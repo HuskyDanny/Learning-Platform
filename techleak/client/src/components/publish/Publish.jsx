@@ -144,36 +144,39 @@ class Publish extends Component {
             this.successPosted()
           ) : (
             <React.Fragment>
-              <input
-                className="input is-rounded"
-                type="text"
-                placeholder="Enter Your Title..."
-                value={this.state.title}
-                onChange={this.handleTitle}
-              />
-              <input
-                className="input is-rounded"
-                type="text"
-                placeholder="Enter Your Tags..."
-              />
-              <Editor
-                updateContent={this.updateContent}
-                value={this.state.content}
-              />
-              <div class="level-left">
-                <button
-                  className="button is-primary level-item"
-                  onClick={this.handlePost}
-                >
-                  Post
-                </button>
-                <button
-                  className="button is-primary level-item"
-                  onClick={this.handleCancel}
-                >
-                  Cancel
-                </button>
-              </div>
+              <form onSubmit={this.handlePost}>
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  required
+                  placeholder="Enter Your Title..."
+                  value={this.state.title}
+                  onChange={this.handleTitle}
+                />
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  placeholder="Enter Your Tags..."
+                />
+                <Editor
+                  updateContent={this.updateContent}
+                  value={this.state.content}
+                />
+                <div class="level-left">
+                  <button
+                    className="button is-primary level-item"
+                    type="submit"
+                  >
+                    Post
+                  </button>
+                  <button
+                    className="button is-primary level-item"
+                    onClick={this.handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
             </React.Fragment>
           )}
         </div>
