@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-responsive-modal";
 import "./contactUs.css";
-
+import { connect } from "react-redux";
 class ContactUs extends React.Component {
   constructor(props) {
     super(props);
@@ -37,11 +37,11 @@ class ContactUs extends React.Component {
         padding: "0px"
       }
     };
-    console.log(this.props.contactUsOpen);
+
     return (
       <Modal
         open={this.props.contactUsOpen}
-        onClose={() => this.props.onCloseModal("contactUsOpen")}
+        onClose={this.props.onSwitchContactModal}
         styles={modalBg}
         center
       >
@@ -140,4 +140,19 @@ class ContactUs extends React.Component {
   }
 }
 
-export default ContactUs;
+const mapStateToProps = state => {
+  return {
+    contactUsOpen: state.contactUsOpen
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSwitchContactModal: () => dispatch({ type: "CONTACTMODAL" })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ContactUs);

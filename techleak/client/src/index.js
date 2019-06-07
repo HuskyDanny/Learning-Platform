@@ -6,11 +6,24 @@ import * as serviceWorker from "./serviceWorker";
 import "bulma";
 import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
 import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import configureStore from "./store/configureStore";
+const { store, persistor } = configureStore();
+
+store.subscribe(() => {
+  console.log("subscription", store.getState());
+});
+
 ReactDOM.render(
- <Router>
-    <App />
-  </Router>,
-  document.getElementById("root") 
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Router>
+        <App />
+      </Router>
+    </PersistGate>
+  </Provider>,
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change

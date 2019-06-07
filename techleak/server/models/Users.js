@@ -89,7 +89,7 @@ UsersSchema.methods.userView = function() {
 
 UsersSchema.methods.toAuthJSON = function() {
   return {
-    _id: this._id,
+    username: this.username,
     email: this.email,
     token: this.generateJWT()
   };

@@ -61,7 +61,6 @@ class Blog extends Component {
           onCloseModal={this.props.onCloseModal}
           signupOpen={this.props.signupOpen}
           loginOpen={this.props.loginOpen}
-          loggedIn={this.props.loggedIn}
           logHandler={this.props.logHandler}
           username={this.props.username}
           contactUsOpen={this.props.contactUsOpen}

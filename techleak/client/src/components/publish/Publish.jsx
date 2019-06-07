@@ -6,6 +6,7 @@ import image from "../../assets/img/logo.jpg";
 import DropDown from "../dropdown/dropdown";
 import Spinner from "../UI/Spinner/Spinner";
 import Modal from "react-responsive-modal";
+import { connect } from "react-redux";
 
 class Publish extends Component {
   constructor(props) {
@@ -16,7 +17,6 @@ class Publish extends Component {
       loading: false,
       posted: false,
       content: "",
-      author: "Allen",
       title: "",
       tags: ["python", "interview"]
     };
@@ -30,7 +30,7 @@ class Publish extends Component {
     const token = localStorage.getItem("token");
 
     const post = {
-      author: this.state.author,
+      author: this.props.username,
       title: this.state.title,
       content: this.state.content,
       tags: this.state.tags || []
@@ -158,10 +158,12 @@ class Publish extends Component {
                   type="text"
                   placeholder="Enter Your Tags..."
                 />
-                <Editor
-                  updateContent={this.updateContent}
-                  value={this.state.content}
-                />
+                <div style={{ margin: "auto auto" }}>
+                  <Editor
+                    updateContent={this.updateContent}
+                    value={this.state.content}
+                  />
+                </div>
                 <div class="level-left">
                   <button
                     className="button is-primary level-item"
@@ -201,4 +203,10 @@ class Publish extends Component {
   }
 }
 
-export default Publish;
+const mapStateToProps = state => {
+  return {
+    username: state.username
+  };
+};
+
+export default connect(mapStateToProps)(Publish);

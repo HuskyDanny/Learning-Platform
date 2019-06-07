@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Modal from "react-responsive-modal";
 import Spinner from "./UI/Spinner/Spinner";
+import { connect } from "react-redux";
 class Singup extends Component {
   state = {
     username: "",
@@ -46,8 +47,8 @@ class Singup extends Component {
             email: ""
           });
           localStorage.setItem("token", res.data.token);
-          this.props.onCloseModal("signupOpen");
-          this.props.logHandler(res.data.username, res.data.token);
+          this.props.onSwitchModal();
+          this.props.handleLogIn();
         })
         .catch(err => {
           if (err.response) {
@@ -193,7 +194,7 @@ class Singup extends Component {
       <Modal
         className="modal-lg"
         open={this.props.signupOpen}
-        onClose={() => this.props.onCloseModal("signupOpen")}
+        onClose={this.props.onSwitchModal}
         center
         styles={modalBg}
       >
@@ -203,4 +204,19 @@ class Singup extends Component {
   }
 }
 
-export default Singup;
+const mapStateToProps = state => {
+  return {
+    signupOpen: state.signupOpen
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSwitchModal: () => dispatch({ type: "SIGNUPMODAL" })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Singup);

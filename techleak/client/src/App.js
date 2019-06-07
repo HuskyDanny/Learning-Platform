@@ -14,19 +14,9 @@ class App extends Component {
   state = {
     signupOpen: false,
     loginOpen: false,
-    loggedIn: false,
     username: "",
     token: "",
-    contactUsOpen: false,
     tags: ["Python", "Interview", "10XCoder", "Interview", "Leetcode"]
-  };
-
-  onOpenModal = type => {
-    this.setState({ [type]: true });
-  };
-
-  onCloseModal = type => {
-    this.setState({ [type]: false });
   };
 
   likeHandler = id => {
@@ -34,23 +24,7 @@ class App extends Component {
     this.setState({});
   };
 
-  logHandler = (name, token) => {
-    this.setState({
-      loggedIn: !this.state.loggedIn,
-      username: name,
-      token: token
-    });
-  };
-
   render() {
-    const {
-      signupOpen,
-      loginOpen,
-      loggedIn,
-      contactUsOpen,
-      username
-    } = this.state;
-
     return (
       <React.Fragment>
         <Route
@@ -62,17 +36,7 @@ class App extends Component {
           path="/index"
           render={props => (
             <ErrorBoundary>
-              <Navbar
-                onOpenModal={this.onOpenModal}
-                onCloseModal={this.onCloseModal}
-                signupOpen={signupOpen}
-                loginOpen={loginOpen}
-                loggedIn={loggedIn}
-                logHandler={this.logHandler}
-                username={username}
-                contactUsOpen={contactUsOpen}
-                onPaneOpen={this.onPaneOpen}
-              />
+              <Navbar />
               <Search />
               <About />
               <Footer />
@@ -86,27 +50,13 @@ class App extends Component {
         <Route
           path="/blog/:id"
           exact
-          component={props => (
-            <Blog
-              {...props}
-              onOpenModal={this.onOpenModal}
-              onCloseModal={this.onCloseModal}
-              signupOpen={signupOpen}
-              loginOpen={loginOpen}
-              loggedIn={loggedIn}
-              logHandler={this.logHandler}
-              username={username}
-              contactUsOpen={contactUsOpen}
-            />
-          )}
+          component={props => <Blog {...props} />}
         />
         <Route path="/contact" exact component={ContactUs} />
         <Route
           path="/publish"
           exact
-          component={props => (
-            <Publish {...props} loggedIn={loggedIn} username={username} />
-          )}
+          component={props => <Publish {...props} />}
         />
       </React.Fragment>
     );

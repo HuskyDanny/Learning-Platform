@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Modal from "react-responsive-modal";
 import Spinner from "./UI/Spinner/Spinner";
+import { connect } from "react-redux";
 class Login extends Component {
   state = {
     password: "",
@@ -33,12 +34,11 @@ class Login extends Component {
       .post("http://127.0.0.1:3000/api/users/login", user)
       .then(res => {
         this.setState({ loading: false, email: "", password: "" });
-        this.props.logHandler(res.data.username, res.data.token);
-        this.props.onCloseModal("loginOpen");
+        this.props.handleLogIn(res.data.username);
+        this.props.onSwitchLoginModal();
         localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
-        console.log(err);
         this.setState({ notMatched: true });
         this.setState({ loading: false });
       });
@@ -133,7 +133,7 @@ class Login extends Component {
       <Modal
         className="modal-lg"
         open={this.props.loginOpen}
-        onClose={() => this.props.onCloseModal("loginOpen")}
+        onClose={this.props.onSwitchLoginModal}
         center
         styles={modalBg}
       >
@@ -143,4 +143,20 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    loginOpen: state.loginOpen
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleLogIn: username => dispatch({ type: "LOGIN", username: username }),
+    onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

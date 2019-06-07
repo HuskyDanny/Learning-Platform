@@ -4,31 +4,21 @@ import Login from "./Login";
 import image from "../assets/img/logo.jpg";
 import { Link } from "react-router-dom";
 import ContactUs from "./contactUs/contactUs";
+import { connect } from "react-redux";
 const Navbar = props => {
-  let {
-    onOpenModal,
-    onCloseModal,
-    signupOpen,
-    loginOpen,
-    loggedIn,
-    logHandler,
-    username,
-    contactUsOpen
-  } = props;
-
   let status = (
     <div className="navbar-end">
       <div className="navbar-item">
         <div className="buttons">
           <button
             className="button is-primary"
-            onClick={() => onOpenModal("signupOpen")}
+            onClick={props.onSwitchSignupModal}
           >
             <strong>Sign up</strong>
           </button>
           <button
             className="button is-primary"
-            onClick={() => onOpenModal("loginOpen")}
+            onClick={props.onSwitchLoginModal}
           >
             <strong>Log in</strong>
           </button>
@@ -51,12 +41,7 @@ const Navbar = props => {
             </div>
 
             <Link>
-              <div
-                className="button is-primary"
-                onClick={() => {
-                  logHandler("", "");
-                }}
-              >
+              <div className="button is-primary" onClick={props.handleLogOut}>
                 <strong>Log Out</strong>
               </div>
             </Link>
@@ -83,10 +68,7 @@ const Navbar = props => {
               About
             </Link>
 
-            <Link
-              className="navbar-item"
-              onClick={() => onOpenModal("contactUsOpen")}
-            >
+            <Link className="navbar-item" onClick={props.onSwitchContactModal}>
               Contact Us
             </Link>
 
@@ -97,22 +79,32 @@ const Navbar = props => {
           {status}
         </div>
       </nav>
-
-      <Signup
-        signupOpen={signupOpen}
-        loginOpen={loginOpen}
-        onCloseModal={onCloseModal}
-        logHandler={logHandler}
-      />
-      <Login
-        loginOpen={loginOpen}
-        loggedIn={loggedIn}
-        onCloseModal={onCloseModal}
-        logHandler={logHandler}
-      />
-      <ContactUs onCloseModal={onCloseModal} contactUsOpen={contactUsOpen} />
+      <Signup />
+      <Login />
+      <ContactUs />
     </React.Fragment>
   );
 };
 
-export default Navbar;
+const mapStateToProps = state => {
+  return {
+    loggedIn: state.loggedIn,
+    signupOpen: state.signupOpen,
+    loginOpen: state.loginOpen,
+    contactUsOpen: state.contactUsOpen
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleLogOut: () => dispatch({ type: "LOGOUT" }),
+    onSwitchSignupModal: () => dispatch({ type: "SIGNUPMODAL" }),
+    onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" }),
+    onSwitchContactModal: () => dispatch({ type: "CONTACTMODAL" })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navbar);
