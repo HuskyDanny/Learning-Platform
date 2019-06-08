@@ -20,7 +20,7 @@ import "froala-editor/js/plugins/draggable.min.js";
 import "froala-editor/js/plugins/save.min.js";
 import "froala-editor/js/plugins/paragraph_format.min.js";
 import "froala-editor/js/plugins/paragraph_style.min.js";
-import "froala-editor/js/plugins/color.min.js";
+// import "froala-editor/js/plugins/color.min.js";
 import "froala-editor/js/plugins/image_manager.min.js";
 import FroalaEditorComponent from "react-froala-wysiwyg";
 
