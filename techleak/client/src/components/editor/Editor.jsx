@@ -37,7 +37,6 @@ const EditorComponent = props => {
     },
     events: {
       "image.removed": function($img) {
-        console.log($img.attr("src").slice(YOURSERVER.length + 1));
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
           // Image was removed.

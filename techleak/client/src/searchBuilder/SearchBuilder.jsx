@@ -12,8 +12,8 @@ import {
 import Posts from "../components/posts";
 
 const searchClient = algoliasearch(
-  "ZHIBUXKOT0",
-  "fe7ce01b726f12ff9c7555c1c5df9c03"
+  process.env.REACT_APP_APPLICATION_ID,
+  process.env.REACT_APP_SEARCH_ADMIN_API
 );
 
 class SearchBuilder extends Component {

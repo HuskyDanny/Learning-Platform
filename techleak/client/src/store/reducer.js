@@ -3,7 +3,9 @@ const initialState = {
   signupOpen: false,
   loginOpen: false,
   contactUsOpen: false,
-  username: ""
+  username: "",
+  currentHits: [],
+  currentBlog: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +39,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       contactUsOpen: !state.contactUsOpen
+    };
+  }
+  if (action.type === "GETHITS") {
+    return {
+      ...state,
+      currentHits: action.hits
     };
   }
 

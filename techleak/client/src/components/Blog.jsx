@@ -21,12 +21,12 @@ class Blog extends Component {
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Token " + token
+        Authorization: `Token ${token}`
       }
     };
     axios
       .patch(
-        "http://localhost:3000/api/posts/likes/" + this.props.match.params.id,
+        `http://localhost:3000/api/posts/likes/${this.props.match.params.id}`,
         null,
         headers
       )
@@ -39,12 +39,14 @@ class Blog extends Component {
   render() {
     if (!this.state.loaded) {
       axios
-        .get("http://localhost:3000/api/posts/" + this.props.match.params.id)
+        .get(`http://localhost:3000/api/posts/${this.props.match.params.id}`)
         .then(res => {
+          const date = new Date(res.data.post_date_timestamp);
           this.setState({
             title: res.data.title,
             author: res.data.author,
-            post_date: res.data.post_date,
+            post_date: `${date.getMonth() +
+              1}-${date.getDate()}-${date.getFullYear()}`,
             content: res.data.content,
             likes: res.data.likes,
             loaded: true
@@ -56,15 +58,7 @@ class Blog extends Component {
 
     return (
       <React.Fragment>
-        <Navbar
-          onOpenModal={this.props.onOpenModal}
-          onCloseModal={this.props.onCloseModal}
-          signupOpen={this.props.signupOpen}
-          loginOpen={this.props.loginOpen}
-          logHandler={this.props.logHandler}
-          username={this.props.username}
-          contactUsOpen={this.props.contactUsOpen}
-        />
+        <Navbar />
 
         <section className="hero is-info is-medium is-bold">
           <div className="hero-body">

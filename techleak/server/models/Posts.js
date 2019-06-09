@@ -17,26 +17,27 @@ const availableTags = [
   "concurrency"
 ];
 
-const postSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    tags: {
-      type: [String],
-      enum: availableTags,
-      lowercase: true
-    },
-    likes: { type: Number },
-    post_date: {
-      type: Date
-    },
-    post_date_timestamp: {
-      type: Number
-    },
-    author: { type: String, require: true },
-    content: { type: String, required: true }
+const Comment = new mongoose.Schema({
+  body: String,
+  date: String
+});
+
+const postSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  tags: {
+    type: [String],
+    enum: availableTags,
+    lowercase: true
   },
-  { timestamps: true }
-);
+  likes: { type: Number },
+  post_date_timestamp: {
+    type: Number,
+    default: new Date().getTime()
+  },
+  author: { type: String, require: true },
+  content: { type: String, required: true },
+  comments: [Comment]
+});
 
 const Post = mongoose.model("Post", postSchema);
 

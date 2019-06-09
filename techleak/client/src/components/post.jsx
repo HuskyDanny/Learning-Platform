@@ -3,7 +3,15 @@ import Tag from "./commons/tag";
 import Likes from "./commons/likes";
 import { Link } from "react-router-dom";
 const Post = props => {
-  const { author, title, tags, likes, post_date, objectID } = props.post;
+  const {
+    author,
+    title,
+    tags,
+    likes,
+    post_date_timestamp,
+    objectID
+  } = props.post;
+
   const contentStyles = {
     padding: "3% 1% 2% 1%",
     height: "100%"
@@ -12,6 +20,8 @@ const Post = props => {
     margin: "3% 1% 0 1%"
   };
 
+  const date = new Date(post_date_timestamp);
+  console.log(date);
   return (
     <div className="column box is-4" style={postStyle}>
       <div>
@@ -41,7 +51,8 @@ const Post = props => {
             >
               <div>
                 <span style={{ color: "black", fontSize: "12px" }}>
-                  {post_date.slice(0, 10)}
+                  {`${date.getMonth() +
+                    1}-${date.getDate()}-${date.getFullYear()}`}
                 </span>
               </div>
 
