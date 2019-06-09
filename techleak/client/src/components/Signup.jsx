@@ -37,7 +37,7 @@ class Singup extends Component {
         }
       };
       axios
-        .post("http://127.0.0.1:3000/api/users/signup", user)
+        .post(`${process.env.REACT_APP_BACKEND_SERVER}/api/users/signup`, user)
         .then(res => {
           this.setState({
             loading: false,

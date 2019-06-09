@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const mongoose = require("mongoose");
-
+const { commentSchema } = require("../models/Comments");
 const Joi = require("joi");
 
 const availableTags = [
@@ -17,11 +17,6 @@ const availableTags = [
   "concurrency"
 ];
 
-const Comment = new mongoose.Schema({
-  body: String,
-  date: String
-});
-
 const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
   tags: {
@@ -36,7 +31,7 @@ const postSchema = new mongoose.Schema({
   },
   author: { type: String, require: true },
   content: { type: String, required: true },
-  comments: [Comment]
+  comments: [commentSchema]
 });
 
 const Post = mongoose.model("Post", postSchema);

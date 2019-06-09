@@ -3,6 +3,7 @@ const { Router } = require("express");
 const auth = require("../../auth");
 const { index, algoliaSchema } = require("../../../config/algolia");
 const router = Router();
+const { Comment, commentValidator } = require("../../../models/Comments");
 const _ = require("lodash");
 
 router.get("/", auth.required, async (req, res) => {
@@ -84,11 +85,29 @@ router.patch("/likes/:id", auth.required, (req, res) => {
     .catch(err => res.status(500).json(err.message));
 });
 
-router.patch("/comments", auth.required, (req, res) => {});
-
-router.patch("/tags/:id", auth.required, (req, res) => {
+router.patch("/comments/:id", auth.required, async (req, res) => {
   try {
-    const post = Post.findOneAndUpdate(
+    const post = await Post.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: {
+          comments: new Comment(req.body.comment)
+        }
+      },
+      { new: true }
+    );
+
+    if (!post) return res.status(400).send("Post not Found");
+
+    return res.json(post);
+  } catch (error) {
+    return res.json(error);
+  }
+});
+
+router.patch("/tags/:id", auth.required, async (req, res) => {
+  try {
+    const post = await Post.findOneAndUpdate(
       { _id: req.params.id },
       { tags: req.body.tags },
       { new: true }
@@ -96,9 +115,9 @@ router.patch("/tags/:id", auth.required, (req, res) => {
 
     if (!post) return res.status(400).send("Post not Found");
 
-    return res.send(post);
+    return res.json(post);
   } catch (error) {
-    return res.send(error);
+    return res.json(error);
   }
 });
 

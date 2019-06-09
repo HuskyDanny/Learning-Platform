@@ -26,7 +26,9 @@ class Blog extends Component {
     };
     axios
       .patch(
-        `http://localhost:3000/api/posts/likes/${this.props.match.params.id}`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
+          this.props.match.params.id
+        }`,
         null,
         headers
       )
@@ -39,7 +41,11 @@ class Blog extends Component {
   render() {
     if (!this.state.loaded) {
       axios
-        .get(`http://localhost:3000/api/posts/${this.props.match.params.id}`)
+        .get(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
+            this.props.match.params.id
+          }`
+        )
         .then(res => {
           const date = new Date(res.data.post_date_timestamp);
           this.setState({

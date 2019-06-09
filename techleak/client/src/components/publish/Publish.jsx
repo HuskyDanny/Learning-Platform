@@ -44,7 +44,7 @@ class Publish extends Component {
       }
     };
     axios
-      .post("http://localhost:3000/api/posts", post, headers)
+      .post(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts`, post, headers)
       .then(res => {
         console.log(res);
       })
