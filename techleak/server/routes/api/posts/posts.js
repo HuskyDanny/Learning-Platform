@@ -17,7 +17,6 @@ router.get("/", auth.required, async (req, res) => {
 router.get("/:id", auth.optional, async (req, res) => {
   try {
     const post = await Post.findOne({ _id: req.params.id });
-    console.log(post);
     return res.send(post);
   } catch (error) {
     return res.status(500).send(error);
@@ -30,13 +29,10 @@ router.post("/", auth.required, async (req, res, next) => {
 
   try {
     //save to db
-    // const now = new Date();
     const dbSchema = {
       title: result.title,
       author: result.author,
       content: result.content,
-      // post_date: new Date(now.getTime() - now.getTimezoneOffset() * 60000),
-      // post_date_timestamp: now.getTime() - now.getTimezoneOffset() * 60000,
       tags: result.tags ? result.tags : [],
       likes: result.likes ? result.likes : 0
     };
@@ -44,7 +40,6 @@ router.post("/", auth.required, async (req, res, next) => {
     let post = new Post(dbSchema);
     post = await post.save();
 
-    console.log(post);
     //save to algolia
     let algoSchema = _.pick(post, algoliaSchema);
     algoSchema["objectID"] = post._id;

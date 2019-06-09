@@ -25,7 +25,7 @@ import "froala-editor/js/plugins/image_manager.min.js";
 import FroalaEditorComponent from "react-froala-wysiwyg";
 
 const EditorComponent = props => {
-  const YOURSERVER = "http://localhost:3000";
+  const YOURSERVER = process.env.REACT_APP_BACKEND_SERVER;
   const TOKEN = localStorage.getItem("token");
 
   const config = {
