@@ -10,7 +10,9 @@ class Blog extends Component {
     saved: false,
     shared: false,
     post_date: "",
-    comments: []
+    comments: [],
+    username: "",
+    userID: ""
   };
 
   componentDidMount = () => {
@@ -26,7 +28,8 @@ class Blog extends Component {
           comments: res.data.comments,
           post_date: `${date.getMonth() +
             1}-${date.getDate()}-${date.getFullYear()}`,
-          loaded: true
+          username: res.data.username,
+          userID: res.data.userID
         });
       })
       .catch(err => console.log(err));

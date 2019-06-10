@@ -127,7 +127,7 @@ router.post("/login", (req, res) => {
     if (!user.confirmed) {
       return res
         .status(400)
-        .json({ message: "Please verify your email first" });
+        .json(new Error({ message: "Please verify your email first" }));
     }
     return res.json(user.toAuthJSON());
   })(req, res);

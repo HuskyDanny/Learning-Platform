@@ -39,8 +39,7 @@ class Login extends Component {
         localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
-        this.setState({ notMatched: true });
-        this.setState({ loading: false });
+        this.setState({ notMatched: true, loading: false });
       });
   };
 
