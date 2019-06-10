@@ -27,7 +27,7 @@ const Navbar = props => {
     </div>
   );
 
-  if (props.loggedIn) {
+  if (props.logIn) {
     status = (
       <div className="navbar-end">
         <div className="navbar-item">
@@ -88,7 +88,7 @@ const Navbar = props => {
 
 const mapStateToProps = state => {
   return {
-    loggedIn: state.loggedIn,
+    logIn: state.loggedIn,
     signupOpen: state.signupOpen,
     loginOpen: state.loginOpen,
     contactUsOpen: state.contactUsOpen

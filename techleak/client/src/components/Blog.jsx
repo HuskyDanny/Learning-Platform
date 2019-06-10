@@ -2,18 +2,34 @@ import React, { Component } from "react";
 import Navbar from "./navbar";
 import axios from "axios";
 import ReactHtmlParser from "react-html-parser";
-import Comment from "./comment/comment";
+import Comments from "./comment/comments";
 
 class Blog extends Component {
   state = {
-    title: "",
-    author: "",
-    content: "",
     liked: false,
     saved: false,
     shared: false,
     post_date: "",
-    loaded: false
+    comments: []
+  };
+
+  componentDidMount = () => {
+    axios
+      .get(
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
+          this.props.match.params.id
+        }`
+      )
+      .then(res => {
+        const date = new Date(res.data.post_date_timestamp);
+        this.setState({
+          comments: res.data.comments,
+          post_date: `${date.getMonth() +
+            1}-${date.getDate()}-${date.getFullYear()}`,
+          loaded: true
+        });
+      })
+      .catch(err => console.log(err));
   };
 
   handleLike = type => {
@@ -39,27 +55,6 @@ class Blog extends Component {
   };
 
   render() {
-    if (!this.state.loaded) {
-      axios
-        .get(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-            this.props.match.params.id
-          }`
-        )
-        .then(res => {
-          const date = new Date(res.data.post_date_timestamp);
-          this.setState({
-            title: res.data.title,
-            author: res.data.author,
-            post_date: `${date.getMonth() +
-              1}-${date.getDate()}-${date.getFullYear()}`,
-            content: res.data.content,
-            likes: res.data.likes,
-            loaded: true
-          });
-        })
-        .catch(err => console.log(err));
-    }
     let { liked, shared, saved } = this.state;
 
     return (
@@ -144,7 +139,7 @@ class Blog extends Component {
                   </div>
                   <hr />
                 </div>
-                <Comment />
+                <Comments comments={this.state.comments} />
               </div>
             </div>
           </section>

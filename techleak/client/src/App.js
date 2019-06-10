@@ -11,14 +11,6 @@ import Footer from "./components/footer/footer";
 import About from "./components/about/about";
 
 class App extends Component {
-  state = {
-    signupOpen: false,
-    loginOpen: false,
-    username: "",
-    token: "",
-    tags: ["Python", "Interview", "10XCoder", "Interview", "Leetcode"]
-  };
-
   likeHandler = id => {
     this.state.posts.filter(post => post.id === id);
     this.setState({});

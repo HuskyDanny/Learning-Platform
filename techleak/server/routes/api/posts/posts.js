@@ -3,7 +3,12 @@ const { Router } = require("express");
 const auth = require("../../auth");
 const { index, algoliaSchema } = require("../../../config/algolia");
 const router = Router();
-const { Comment, commentValidator } = require("../../../models/Comments");
+const {
+  Comment,
+  commentValidator,
+  Reply,
+  replyValidator
+} = require("../../../models/Comments");
 const _ = require("lodash");
 
 router.get("/", auth.required, async (req, res) => {
@@ -18,6 +23,8 @@ router.get("/", auth.required, async (req, res) => {
 router.get("/:id", auth.optional, async (req, res) => {
   try {
     const post = await Post.findOne({ _id: req.params.id });
+
+    if (!post) return res.status(400).json("Not Found");
     return res.send(post);
   } catch (error) {
     return res.status(500).send(error);
@@ -86,12 +93,15 @@ router.patch("/likes/:id", auth.required, (req, res) => {
 });
 
 router.patch("/comments/:id", auth.required, async (req, res) => {
+  const { error } = await commentValidator(req.body);
+  if (error) return res.status(400).send(error.message);
+
   try {
     const post = await Post.findOneAndUpdate(
       { _id: req.params.id },
       {
         $push: {
-          comments: new Comment(req.body.comment)
+          comments: new Comment(req.body)
         }
       },
       { new: true }
@@ -118,6 +128,24 @@ router.patch("/tags/:id", auth.required, async (req, res) => {
     return res.json(post);
   } catch (error) {
     return res.json(error);
+  }
+});
+
+router.patch("/comments/reply/:id", auth.required, async (req, res) => {
+  const { error } = await replyValidator(req.body);
+  if (error) return res.status(400).send(error.message);
+
+  try {
+    let post = await Post.findOne({ _id: req.params.id });
+
+    let result = await post.comments.id(req.query.commentId);
+
+    result.replies.push(new Reply(req.body));
+
+    post = await post.save();
+    res.json(post);
+  } catch (error) {
+    res.json(error.message);
   }
 });
 
