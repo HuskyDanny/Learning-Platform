@@ -6,8 +6,7 @@ import { store } from "../store/configureStore";
 const Hits = ({ hits }) => {
   if (hits && hits.length > 0) {
     store.dispatch({ type: "GETHITS", hits: hits });
-    console.log(hits);
-    return <Posts />;
+    return <Posts posts={hits} />;
   }
   return null;
 };

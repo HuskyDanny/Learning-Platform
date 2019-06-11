@@ -38,9 +38,9 @@ class SearchBuilder extends Component {
           <CustomHits />
           <Pagination
             defaultRefinement={1}
-            showFirst={true}
-            showPrevious={true}
-            showNext={true}
+            showFirst
+            showPrevious
+            showNext
             showLast
             padding={3}
             totalPages={10}
@@ -50,23 +50,5 @@ class SearchBuilder extends Component {
     );
   }
 }
-
-// const Hits = (props, { hits }) => {
-//   props.updateHits(hits);
-//   return <Posts posts={hits} />;
-// };
-
-// const CustomHits = connectHits(Hits);
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     updateHits: hits => dispatch({ type: "GETHITS", hits: hits })
-//   };
-// };
-
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(Hits);
 
 export default SearchBuilder;

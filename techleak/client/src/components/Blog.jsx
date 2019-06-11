@@ -10,15 +10,14 @@ class Blog extends Component {
     super(props);
 
     this.state = {
-      liked: false,
+      incremental: true,
       saved: false,
       shared: false,
       post_date: "",
       comments: [],
       username: "",
       userID: "",
-      content: "",
-      likes: props.likes
+      content: ""
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -47,12 +46,20 @@ class Blog extends Component {
 
   handleLike = type => {
     const token = localStorage.getItem("token");
+    console.log(this.props.userID);
     const headers = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`
       }
     };
+    axios.post(
+      `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+        this.props.userID
+      }`,
+      { postID: this.props.match.params.id },
+      headers
+    );
     axios
       .patch(
         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
@@ -63,9 +70,13 @@ class Blog extends Component {
       )
       .then(res => {
         this.setState({ [type]: !this.state[type] });
+        this.props.handleLike(
+          this.props.match.params.id,
+          this.state.incremental
+        );
+        this.setState({ incremental: !this.state.incremental });
       })
       .catch(err => err);
-    this.props.handleLike(this.props.match.params.id);
   };
 
   render() {
@@ -163,13 +174,20 @@ class Blog extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    userID: state.userID
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    handleLike: id => dispatch({ type: "HANDLELIKE", id: id })
+    handleLike: (id, incremental) =>
+      dispatch({ type: "HANDLELIKE", id: id, incremental: incremental })
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Blog);
