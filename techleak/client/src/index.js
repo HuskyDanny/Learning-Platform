@@ -8,9 +8,7 @@ import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import configureStore from "./store/configureStore";
-
-const { store, persistor } = configureStore();
+import { store, persistor } from "./store/configureStore";
 
 store.subscribe(() => {
   console.log("subscription", store.getState());

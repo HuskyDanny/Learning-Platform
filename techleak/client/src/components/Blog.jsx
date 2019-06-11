@@ -3,17 +3,26 @@ import Navbar from "./navbar";
 import axios from "axios";
 import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
+import { connect } from "react-redux";
 
 class Blog extends Component {
-  state = {
-    liked: false,
-    saved: false,
-    shared: false,
-    post_date: "",
-    comments: [],
-    username: "",
-    userID: ""
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      liked: false,
+      saved: false,
+      shared: false,
+      post_date: "",
+      comments: [],
+      username: "",
+      userID: "",
+      content: "",
+      likes: props.likes
+    };
+
+    this.handleLike = this.handleLike.bind(this);
+  }
 
   componentDidMount = () => {
     axios
@@ -29,32 +38,34 @@ class Blog extends Component {
           post_date: `${date.getMonth() +
             1}-${date.getDate()}-${date.getFullYear()}`,
           username: res.data.username,
-          userID: res.data.userID
+          userID: res.data.userID,
+          content: res.data.content
         });
       })
       .catch(err => console.log(err));
   };
 
   handleLike = type => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
-    };
-    axios
-      .patch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-          this.props.match.params.id
-        }`,
-        null,
-        headers
-      )
-      .then(res => {
-        this.setState({ [type]: !this.state[type] });
-      })
-      .catch(err => err);
+    // const token = localStorage.getItem("token");
+    // const headers = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Token ${token}`
+    //   }
+    // };
+    // axios
+    //   .patch(
+    //     `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
+    //       this.props.match.params.id
+    //     }`,
+    //     null,
+    //     headers
+    //   )
+    //   .then(res => {
+    //     this.setState({ [type]: !this.state[type] });
+    //   })
+    //   .catch(err => err);
+    this.props.handleLike(this.props.match.params.id);
   };
 
   render() {
@@ -152,4 +163,13 @@ class Blog extends Component {
   }
 }
 
-export default Blog;
+const mapDispatchToProps = dispatch => {
+  return {
+    handleLike: id => dispatch({ type: "HANDLELIKE", id: id })
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Blog);

@@ -5,7 +5,7 @@ const initialState = {
   contactUsOpen: false,
   username: "",
   currentHits: [],
-  currentBlog: {}
+  likes: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -42,9 +42,32 @@ const reducer = (state = initialState, action) => {
     };
   }
   if (action.type === "GETHITS") {
+    const likes = {};
+    action.hits.map(hit => {
+      likes[hit.objectID] = hit.likes;
+    });
     return {
       ...state,
-      currentHits: action.hits
+      likes: likes
+    };
+  }
+  if (action.type === "HANDLELIKE") {
+    // return {
+    //   ...state,
+    //   currentHits: state.currentHits.map(hit => {
+    //     if (hit.objectID !== action.id) {
+    //       return hit;
+    //     }
+    //     return {
+    //       ...hit,
+    //       likes: hit.likes + 1
+    //     };
+    //   })
+    // };
+
+    return {
+      ...state,
+      likes: { ...state.likes, [action.id]: state.likes[action.id] + 1 }
     };
   }
 

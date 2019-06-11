@@ -2,15 +2,19 @@ import React from "react";
 import Tag from "./commons/tag";
 import Likes from "./commons/likes";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 const Post = props => {
-  const {
-    author,
-    title,
-    tags,
-    likes,
-    post_date_timestamp,
-    objectID
-  } = props.post;
+  // const {
+  //   author,
+  //   title,
+  //   tags,
+  //   likes,
+  //   post_date_timestamp,
+  //   objectID
+  // } = props.post;
+
+  const post = props.posts.filter(post => post.objectID === props.id);
+  const { tags, likes, post_date_timestamp, title, author } = post[0];
 
   const contentStyles = {
     padding: "3% 1% 2% 1%",
@@ -25,7 +29,7 @@ const Post = props => {
   return (
     <div className="column box is-4" style={postStyle}>
       <div>
-        <Link to={"/blog/" + objectID}>
+        <Link to={"/blog/" + props.id}>
           <header style={{ contentStyles }}>
             <div className="tags">
               {tags.map((tag, index) => (
@@ -57,7 +61,7 @@ const Post = props => {
               </div>
 
               <div>
-                <Likes likes={likes} />
+                <Likes likes={props.likes[props.id]} />
               </div>
             </div>
           </footer>
@@ -67,4 +71,12 @@ const Post = props => {
   );
 };
 
-export default Post;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    posts: state.currentHits,
+    likes: state.likes
+  };
+};
+
+export default connect(mapStateToProps)(Post);

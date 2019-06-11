@@ -1,5 +1,6 @@
 import React from "react";
 import Post from "./post";
+import { connect } from "react-redux";
 
 const Posts = props => {
   const { posts } = props;
@@ -18,7 +19,7 @@ const Posts = props => {
           }}
         >
           {posts.slice(index * 3, index * 3 + 3).map((post, position) => (
-            <Post key={position + rows} post={post} />
+            <Post key={position + rows} id={post.objectID} />
           ))}
         </div>
       ))}
@@ -26,4 +27,10 @@ const Posts = props => {
   );
 };
 
-export default Posts;
+const mapStateToProps = state => {
+  return {
+    posts: state.currentHits
+  };
+};
+
+export default connect(mapStateToProps)(Posts);

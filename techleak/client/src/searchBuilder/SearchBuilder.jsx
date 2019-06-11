@@ -6,10 +6,10 @@ import {
   SearchBox,
   Pagination,
   SortBy,
-  connectHits,
   Configure
 } from "react-instantsearch-dom";
-import Posts from "../components/posts";
+
+import CustomHits from "./customHits";
 
 const searchClient = algoliasearch(
   process.env.REACT_APP_APPLICATION_ID,
@@ -51,10 +51,22 @@ class SearchBuilder extends Component {
   }
 }
 
-const Hits = ({ hits }) => {
-  return <Posts posts={hits} />;
-};
+// const Hits = (props, { hits }) => {
+//   props.updateHits(hits);
+//   return <Posts posts={hits} />;
+// };
 
-const CustomHits = connectHits(Hits);
+// const CustomHits = connectHits(Hits);
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     updateHits: hits => dispatch({ type: "GETHITS", hits: hits })
+//   };
+// };
+
+// export default connect(
+//   null,
+//   mapDispatchToProps
+// )(Hits);
 
 export default SearchBuilder;
