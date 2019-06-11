@@ -10,7 +10,6 @@ class Blog extends Component {
     super(props);
 
     this.state = {
-      incremental: true,
       saved: false,
       shared: false,
       post_date: "",
@@ -46,35 +45,42 @@ class Blog extends Component {
 
   handleLike = type => {
     const token = localStorage.getItem("token");
-    console.log(this.props.userID);
     const headers = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${token}`
       }
     };
-    axios.post(
-      `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-        this.props.userID
-      }`,
-      { postID: this.props.match.params.id },
-      headers
-    );
+
+    const liked = this.props.match.params.id in this.props.likedPosts;
+    //handling likeposts in User route
+    liked
+      ? axios.delete(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+            this.props.userID
+          }`,
+          { postID: this.props.match.params.id },
+          headers
+        )
+      : axios.post(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+            this.props.userID
+          }`,
+          { postID: this.props.match.params.id },
+          headers
+        );
+
+    //handling like# in Post route
     axios
       .patch(
         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
           this.props.match.params.id
         }`,
-        null,
+        { incremental: !liked },
         headers
       )
       .then(res => {
-        this.setState({ [type]: !this.state[type] });
-        this.props.handleLike(
-          this.props.match.params.id,
-          this.state.incremental
-        );
-        this.setState({ incremental: !this.state.incremental });
+        this.props.handleLike(this.props.match.params.id, liked);
       })
       .catch(err => err);
   };
@@ -120,7 +126,7 @@ class Blog extends Component {
                   <hr />
 
                   <div
-                    class="level-left"
+                    className="level-left"
                     style={{
                       justifyContent: "space-between",
                       width: "80%",
@@ -128,15 +134,15 @@ class Blog extends Component {
                     }}
                   >
                     <button
-                      class="level-item button "
+                      className="level-item button "
                       onClick={() => this.handleLike("shared")}
                     >
-                      <span class="icon is-small">
-                        <i class="far fa-share-square" aria-hidden="true" />
+                      <span className="icon is-small">
+                        <i className="far fa-share-square" aria-hidden="true" />
                       </span>
                     </button>
                     <button
-                      class={
+                      className={
                         saved
                           ? "level-item button is-success"
                           : "level-item button"
@@ -144,12 +150,12 @@ class Blog extends Component {
                       aria-label="retweet"
                       onClick={() => this.handleLike("saved")}
                     >
-                      <span class="icon is-small">
-                        <i class="far fa-save" aria-hidden="true" />
+                      <span className="icon is-small">
+                        <i className="far fa-save" aria-hidden="true" />
                       </span>
                     </button>
                     <button
-                      class={
+                      className={
                         liked
                           ? "level-item button is-success"
                           : "level-item button"
@@ -157,8 +163,8 @@ class Blog extends Component {
                       aria-label="like"
                       onClick={() => this.handleLike("liked")}
                     >
-                      <span class="icon is-small">
-                        <i class="far fa-thumbs-up" aria-hidden="true" />
+                      <span className="icon is-small">
+                        <i className="far fa-thumbs-up" aria-hidden="true" />
                       </span>
                     </button>
                   </div>
@@ -176,14 +182,15 @@ class Blog extends Component {
 
 const mapStateToProps = state => {
   return {
-    userID: state.userID
+    userID: state.userID,
+    likedPosts: state.likedPosts
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLike: (id, incremental) =>
-      dispatch({ type: "HANDLELIKE", id: id, incremental: incremental })
+    handleLike: (id, liked) =>
+      dispatch({ type: "HANDLELIKE", id: id, incremental: liked })
   };
 };
 

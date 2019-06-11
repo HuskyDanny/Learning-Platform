@@ -56,11 +56,15 @@ const reducer = (state = initialState, action) => {
     };
   }
   if (action.type === "HANDLELIKE") {
-    const delta = action.incremental ? 1 : -1;
-
+    const delta = action.liked ? 1 : -1;
+    let newLikePosts = [...state.likedPosts];
+    action.liked
+      ? newLikePosts.push(action.id)
+      : newLikePosts.filter(post => post !== action.id);
     return {
       ...state,
-      likes: { ...state.likes, [action.id]: state.likes[action.id] + delta }
+      likes: { ...state.likes, [action.id]: state.likes[action.id] + delta },
+      likedPosts: newLikePosts
     };
   }
 

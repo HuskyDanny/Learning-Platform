@@ -4,17 +4,17 @@ import Replies from "./replies";
 const Comment = props => {
   console.log(props.comment.replies);
   return (
-    <article class="media">
-      <figure class="media-left">
-        <p class="image is-64x64">
+    <article className="media">
+      <figure className="media-left">
+        <p className="image is-64x64">
           <img
             src="https://bulma.io/images/placeholders/128x128.png"
             alt="placeholder"
           />
         </p>
       </figure>
-      <div class="media-content">
-        <div class="content">
+      <div className="media-content">
+        <div className="content">
           <p>
             <strong>{props.comment.username}</strong>
             <br />

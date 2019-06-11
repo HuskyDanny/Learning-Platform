@@ -124,6 +124,22 @@ router.post("/likes/:id", auth.required, async (req, res) => {
   }
 });
 
+router.delete("/likes/:id", auth.required, async (req, res) => {
+  try {
+    const result = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $pull: { likedPosts: req.body.postID } },
+      { new: true }
+    );
+
+    if (!result)
+      return res.status(400).json({ message: "Please register or sign in" });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "error occurred" });
+  }
+});
+
 router.post("/login", (req, res) => {
   return passport.authenticate("local", { session: false }, function(
     err,

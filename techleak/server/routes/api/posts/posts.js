@@ -70,9 +70,16 @@ router.delete("/:id", (req, res) => {
 });
 
 router.patch("/likes/:id", auth.required, (req, res) => {
+  let increment;
+  if (req.body.incremental) {
+    increment = 1;
+  } else {
+    increment = -1;
+  }
+
   const promiseMongo = Post.findOneAndUpdate(
     { _id: req.params.id },
-    { $inc: { likes: 1 } },
+    { $inc: { likes: increment } },
     { new: true }
   );
 
