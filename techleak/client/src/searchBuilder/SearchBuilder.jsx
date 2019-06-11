@@ -20,7 +20,7 @@ class SearchBuilder extends Component {
   render() {
     return (
       <div>
-        <InstantSearch indexName="Test" searchClient={searchClient}>
+        <InstantSearch indexName="Test" searchClient={searchClient} refresh>
           <Configure hitsPerPage={6} analytics={true} distinct />
           <div style={{ justifyContent: "center", display: "flex" }}>
             <SortBy

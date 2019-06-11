@@ -25,7 +25,7 @@ const Post = props => {
   };
 
   const date = new Date(post_date_timestamp);
-
+  console.log(props.likes[props.id]);
   return (
     <div className="column box is-4" style={postStyle}>
       <div>

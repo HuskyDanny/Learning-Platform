@@ -44,11 +44,16 @@ const reducer = (state = initialState, action) => {
   if (action.type === "GETHITS") {
     const likes = {};
     action.hits.map(hit => {
-      likes[hit.objectID] = hit.likes;
+      if (!(hit.objectID in state.likes)) {
+        likes[hit.objectID] = hit.likes;
+      } else {
+        likes[hit.objectID] = state.likes[hit.objectID];
+      }
     });
     return {
       ...state,
-      likes: likes
+      likes: likes,
+      currentHits: action.hits
     };
   }
   if (action.type === "HANDLELIKE") {

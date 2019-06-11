@@ -33,18 +33,16 @@ const Navbar = props => {
         <div className="navbar-item">
           <div className="buttons">
             <Link className="button is-primary" to="/publish">
-              <i class="fas fa-plus-circle" /> <strong> New Post</strong>
+              <i className="fas fa-plus-circle" /> <strong> New Post</strong>
             </Link>
 
             <div className="button is-primary">
               <strong>My Profile </strong>
             </div>
 
-            <Link>
-              <div className="button is-primary" onClick={props.handleLogOut}>
-                <strong>Log Out</strong>
-              </div>
-            </Link>
+            <div className="button is-primary" onClick={props.handleLogOut}>
+              <strong>Log Out</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -64,9 +62,9 @@ const Navbar = props => {
 
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
-            <Link className="navbar-item" to="/about">
+            <a className="navbar-item" href="#about">
               About
-            </Link>
+            </a>
 
             <Link className="navbar-item" onClick={props.onSwitchContactModal}>
               Contact Us

@@ -4,8 +4,12 @@ import Posts from "../components/posts";
 import { store } from "../store/configureStore";
 
 const Hits = ({ hits }) => {
-  store.dispatch({ type: "GETHITS", hits: hits });
-  return <Posts posts={hits} />;
+  if (hits && hits.length > 0) {
+    store.dispatch({ type: "GETHITS", hits: hits });
+    console.log(hits);
+    return <Posts />;
+  }
+  return null;
 };
 
 const CustomHits = connectHits(Hits);

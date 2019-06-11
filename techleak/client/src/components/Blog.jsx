@@ -46,25 +46,25 @@ class Blog extends Component {
   };
 
   handleLike = type => {
-    // const token = localStorage.getItem("token");
-    // const headers = {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Token ${token}`
-    //   }
-    // };
-    // axios
-    //   .patch(
-    //     `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-    //       this.props.match.params.id
-    //     }`,
-    //     null,
-    //     headers
-    //   )
-    //   .then(res => {
-    //     this.setState({ [type]: !this.state[type] });
-    //   })
-    //   .catch(err => err);
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`
+      }
+    };
+    axios
+      .patch(
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
+          this.props.match.params.id
+        }`,
+        null,
+        headers
+      )
+      .then(res => {
+        this.setState({ [type]: !this.state[type] });
+      })
+      .catch(err => err);
     this.props.handleLike(this.props.match.params.id);
   };
 
