@@ -34,7 +34,12 @@ class Login extends Component {
       .post("http://127.0.0.1:3000/api/users/login", user)
       .then(res => {
         this.setState({ loading: false, email: "", password: "" });
-        this.props.handleLogIn(res.data.username, res.data.id);
+        console.log(res);
+        this.props.handleLogIn(
+          res.data.username,
+          res.data.id,
+          res.data.likedPosts
+        );
         //close modal
         this.props.onSwitchLoginModal();
         //save tokens
@@ -152,8 +157,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogIn: (username, userID) =>
-      dispatch({ type: "LOGIN", username: username, userID: userID }),
+    handleLogIn: (username, userID, likedPosts) =>
+      dispatch({
+        type: "LOGIN",
+        username: username,
+        userID: userID,
+        likedPosts: likedPosts
+      }),
     onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" })
   };
 };

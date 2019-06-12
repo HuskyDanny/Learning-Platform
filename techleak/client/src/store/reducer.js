@@ -15,7 +15,8 @@ const reducer = (state = initialState, action) => {
       ...state,
       loggedIn: true,
       userID: action.userID,
-      username: action.username
+      username: action.username,
+      likedPosts: action.likedPosts
     };
   }
   if (action.type === "LOGOUT") {
@@ -56,11 +57,12 @@ const reducer = (state = initialState, action) => {
     };
   }
   if (action.type === "HANDLELIKE") {
-    const delta = action.liked ? 1 : -1;
+    const delta = action.liked ? -1 : 1;
     let newLikePosts = [...state.likedPosts];
     action.liked
-      ? newLikePosts.push(action.id)
-      : newLikePosts.filter(post => post !== action.id);
+      ? (newLikePosts = newLikePosts.filter(post => post !== action.id))
+      : newLikePosts.push(action.id);
+
     return {
       ...state,
       likes: { ...state.likes, [action.id]: state.likes[action.id] + delta },

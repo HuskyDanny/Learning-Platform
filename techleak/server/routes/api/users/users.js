@@ -128,7 +128,7 @@ router.delete("/likes/:id", auth.required, async (req, res) => {
   try {
     const result = await User.findByIdAndUpdate(
       { _id: req.params.id },
-      { $pull: { likedPosts: req.body.postID } },
+      { $pull: { likedPosts: req.query.postID } },
       { new: true }
     );
 

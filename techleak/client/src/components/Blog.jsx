@@ -45,23 +45,27 @@ class Blog extends Component {
 
   handleLike = type => {
     const token = localStorage.getItem("token");
+    console.log(token);
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
+        Authorization: `Token ${token}`,
+        withCredentials: true
       }
     };
 
-    const liked = this.props.match.params.id in this.props.likedPosts;
+    const liked = this.props.likedPosts.includes(this.props.match.params.id);
     //handling likeposts in User route
+
     liked
-      ? axios.delete(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID
-          }`,
-          { postID: this.props.match.params.id },
-          headers
-        )
+      ? axios
+          .delete(
+            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+              this.props.userID
+            }?postID=${this.props.match.params.id}`,
+            headers
+          )
+          .then(res => console.log(res))
       : axios.post(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
             this.props.userID
@@ -76,7 +80,7 @@ class Blog extends Component {
         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
           this.props.match.params.id
         }`,
-        { incremental: !liked },
+        { liked: liked },
         headers
       )
       .then(res => {
@@ -86,8 +90,8 @@ class Blog extends Component {
   };
 
   render() {
-    let { liked, shared, saved } = this.state;
-
+    const liked = this.props.likedPosts.includes(this.props.match.params.id);
+    const saved = liked;
     return (
       <React.Fragment>
         <Navbar />
@@ -190,7 +194,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, incremental: liked })
+      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
   };
 };
 

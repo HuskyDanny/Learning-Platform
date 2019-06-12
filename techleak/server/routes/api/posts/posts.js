@@ -71,10 +71,10 @@ router.delete("/:id", (req, res) => {
 
 router.patch("/likes/:id", auth.required, (req, res) => {
   let increment;
-  if (req.body.incremental) {
-    increment = 1;
-  } else {
+  if (req.body.liked) {
     increment = -1;
+  } else {
+    increment = 1;
   }
 
   const promiseMongo = Post.findOneAndUpdate(
