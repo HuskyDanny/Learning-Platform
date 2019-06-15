@@ -27,6 +27,9 @@ const reducer = (state = initialState, action) => {
     };
   }
   if (action.type === "SIGNUPMODAL") {
+    //Here, after submit or even close, we
+    //will redirect to login modal
+
     return {
       ...state,
       loginOpen: state.signupOpen,

@@ -45,17 +45,13 @@ class Login extends Component {
         localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
+        //Here we pass in status code into error, and we handle
+        //error codes by err.response
         this.setState({
           loading: false,
           errStatus: err.response.status
         });
       });
-  };
-
-  emailDuplicateError = () => {
-    if (this.state.emailError) {
-      return <p className="help is-danger">{this.state.emailError}</p>;
-    }
   };
 
   render() {
@@ -73,6 +69,7 @@ class Login extends Component {
     const userError = () => {
       let body;
 
+      //handles different error
       switch (this.state.errStatus) {
         case 458:
           body = "Account does not exist";
@@ -104,7 +101,6 @@ class Login extends Component {
               <span className="icon is-small is-left">
                 <i className="fas fa-envelope" />
               </span>
-              {this.emailDuplicateError()}
             </div>
           </div>
 
