@@ -45,7 +45,6 @@ class Login extends Component {
         localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
-        console.log(err.response);
         this.setState({
           loading: false,
           errStatus: err.response.status
