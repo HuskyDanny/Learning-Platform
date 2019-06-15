@@ -12,7 +12,7 @@ passport.use(
           return done(err);
         }
         if (!user) {
-          return done(null, false, { message: "Incorrect Email" });
+          return done(null, false, null);
         }
         if (!user.validatePassword(password)) {
           return done(null, false, {

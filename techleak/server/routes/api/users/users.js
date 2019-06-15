@@ -65,14 +65,17 @@ router.post("/signup", auth.optional, async (req, res) => {
     body: { user }
   } = req;
 
+  console.log(user);
   //validate content
   const { error } = userValidator(user);
+
   if (error) return res.status(400).json(error.message);
 
   //salt and hash the newuser
   let newUser = new User(user);
   newUser.setPassword(user.password);
 
+  console.log("1");
   //save to mongodb
   try {
     newUser = await newUser.save();
@@ -102,6 +105,7 @@ router.post("/signup", auth.optional, async (req, res) => {
       if (error.errmsg.includes("username")) {
         message.username = "username has been taken";
       }
+      console.log(error);
       return res.status(400).json(message);
     }
   }
@@ -149,18 +153,14 @@ router.post("/login", (req, res) => {
     if (err) {
       next(err);
     }
-    if (!user) {
-      return res
-        .status(400)
-        .json({ message: "Account does not exist, please sign up" });
-    }
     if (info) {
-      return res.status(400).json(info);
+      return res.status(468).json(new Error());
+    }
+    if (!user) {
+      return res.status(458).json(new Error());
     }
     if (!user.confirmed) {
-      return res
-        .status(400)
-        .json(new Error({ message: "Please verify your email first" }));
+      return res.status(478).json(new Error());
     }
     return res.json(user.toAuthJSON());
   })(req, res);

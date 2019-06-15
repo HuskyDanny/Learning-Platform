@@ -39,8 +39,8 @@ const UsersSchema = new mongoose.Schema({
       }
     }
   },
-  likedPosts: { type: [String], unique: true },
-  savedPosts: { type: [String], unique: true },
+  likedPosts: { type: [String] },
+  savedPosts: { type: [String] },
   tags: {
     type: [String],
     enum: availableTags,

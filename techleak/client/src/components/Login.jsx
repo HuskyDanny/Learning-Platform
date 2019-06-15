@@ -7,7 +7,7 @@ class Login extends Component {
   state = {
     password: "",
     email: "",
-    notMatched: false,
+    errStatus: "",
     username: "",
     loading: false
   };
@@ -34,7 +34,6 @@ class Login extends Component {
       .post("http://127.0.0.1:3000/api/users/login", user)
       .then(res => {
         this.setState({ loading: false, email: "", password: "" });
-        console.log(res);
         this.props.handleLogIn(
           res.data.username,
           res.data.id,
@@ -46,7 +45,11 @@ class Login extends Component {
         localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
-        this.setState({ notMatched: true, loading: false });
+        console.log(err.response);
+        this.setState({
+          loading: false,
+          errStatus: err.response.status
+        });
       });
   };
 
@@ -68,14 +71,20 @@ class Login extends Component {
       }
     };
 
-    const notMatchedError = () => {
-      if (this.state.notMatched) {
-        return (
-          <p className="help is-danger"> Email and Password are not matched</p>
-        );
-      } else {
-        return null;
+    const userError = () => {
+      let body;
+
+      switch (this.state.errStatus) {
+        case 458:
+          body = "Account does not exist";
+          break;
+        case 468:
+          body = "Email and password not matched";
+          break;
+        case 478:
+          body = "Email has not been verified";
       }
+      return <p className="help is-danger"> {body}</p>;
     };
 
     let login = (
@@ -118,7 +127,7 @@ class Login extends Component {
               </span>
             </div>
           </div>
-          {notMatchedError()}
+          {userError()}
           <div
             className="field is-grouped"
             style={{ justifyContent: "center" }}

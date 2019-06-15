@@ -29,6 +29,7 @@ const reducer = (state = initialState, action) => {
   if (action.type === "SIGNUPMODAL") {
     return {
       ...state,
+      loginOpen: state.signupOpen,
       signupOpen: !state.signupOpen
     };
   }
