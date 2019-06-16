@@ -107,6 +107,39 @@ router.post("/signup", auth.optional, async (req, res) => {
   }
 });
 
+//Append id of post to User likedposts database
+router.post("/likes/:id", auth.required, async (req, res) => {
+  try {
+    const result = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $push: { likedPosts: req.body.postID } },
+      { new: true }
+    );
+
+    if (!result)
+      return res.status(400).json({ message: "Please register or sign in" });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "error occurred" });
+  }
+});
+
+router.delete("/likes/:id", auth.required, async (req, res) => {
+  try {
+    const result = await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      { $pull: { likedPosts: req.query.postID } },
+      { new: true }
+    );
+
+    if (!result)
+      return res.status(400).json({ message: "Please register or sign in" });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "error occurred" });
+  }
+});
+
 router.post("/login", (req, res) => {
   return passport.authenticate("local", { session: false }, function(
     err,

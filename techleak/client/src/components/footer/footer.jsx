@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer = props => {
   return (
-    <footer class="footer">
-      <div class="content has-text-centered">
+    <footer className="footer">
+      <div className="content has-text-centered">
         <p>
           <strong>Built</strong> by <a href="https://jgthms.com">...</a>. The
           source code is licensed

@@ -4,8 +4,9 @@ const initialState = {
   loginOpen: false,
   contactUsOpen: false,
   username: "",
-  currentHits: [],
-  likes: {}
+  userID: "",
+  likes: {},
+  likedPosts: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,7 +14,9 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       loggedIn: true,
-      username: action.username
+      userID: action.userID,
+      username: action.username,
+      likedPosts: action.likedPosts
     };
   }
   if (action.type === "LOGOUT") {
@@ -42,32 +45,28 @@ const reducer = (state = initialState, action) => {
     };
   }
   if (action.type === "GETHITS") {
-    const likes = {};
+    let temp = { ...state.likes };
     action.hits.map(hit => {
-      likes[hit.objectID] = hit.likes;
+      if (!(hit.objectID in temp)) {
+        temp[hit.objectID] = hit.likes;
+      }
     });
     return {
       ...state,
-      likes: likes
+      likes: temp
     };
   }
   if (action.type === "HANDLELIKE") {
-    // return {
-    //   ...state,
-    //   currentHits: state.currentHits.map(hit => {
-    //     if (hit.objectID !== action.id) {
-    //       return hit;
-    //     }
-    //     return {
-    //       ...hit,
-    //       likes: hit.likes + 1
-    //     };
-    //   })
-    // };
+    const delta = action.liked ? -1 : 1;
+    let newLikePosts = [...state.likedPosts];
+    action.liked
+      ? (newLikePosts = newLikePosts.filter(post => post !== action.id))
+      : newLikePosts.push(action.id);
 
     return {
       ...state,
-      likes: { ...state.likes, [action.id]: state.likes[action.id] + 1 }
+      likes: { ...state.likes, [action.id]: state.likes[action.id] + delta },
+      likedPosts: newLikePosts
     };
   }
 

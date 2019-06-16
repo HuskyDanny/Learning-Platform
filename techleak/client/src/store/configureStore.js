@@ -6,7 +6,14 @@ import rootReducer from "./reducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["loggedIn", "username", "currentHits"]
+  whitelist: [
+    "loggedIn",
+    "username",
+    "currentHits",
+    "userID",
+    "likedPosts",
+    "likes"
+  ]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

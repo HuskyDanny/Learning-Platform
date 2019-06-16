@@ -39,6 +39,8 @@ const UsersSchema = new mongoose.Schema({
       }
     }
   },
+  likedPosts: { type: [String], unique: true },
+  savedPosts: { type: [String], unique: true },
   tags: {
     type: [String],
     enum: availableTags,
@@ -91,7 +93,9 @@ UsersSchema.methods.toAuthJSON = function() {
   return {
     username: this.username,
     email: this.email,
-    token: this.generateJWT()
+    token: this.generateJWT(),
+    id: this._id,
+    likedPosts: this.likedPosts
   };
 };
 

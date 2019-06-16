@@ -6,10 +6,11 @@ import image4 from "../../assets/img/play-study-hard.jpg";
 const About = props => {
   return (
     <article
-      class="message is-primary"
+      className="message is-primary"
+      id="about"
       style={{ margin: "3% auto 0 auto", width: "90%" }}
     >
-      <div class="message-body">
+      <div className="message-body">
         <p className="is-size-4 is-uppercase">About us</p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
         <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta
