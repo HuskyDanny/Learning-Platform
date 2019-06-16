@@ -7,6 +7,8 @@ import DropDown from "../dropdown/dropdown";
 import Spinner from "../UI/Spinner/Spinner";
 import Modal from "react-responsive-modal";
 import { connect } from "react-redux";
+import TagSearch from "../searchTags/tagsearch"
+import Tag from "../commons/tag";
 
 class Publish extends Component {
   constructor(props) {
@@ -18,7 +20,8 @@ class Publish extends Component {
       posted: false,
       content: "",
       title: "",
-      tags: ["python", "interview"]
+      tags: [],
+      hitsDisplay: false
     };
 
     this.handlePost = this.handlePost.bind(this);
@@ -65,6 +68,29 @@ class Publish extends Component {
   onCloseModal = () => {
     this.setState({ warning: false });
   };
+
+  openDisplay = () => {
+    this.setState({ hitsDisplay: true })
+  }
+
+  closeDisplay = () => {
+    this.setState({ hitsDisplay: false })
+  }
+
+  handleRemoveItem = (target) => {
+    this.setState(state => ({
+      tags: state.tags.filter((tag) => tag !== target)
+    }));
+  }
+
+  handleSelect = value => {
+    if (this.state.tags.indexOf(value) === -1) {
+      this.setState(prevState => ({ 
+        tags:[...prevState.tags, value]
+      }));
+    };
+  }
+
   // handleTags = e => {
   //   e.preventDefault();
   //   this.setState({ tags: e.target.value });
@@ -74,6 +100,7 @@ class Publish extends Component {
     e.preventDefault();
     this.setState({ title: e.target.value });
   };
+  
   successPosted() {
     return (
       <div
@@ -115,6 +142,30 @@ class Publish extends Component {
   }
 
   render() {
+
+    let submit = (
+      <div class="level-left">
+        <button
+          className="button is-primary level-item"
+          type="submit"
+        >
+          Post
+        </button>
+        <button
+          className="button is-primary level-item"
+          onClick={this.handleCancel}
+        >
+          Cancel
+        </button>
+      </div>
+    )
+
+    if (this.state.hitsDisplay) {
+      submit = (
+        <div></div>
+      )
+    }
+
     return (
       <React.Fragment>
         <div>
@@ -145,18 +196,13 @@ class Publish extends Component {
           ) : (
             <React.Fragment>
               <form onSubmit={this.handlePost}>
+                <label>Title</label>
                 <input
                   className="input is-rounded"
                   type="text"
                   required
-                  placeholder="Enter Your Title..."
                   value={this.state.title}
                   onChange={this.handleTitle}
-                />
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  placeholder="Enter Your Tags..."
                 />
                 <div style={{ margin: "auto auto" }}>
                   <Editor
@@ -164,20 +210,18 @@ class Publish extends Component {
                     value={this.state.content}
                   />
                 </div>
-                <div class="level-left">
-                  <button
-                    className="button is-primary level-item"
-                    type="submit"
-                  >
-                    Post
-                  </button>
-                  <button
-                    className="button is-primary level-item"
-                    onClick={this.handleCancel}
-                  >
-                    Cancel
-                  </button>
-                </div>
+                <label>Tags</label>
+                <TagSearch
+                  hitsDisplay={this.state.hitsDisplay}
+                  openDisplay={this.openDisplay}
+                  closeDisplay={this.closeDisplay}
+                  inputTags={this.inputTags}
+                  handleRemoveItem={this.handleRemoveItem}
+                  handleSelect={this.handleSelect}
+                  styles={styles}
+                  tags={this.state.tags}
+                />
+                {submit}
               </form>
             </React.Fragment>
           )}
@@ -208,5 +252,47 @@ const mapStateToProps = state => {
     username: state.username
   };
 };
+
+const styles = {
+  container: {
+    border: '1px solid #ddd',
+    padding: '5px',
+    borderRadius: '5px',
+  },
+
+  hitStyle: {
+    margin: "3% 1% 0 1%"
+  },
+
+  input: {
+    outline: 'none',
+    border: 'none',
+    fontSize: '14px',
+    fontFamily: 'Helvetica, sans-serif'
+  },
+
+  items: {
+    display: 'inline-block',
+    padding: '2px',
+    border: '1px solid blue',
+    fontFamily: 'Helvetica, sans-serif',
+    borderRadius: '5px',
+    marginRight: '5px',
+    cursor: 'pointer'
+  },
+  
+  hit: {
+    width: '30%',
+    height: '10%',
+    float: 'left',
+    marginBottom: '10px',
+    borderBottom: 'solid 1px #eee',
+    margin: '0.5%',
+    border: 'solid 1px #eee',
+    boxShadow: '0 0 3px #f6f6f6',
+    position: 'relative',
+    fontSize: '14px'
+  }
+}
 
 export default connect(mapStateToProps)(Publish);
