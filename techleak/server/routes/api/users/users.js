@@ -105,7 +105,6 @@ router.post("/signup", auth.optional, async (req, res) => {
       if (error.errmsg.includes("username")) {
         message.username = "username has been taken";
       }
-      console.log(error);
       return res.status(400).json(message);
     }
   }
