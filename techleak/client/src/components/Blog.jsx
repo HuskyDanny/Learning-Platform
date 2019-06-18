@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Navbar from "./navbar";
-import axios from "axios";
 import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
+import axios from "../axios-blogs";
+import withHandler from "./UI/ErrorHandler/ErrorHandler";
 
 class Blog extends Component {
   constructor(props) {
@@ -16,7 +17,8 @@ class Blog extends Component {
       comments: [],
       username: "",
       userID: "",
-      content: ""
+      content: "",
+      title: ""
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -24,11 +26,7 @@ class Blog extends Component {
 
   componentDidMount = () => {
     axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-          this.props.match.params.id
-        }`
-      )
+      .get(`/api/posts/${this.props.match.params.id}`)
       .then(res => {
         const date = new Date(res.data.post_date_timestamp);
         this.setState({
@@ -37,7 +35,8 @@ class Blog extends Component {
             1}-${date.getDate()}-${date.getFullYear()}`,
           username: res.data.username,
           userID: res.data.userID,
-          content: res.data.content
+          content: res.data.content,
+          title: res.data.title
         });
       })
       .catch(err => console.log(err));
@@ -45,7 +44,6 @@ class Blog extends Component {
 
   handleLike = type => {
     const token = localStorage.getItem("token");
-    console.log(token);
     const headers = {
       headers: {
         "Content-Type": "application/json",
@@ -58,35 +56,29 @@ class Blog extends Component {
     //handling likeposts in User route
 
     liked
-      ? axios
-          .delete(
-            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-              this.props.userID
-            }?postID=${this.props.match.params.id}`,
-            headers
-          )
-          .then(res => console.log(res))
-      : axios.post(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID
+      ? axios.delete(
+          `/api/users/likes/${this.props.userID}?postID=${
+            this.props.match.params.id
           }`,
+          headers
+        )
+      : axios.post(
+          `/api/users/likes/${this.props.userID}`,
           { postID: this.props.match.params.id },
           headers
         );
 
     //handling like# in Post route
+    //catch here to revert the change
     axios
       .patch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-          this.props.match.params.id
-        }`,
+        `/api/posts/likes/${this.props.match.params.id}`,
         { liked: liked },
         headers
       )
-      .then(res => {
-        this.props.handleLike(this.props.match.params.id, liked);
-      })
-      .catch(err => err);
+      .catch(() => this.props.handleLike(this.props.match.params.id, !liked));
+
+    this.props.handleLike(this.props.match.params.id, liked);
   };
 
   render() {
@@ -198,7 +190,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Blog);
+export default withHandler(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Blog),
+  axios
+);

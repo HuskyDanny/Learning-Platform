@@ -6,7 +6,9 @@ const initialState = {
   username: "",
   userID: "",
   likes: {},
-  likedPosts: []
+  likedPosts: [],
+  comments: [],
+  replies: []
 };
 
 const reducer = (state = initialState, action) => {

@@ -5,7 +5,6 @@ import Search from "./searchBuilder/SearchBuilder";
 import Navbar from "./components/navbar";
 import Blog from "./components/Blog";
 import ContactUs from "./components/contactUs/contactUs";
-import ErrorBoundary from "./components/UI/ErrorHandler/ErrorHandler";
 import Publish from "./components/publish/Publish";
 import Footer from "./components/footer/footer";
 import About from "./components/about/about";
@@ -27,12 +26,12 @@ class App extends Component {
         <Route
           path="/index"
           render={props => (
-            <ErrorBoundary>
+            <React.Fragment>
               <Navbar />
               <Search />
               <About />
               <Footer />
-            </ErrorBoundary>
+            </React.Fragment>
           )}
         />
         <Route

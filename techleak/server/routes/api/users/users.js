@@ -65,7 +65,6 @@ router.post("/signup", auth.optional, async (req, res) => {
     body: { user }
   } = req;
 
-  console.log(user);
   //validate content
   const { error } = userValidator(user);
 
@@ -75,14 +74,14 @@ router.post("/signup", auth.optional, async (req, res) => {
   let newUser = new User(user);
   newUser.setPassword(user.password);
 
-  console.log("1");
   //save to mongodb
   try {
     newUser = await newUser.save();
     res.status(201).json({ message: "Created Account" });
 
-    const url =
-      "http://localhost:3000/api/users/comfirmation/" + newUser.generateJWT();
+    const url = `http://localhost:3000/api/users/comfirmation/${newUser.generateJWT()}`;
+
+    //Use smtp service for email verification
     const msg = {
       to: newUser.email,
       from: "welcome@techleak.com",
