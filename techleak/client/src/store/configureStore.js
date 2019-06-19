@@ -12,7 +12,9 @@ const persistConfig = {
     "currentHits",
     "userID",
     "likedPosts",
-    "likes"
+    "likes",
+    "comments",
+    "replies"
   ]
 };
 

@@ -7,6 +7,10 @@ class Comments extends Component {
   state = {
     body: ""
   };
+  onChange = e => {
+    e.preventDefault();
+    this.setState({ body: e.target.value });
+  };
   handlePost = () => {
     const token = localStorage.getItem("token");
     const headers = {
@@ -23,6 +27,8 @@ class Comments extends Component {
       },
       headers
     );
+    this.props.addComment(this.state.body);
+    this.setState({ body: "" });
   };
   render() {
     return (
@@ -42,7 +48,12 @@ class Comments extends Component {
           <div className="media-content">
             <div className="field">
               <p className="control">
-                <textarea className="textarea" placeholder="Add a comment..." />
+                <textarea
+                  className="textarea"
+                  value={this.state.body}
+                  onChange={this.onChange}
+                  placeholder="Add a comment..."
+                />
               </p>
             </div>
             <div className="field">
@@ -67,8 +78,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
+    addComment: body => dispatch({ type: "ADDCOMMENT", body: body })
   };
 };
 

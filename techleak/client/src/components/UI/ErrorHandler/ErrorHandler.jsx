@@ -24,7 +24,7 @@ const WithHandler = (WrappedComponent, axios) => {
 
           this.setState({
             error: true,
-            errorMessage: error.response.data.message
+            errorMessage: error.response.status
           });
           return Promise.reject(error);
         }

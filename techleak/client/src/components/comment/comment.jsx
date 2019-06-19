@@ -1,8 +1,8 @@
 import React from "react";
 import Replies from "./replies";
+import { connect } from "react-redux";
 
 const Comment = props => {
-  console.log(props.comment.replies);
   return (
     <article className="media">
       <figure className="media-left">
@@ -25,12 +25,31 @@ const Comment = props => {
             </small>
           </p>
         </div>
-        {props.comment.replies.length > 0 ? (
-          <Replies replies={props.comment.replies} />
+        {props.replies.length > 0 ? (
+          <Replies
+            replies={props.replies.filter(
+              reply => reply.commentRef === props.comment._id
+            )}
+          />
         ) : null}
       </div>
     </article>
   );
 };
 
-export default Comment;
+const mapStateToProps = state => {
+  return {
+    replies: state.replies
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addComment: body => dispatch({ type: "ADDCOMMENT", body: body })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Comment);

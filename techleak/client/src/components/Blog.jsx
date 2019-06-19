@@ -38,6 +38,8 @@ class Blog extends Component {
           content: res.data.content,
           title: res.data.title
         });
+
+        this.props.getBlog(res.data);
       })
       .catch(err => console.log(err));
   };
@@ -137,19 +139,7 @@ class Blog extends Component {
                         <i className="far fa-share-square" aria-hidden="true" />
                       </span>
                     </button>
-                    <button
-                      className={
-                        saved
-                          ? "level-item button is-success"
-                          : "level-item button"
-                      }
-                      aria-label="retweet"
-                      onClick={() => this.handleLike("saved")}
-                    >
-                      <span className="icon is-small">
-                        <i className="far fa-save" aria-hidden="true" />
-                      </span>
-                    </button>
+
                     <button
                       className={
                         liked
@@ -166,7 +156,7 @@ class Blog extends Component {
                   </div>
                   <hr />
                 </div>
-                <Comments comments={this.state.comments} />
+                <Comments />
               </div>
             </div>
           </section>
@@ -186,7 +176,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
+      dispatch({ type: "HANDLELIKE", id: id, liked: liked }),
+    getBlog: blog => dispatch({ type: "GETBLOG", blog: blog })
   };
 };
 

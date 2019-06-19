@@ -50,16 +50,52 @@ const reducer = (state = initialState, action) => {
       contactUsOpen: !state.contactUsOpen
     };
   }
-  if (action.type === "GETHITS") {
-    let temp = { ...state.likes };
-    action.hits.map(hit => {
-      if (!(hit.objectID in temp)) {
-        temp[hit.objectID] = hit.likes;
-      }
+  if (action.type === "GETBLOG") {
+    let tempComments = [];
+    let tempReplies = [];
+    action.blog.comments.map(comment => {
+      const { replies, ...clone } = comment;
+      tempComments.push({ ...clone });
+      tempReplies.push({ ...replies[0], commentRef: comment._id });
     });
+
     return {
       ...state,
-      likes: temp
+      comments: tempComments,
+      replies: tempReplies
+    };
+  }
+  if (action.type === "ADDCOMMENT") {
+    let temp = [...state.comments];
+    temp.push({ body: action.body, username: state.username });
+
+    return {
+      ...state,
+      comments: temp
+    };
+  }
+
+  if (action.type === "ADDREPLY") {
+    let temp = [...state.replies];
+    temp.push(action.reply);
+
+    return {
+      ...state,
+      replies: temp
+    };
+  }
+  if (action.type === "GETHITS") {
+    let tempLikes = { ...state.likes };
+
+    action.hits.map(hit => {
+      if (!(hit.objectID in tempLikes)) {
+        tempLikes[hit.objectID] = hit.likes;
+      }
+    });
+
+    return {
+      ...state,
+      likes: tempLikes
     };
   }
   if (action.type === "HANDLELIKE") {
