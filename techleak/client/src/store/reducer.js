@@ -56,7 +56,9 @@ const reducer = (state = initialState, action) => {
     action.blog.comments.map(comment => {
       const { replies, ...clone } = comment;
       tempComments.push({ ...clone });
-      tempReplies.push({ ...replies[0], commentRef: comment._id });
+      if (replies.length > 0) {
+        tempReplies.push({ ...replies[0], commentRef: comment._id });
+      }
     });
 
     return {
@@ -67,7 +69,7 @@ const reducer = (state = initialState, action) => {
   }
   if (action.type === "ADDCOMMENT") {
     let temp = [...state.comments];
-    temp.push({ body: action.body, username: state.username });
+    temp.push(action.comment);
 
     return {
       ...state,
@@ -88,6 +90,7 @@ const reducer = (state = initialState, action) => {
     let tempLikes = { ...state.likes };
 
     action.hits.map(hit => {
+      //if the hit not in current memory, then we use the data
       if (!(hit.objectID in tempLikes)) {
         tempLikes[hit.objectID] = hit.likes;
       }

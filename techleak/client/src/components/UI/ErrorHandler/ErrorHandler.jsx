@@ -43,6 +43,13 @@ const WithHandler = (WrappedComponent, axios) => {
         }
       };
 
+      let message;
+      switch (this.state.errorMessage) {
+        case 403:
+          message = "Please login, if you have logged in, please log in again";
+          break;
+      }
+
       const onClose = () => {
         this.setState({ error: false, errorMessage: "" });
       };
@@ -54,8 +61,7 @@ const WithHandler = (WrappedComponent, axios) => {
             center
             styles={modalBg}
           >
-            {this.state.errorMessage}{" "}
-            <i class="fas fa-exclamation" style={{ color: "red" }} />
+            {message} <i class="fas fa-exclamation" style={{ color: "red" }} />
           </Modal>
           <WrappedComponent {...this.props} />
         </div>

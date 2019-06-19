@@ -100,15 +100,18 @@ router.patch("/likes/:id", auth.required, (req, res) => {
 });
 
 router.patch("/comments/:id", auth.required, async (req, res) => {
-  const { error } = await commentValidator(req.body);
+  console.log(req.body.comment);
+  const { error } = await commentValidator(req.body.comment);
   if (error) return res.status(400).send(error.message);
 
   try {
+    const comment = new Comment(req.body.comment);
+
     const post = await Post.findOneAndUpdate(
       { _id: req.params.id },
       {
         $push: {
-          comments: new Comment(req.body)
+          comments: comment
         }
       },
       { new: true }
@@ -116,7 +119,7 @@ router.patch("/comments/:id", auth.required, async (req, res) => {
 
     if (!post) return res.status(400).send("Post not Found");
 
-    return res.json(post);
+    return res.json(comment);
   } catch (error) {
     return res.json(error);
   }

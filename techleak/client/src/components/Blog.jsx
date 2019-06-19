@@ -156,7 +156,7 @@ class Blog extends Component {
                   </div>
                   <hr />
                 </div>
-                <Comments />
+                <Comments blogID={this.props.match.params.id} />
               </div>
             </div>
           </section>

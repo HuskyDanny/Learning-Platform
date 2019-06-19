@@ -20,15 +20,26 @@ class Comments extends Component {
         withCredentials: true
       }
     };
-    axios.patch(
-      "/api/posts/comments/5d00b108eadb8845bf470b66",
-      {
-        content: this.state.body
-      },
-      headers
-    );
-    this.props.addComment(this.state.body);
-    this.setState({ body: "" });
+    axios
+      .patch(
+        `/api/posts/comments/${this.props.blogID}`,
+        {
+          comment: {
+            body: this.state.body,
+            username: this.props.username,
+            userID: this.props.userID
+          }
+        },
+        headers
+      )
+      .then(res => {
+        const { replies, ...comment } = res.data;
+        this.props.addComment({ ...comment });
+        this.setState({ body: "" });
+      })
+      .catch(err => {
+        console.log("error");
+      });
   };
   render() {
     return (
@@ -72,13 +83,15 @@ class Comments extends Component {
 
 const mapStateToProps = state => {
   return {
-    comments: state.comments
+    comments: state.comments,
+    username: state.username,
+    userID: state.userID
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    addComment: body => dispatch({ type: "ADDCOMMENT", body: body })
+    addComment: comment => dispatch({ type: "ADDCOMMENT", comment: comment })
   };
 };
 

@@ -1,7 +1,6 @@
 import React from "react";
 
 const Reply = props => {
-  console.log(props.reply);
   return (
     <div class="content">
       <p>
