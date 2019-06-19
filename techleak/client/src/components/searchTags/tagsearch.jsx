@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from "react";
 import algoliasearch from "algoliasearch";
 import "instantsearch.css/themes/algolia.css";
 import {
@@ -16,68 +16,68 @@ const searchClient = algoliasearch(
 );
 
 
-const TagSearch = ({handleSelect, tags, handleRemoveItem, hitsDisplay, styles, openDisplay, closeDisplay, ...props}) => {
-
-  const HitComponent = ({ hit, handleSelect }) => {
-    return (
-      <div className="column box" style={styles.hit}>
-        <div 
-          onClick={() => handleSelect(hit.name)}
-        >
-          <Highlight attribute="name" hit={hit} />
-        </div>
+const HitComponent = ({ hit, handleSelect, styles }) => {
+  return (
+    <div className="column box" style={styles.hit}>
+      <div 
+        onClick={() => handleSelect(hit.name)}
+      >
+        <Highlight attribute="name" hit={hit} />
       </div>
-    );
-  }
-  
-  const MyHits = connectHits(({ hits, handleSelect }) => {
-    const hs = hits.map(hit => <HitComponent 
-                                  key={hit.objectID} 
-                                  hit={hit} 
-                                  handleSelect={handleSelect}/>);
-    return <div id="hits">{hs}</div>;
-  })
+    </div>
+  );
+}
 
+const MyHits = connectHits(({ hits, handleSelect, styles }) => {
+  const hs = hits.map(hit => <HitComponent 
+                                key={hit.objectID} 
+                                hit={hit} 
+                                handleSelect={handleSelect}
+                                styles={styles}/>);
+  return <div id="hits">{hs}</div>;
+})
+
+const TagSearch = (props) => {
+  console.log(props)
   let inputTags = (
-    tags.map((tag) => 
-      <li key={tag} style={styles.items}>
+    props.tags.map((tag) => 
+      <li key={tag} style={props.styles.items}>
         {tag}
         <button
-          onClick={() => handleRemoveItem(tag)}
+          onClick={() => props.handleRemoveItem(tag)}
         >
           (x)
         </button>
       </li>
     )
   )
-
+  
   let result = (
     <div className="container-fluid" id="results">
 
     </div>
   )
 
-  if (hitsDisplay) {
+  if (props.hitsDisplay) {
     result = (
       <Flexbox 
         flexDirection="column" 
         minHeight="100vh"
       >
         <div className="rows">
-          <MyHits handleSelect={handleSelect}/>
+          <MyHits handleSelect={props.handleSelect} styles={props.styles}/>
         </div>
       </Flexbox>
     )
   }
 
-
   return (
     <InstantSearch indexName="tags" searchClient={searchClient}>
       <Configure hitsPerPage={12} analytics={true} distinct />
       <CustomSearchBox
-        styles={styles}
-        openDisplay={openDisplay}
-        closeDisplay={closeDisplay}
+        styles={props.styles}
+        openDisplay={props.openDisplay}
+        closeDisplay={props.closeDisplay}
       />
       <Flexbox>
         {inputTags}
@@ -85,7 +85,29 @@ const TagSearch = ({handleSelect, tags, handleRemoveItem, hitsDisplay, styles, o
       {result}
 
     </InstantSearch>
-  )
+  );
 }
 
-export default TagSearch
+export default TagSearch;
+
+  // const openDisplay = () => {
+  //   this.setState({ hitsDisplay: true })
+  // }
+
+  // const closeDisplay = () => {
+  //   this.setState({ hitsDisplay: false })
+  // }
+
+  // const handleRemoveItem = (target) => {
+  //   this.setState(state => ({
+  //     tags: state.tags.filter((tag) => tag !== target)
+  //   }));
+  // }
+
+  // const handleSelect = value => {
+  //   if (this.state.tags.indexOf(value) === -1) {
+  //     this.setState(prevState => ({ 
+  //       tags:[...prevState.tags, value]
+  //     }));
+  //   };
+  // }

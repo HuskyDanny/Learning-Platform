@@ -8,6 +8,7 @@ import Spinner from "../UI/Spinner/Spinner";
 import Modal from "react-responsive-modal";
 import { connect } from "react-redux";
 import TagSearch from "../searchTags/tagsearch"
+import { openDisplay, closeDisplay, addTag, removeTag } from "../../actions/tagActions"
 import Tag from "../commons/tag";
 
 class Publish extends Component {
@@ -20,8 +21,6 @@ class Publish extends Component {
       posted: false,
       content: "",
       title: "",
-      tags: [],
-      hitsDisplay: false
     };
 
     this.handlePost = this.handlePost.bind(this);
@@ -69,27 +68,27 @@ class Publish extends Component {
     this.setState({ warning: false });
   };
 
-  openDisplay = () => {
-    this.setState({ hitsDisplay: true })
-  }
+  // openDisplay = () => {
+  //   this.setState({ hitsDisplay: true })
+  // }
 
-  closeDisplay = () => {
-    this.setState({ hitsDisplay: false })
-  }
+  // closeDisplay = () => {
+  //   this.setState({ hitsDisplay: false })
+  // }
 
-  handleRemoveItem = (target) => {
-    this.setState(state => ({
-      tags: state.tags.filter((tag) => tag !== target)
-    }));
-  }
+  // handleRemoveItem = (target) => {
+  //   this.setState(state => ({
+  //     tags: state.tags.filter((tag) => tag !== target)
+  //   }));
+  // }
 
-  handleSelect = value => {
-    if (this.state.tags.indexOf(value) === -1) {
-      this.setState(prevState => ({ 
-        tags:[...prevState.tags, value]
-      }));
-    };
-  }
+  // handleSelect = value => {
+  //   if (this.state.tags.indexOf(value) === -1) {
+  //     this.setState(prevState => ({ 
+  //       tags:[...prevState.tags, value]
+  //     }));
+  //   };
+  // }
 
   // handleTags = e => {
   //   e.preventDefault();
@@ -212,14 +211,13 @@ class Publish extends Component {
                 </div>
                 <label>Tags</label>
                 <TagSearch
-                  hitsDisplay={this.state.hitsDisplay}
-                  openDisplay={this.openDisplay}
-                  closeDisplay={this.closeDisplay}
-                  inputTags={this.inputTags}
-                  handleRemoveItem={this.handleRemoveItem}
-                  handleSelect={this.handleSelect}
+                  hitsDisplay={this.props.tagReducer.hitsDisplay}
+                  tags={this.props.tagReducer.tags}
+                  handleSelect={(tag) => this.props.addTag(tag)}
+                  handleRemoveItem={(tag) => this.props.removeTag(tag)}
+                  openDisplay={() => this.props.openDisplay()}
+                  closeDisplay={() => this.props.closeDisplay()}
                   styles={styles}
-                  tags={this.state.tags}
                 />
                 {submit}
               </form>
@@ -249,9 +247,27 @@ class Publish extends Component {
 
 const mapStateToProps = state => {
   return {
-    username: state.username
+    username: state.username,
+    tagReducer: state.tagReducer
   };
 };
+
+const mapDispatchToProps = dispatch => {
+  return {
+    openDisplay: () => {
+      dispatch(openDisplay());
+    },
+    closeDisplay: () => {
+      dispatch(closeDisplay());
+    },
+    addTag: (tag) => {
+      dispatch(addTag(tag));
+    },
+    removeTag: (tag) => {
+      dispatch(removeTag(tag));
+    }
+  }
+}
 
 const styles = {
   container: {
@@ -295,4 +311,4 @@ const styles = {
   }
 }
 
-export default connect(mapStateToProps)(Publish);
+export default connect(mapStateToProps, mapDispatchToProps)(Publish);
