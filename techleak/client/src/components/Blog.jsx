@@ -26,10 +26,13 @@ class Blog extends Component {
     axios
       .get(
         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-          this.props.match.params.id
+        this.props.match.params.id
         }`
       )
       .then(res => {
+        console.log(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
+          this.props.match.params.id
+          }`)
         const date = new Date(res.data.post_date_timestamp);
         this.setState({
           comments: res.data.comments,
@@ -56,29 +59,28 @@ class Blog extends Component {
 
     const liked = this.props.likedPosts.includes(this.props.match.params.id);
     //handling likeposts in User route
-
     liked
       ? axios
-          .delete(
-            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-              this.props.userID
-            }?postID=${this.props.match.params.id}`,
-            headers
-          )
-          .then(res => console.log(res))
-      : axios.post(
+        .delete(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID
-          }`,
-          { postID: this.props.match.params.id },
+          this.props.userID
+          }?postID=${this.props.match.params.id}`,
           headers
-        );
+        )
+        .then(res => console.log(res))
+      : axios.post(
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+        this.props.userID
+        }`,
+        { postID: this.props.match.params.id },
+        headers
+      );
 
     //handling like# in Post route
     axios
       .patch(
         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-          this.props.match.params.id
+        this.props.match.params.id
         }`,
         { liked: liked },
         headers

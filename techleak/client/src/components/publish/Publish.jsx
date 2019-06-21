@@ -43,10 +43,26 @@ class Publish extends Component {
         Authorization: `Token ${token}`
       }
     };
+
     axios
       .post(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts`, post, headers)
       .then(res => {
-        console.log(res);
+        axios.post(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
+          this.props.userID
+          }`,
+          { postID: res.data._id },
+          headers
+        )
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        var newMyPosts = this.props.myPosts;
+        newMyPosts.push(res.data._id);
+        this.props.handleMyPosts(newMyPosts);
       })
       .catch(err => {
         console.log(err);
@@ -143,44 +159,44 @@ class Publish extends Component {
           ) : this.state.posted ? (
             this.successPosted()
           ) : (
-            <React.Fragment>
-              <form onSubmit={this.handlePost}>
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  required
-                  placeholder="Enter Your Title..."
-                  value={this.state.title}
-                  onChange={this.handleTitle}
-                />
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  placeholder="Enter Your Tags..."
-                />
-                <div style={{ margin: "auto auto" }}>
-                  <Editor
-                    updateContent={this.updateContent}
-                    value={this.state.content}
-                  />
-                </div>
-                <div class="level-left">
-                  <button
-                    className="button is-primary level-item"
-                    type="submit"
-                  >
-                    Post
+                <React.Fragment>
+                  <form onSubmit={this.handlePost}>
+                    <input
+                      className="input is-rounded"
+                      type="text"
+                      required
+                      placeholder="Enter Your Title..."
+                      value={this.state.title}
+                      onChange={this.handleTitle}
+                    />
+                    <input
+                      className="input is-rounded"
+                      type="text"
+                      placeholder="Enter Your Tags..."
+                    />
+                    <div style={{ margin: "auto auto" }}>
+                      <Editor
+                        updateContent={this.updateContent}
+                        value={this.state.content}
+                      />
+                    </div>
+                    <div class="level-left">
+                      <button
+                        className="button is-primary level-item"
+                        type="submit"
+                      >
+                        Post
                   </button>
-                  <button
-                    className="button is-primary level-item"
-                    onClick={this.handleCancel}
-                  >
-                    Cancel
+                      <button
+                        className="button is-primary level-item"
+                        onClick={this.handleCancel}
+                      >
+                        Cancel
                   </button>
-                </div>
-              </form>
-            </React.Fragment>
-          )}
+                    </div>
+                  </form>
+                </React.Fragment>
+              )}
         </div>
         <Modal
           className="modal-lg"
@@ -205,8 +221,24 @@ class Publish extends Component {
 
 const mapStateToProps = state => {
   return {
-    username: state.username
+    username: state.username,
+    userID: state.userID,
+    myPosts: state.myPosts
   };
 };
 
-export default connect(mapStateToProps)(Publish);
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleMyPosts: (newMyPosts) =>
+      dispatch({
+        type: "PUBLISHEDNEWPOST",
+        myPosts: newMyPosts
+      }),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Publish);

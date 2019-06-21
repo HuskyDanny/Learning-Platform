@@ -41,6 +41,7 @@ const UsersSchema = new mongoose.Schema({
   },
   likedPosts: { type: [String], unique: true },
   savedPosts: { type: [String], unique: true },
+  myPosts: { type: [String], unique: true },
   tags: {
     type: [String],
     enum: availableTags,
@@ -55,21 +56,21 @@ const UsersSchema = new mongoose.Schema({
   }
 });
 
-UsersSchema.methods.setPassword = function(password) {
+UsersSchema.methods.setPassword = function (password) {
   this.salt = crypto.randomBytes(16).toString("hex");
   this.hash = crypto
     .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
     .toString("hex");
 };
 
-UsersSchema.methods.validatePassword = function(password) {
+UsersSchema.methods.validatePassword = function (password) {
   const hash = crypto
     .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
     .toString("hex");
   return this.hash === hash;
 };
 
-UsersSchema.methods.generateJWT = function() {
+UsersSchema.methods.generateJWT = function () {
   return jwt.sign(
     {
       _id: this._id,
@@ -81,7 +82,7 @@ UsersSchema.methods.generateJWT = function() {
   );
 };
 
-UsersSchema.methods.userView = function() {
+UsersSchema.methods.userView = function () {
   return {
     email: this.email,
     username: this.username,
@@ -89,13 +90,14 @@ UsersSchema.methods.userView = function() {
   };
 };
 
-UsersSchema.methods.toAuthJSON = function() {
+UsersSchema.methods.toAuthJSON = function () {
   return {
     username: this.username,
     email: this.email,
     token: this.generateJWT(),
     id: this._id,
-    likedPosts: this.likedPosts
+    likedPosts: this.likedPosts,
+    myPosts: this.myPosts
   };
 };
 

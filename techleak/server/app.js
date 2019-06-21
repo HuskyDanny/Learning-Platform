@@ -32,7 +32,7 @@ app.use(
 );
 app.use(require("./routes"));
 //Error handling middleware
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     return res.status(403).send({
       success: false,
