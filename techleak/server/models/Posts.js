@@ -4,17 +4,20 @@ const { commentSchema } = require("../models/Comments");
 const Joi = require("joi");
 
 const availableTags = [
-  "python",
+  "Python",
   "javascript",
-  "java",
+  "Java",
   "golang",
-  "interview",
+  "Interview",
   "database",
   "10xcoder",
   "network",
   "database",
   "compiler",
-  "concurrency"
+  "concurrency",
+  "C",
+  "C++",
+  "OS"
 ];
 
 const postSchema = new mongoose.Schema({

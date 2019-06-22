@@ -26,8 +26,17 @@ class Blog extends Component {
 
   componentDidMount = () => {
     axios
-      .get(`/api/posts/${this.props.match.params.id}`)
+      .get(
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
+          this.props.match.params.id
+        }`
+      )
       .then(res => {
+        console.log(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
+            this.props.match.params.id
+          }`
+        );
         const date = new Date(res.data.post_date_timestamp);
         this.setState({
           comments: res.data.comments,
@@ -56,16 +65,19 @@ class Blog extends Component {
 
     const liked = this.props.likedPosts.includes(this.props.match.params.id);
     //handling likeposts in User route
-
     liked
-      ? axios.delete(
-          `/api/users/likes/${this.props.userID}?postID=${
-            this.props.match.params.id
-          }`,
-          headers
-        )
+      ? axios
+          .delete(
+            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+              this.props.userID
+            }?postID=${this.props.match.params.id}`,
+            headers
+          )
+          .then(res => console.log(res))
       : axios.post(
-          `/api/users/likes/${this.props.userID}`,
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+            this.props.userID
+          }`,
           { postID: this.props.match.params.id },
           headers
         );
@@ -74,7 +86,9 @@ class Blog extends Component {
     //catch here to revert the change
     axios
       .patch(
-        `/api/posts/likes/${this.props.match.params.id}`,
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
+          this.props.match.params.id
+        }`,
         { liked: liked },
         headers
       )
@@ -168,8 +182,8 @@ class Blog extends Component {
 
 const mapStateToProps = state => {
   return {
-    userID: state.userID,
-    likedPosts: state.likedPosts
+    userID: state.persistedReducer.userID,
+    likedPosts: state.persistedReducer.likedPosts
   };
 };
 

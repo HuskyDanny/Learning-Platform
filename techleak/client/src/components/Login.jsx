@@ -37,7 +37,8 @@ class Login extends Component {
         this.props.handleLogIn(
           res.data.username,
           res.data.id,
-          res.data.likedPosts
+          res.data.likedPosts,
+          res.data.myPosts
         );
         //close modal
         this.props.onSwitchLoginModal();
@@ -155,18 +156,19 @@ class Login extends Component {
 
 const mapStateToProps = state => {
   return {
-    loginOpen: state.loginOpen
+    loginOpen: state.persistedReducer.loginOpen
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogIn: (username, userID, likedPosts) =>
+    handleLogIn: (username, userID, likedPosts, myPosts) =>
       dispatch({
         type: "LOGIN",
         username: username,
         userID: userID,
-        likedPosts: likedPosts
+        likedPosts: likedPosts,
+        myPosts: myPosts
       }),
     onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" })
   };

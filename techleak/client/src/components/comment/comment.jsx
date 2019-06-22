@@ -39,7 +39,7 @@ const Comment = props => {
 
 const mapStateToProps = state => {
   return {
-    replies: state.replies
+    replies: state.persistedReducer.replies
   };
 };
 

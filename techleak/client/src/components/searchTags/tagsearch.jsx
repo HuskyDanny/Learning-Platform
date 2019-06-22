@@ -1,14 +1,22 @@
-import React, { Component } from 'react'
+import React from "react";
+import algoliasearch from "algoliasearch";
+import "instantsearch.css/themes/algolia.css";
 import {
   InstantSearch,
   Highlight,
-  connectHits
+  connectHits,
+  Configure
 } from 'react-instantsearch-dom';
-import CustomSearchBox from './searchbox'
-import '../App.css'
+import CustomSearchBox from './searchbox';
 import Flexbox from 'flexbox-react';
 
-const HitComponent = ({ hit, handleSelect }) => {
+const searchClient = algoliasearch(
+  process.env.REACT_APP_APPLICATION_ID,
+  process.env.REACT_APP_SEARCH_ADMIN_API
+);
+
+
+const HitComponent = ({ hit, handleSelect, styles }) => {
   return (
     <div className="column box" style={styles.hit}>
       <div 
@@ -20,141 +28,86 @@ const HitComponent = ({ hit, handleSelect }) => {
   );
 }
 
-const MyHits = connectHits(({ hits, handleSelect }) => {
+const MyHits = connectHits(({ hits, handleSelect, styles }) => {
   const hs = hits.map(hit => <HitComponent 
                                 key={hit.objectID} 
                                 hit={hit} 
-                                handleSelect={handleSelect}/>);
+                                handleSelect={handleSelect}
+                                styles={styles}/>);
   return <div id="hits">{hs}</div>;
 })
 
-export default class Tagsearch extends Component {
+const TagSearch = (props) => {
+  console.log(props)
+  let inputTags = (
+    props.tags.map((tag) => 
+      <li key={tag} style={props.styles.items}>
+        {tag}
+        <button
+          onClick={() => props.handleRemoveItem(tag)}
+        >
+          (x)
+        </button>
+      </li>
+    )
+  )
   
-  constructor(props) {
-    super(props);
+  let result = (
+    <div className="container-fluid" id="results">
 
-    this.state = {
-      inputContent:"",
-      tags:[]
-    };
+    </div>
+  )
+
+  if (props.hitsDisplay) {
+    result = (
+      <Flexbox 
+        flexDirection="column" 
+        minHeight="100vh"
+      >
+        <div className="rows">
+          <MyHits handleSelect={props.handleSelect} styles={props.styles}/>
+        </div>
+      </Flexbox>
+    )
   }
 
-  handleRemoveItem = (target) => {
-    this.setState(state => ({
-      tags: state.tags.filter((tag) => tag !== target)
-    }));
-  }
+  return (
+    <InstantSearch indexName="tags" searchClient={searchClient}>
+      <Configure hitsPerPage={12} analytics={true} distinct />
+      <CustomSearchBox
+        styles={props.styles}
+        openDisplay={props.openDisplay}
+        closeDisplay={props.closeDisplay}
+      />
+      <Flexbox>
+        {inputTags}
+      </Flexbox>
+      {result}
 
-  handleSelect = value => {
-    if (this.state.tags.indexOf(value) === -1) {
-      this.setState(prevState => ({ 
-        tags:[...prevState.tags, value]
-      }));
-    };
-    this.setState({ selected:true });
-  }
+    </InstantSearch>
+  );
+}
 
-  // openDisplay = () => {
+export default TagSearch;
+
+  // const openDisplay = () => {
   //   this.setState({ hitsDisplay: true })
   // }
 
-  // closeDisplay = () => {
+  // const closeDisplay = () => {
   //   this.setState({ hitsDisplay: false })
   // }
-  
-  render() {
 
-    let inputTags = (
-      this.state.tags.map((tag) => 
-        <li key={tag} style={styles.items}>
-          {tag}
-          <button
-            onClick={() => this.handleRemoveItem(tag)}
-          >
-            (x)
-          </button>
-        </li>
-      )
-    )
+  // const handleRemoveItem = (target) => {
+  //   this.setState(state => ({
+  //     tags: state.tags.filter((tag) => tag !== target)
+  //   }));
+  // }
 
-    let result = (
-      <div className="container-fluid" id="results">
-
-      </div>
-    )
-
-    if (this.props.hitsDisplay) {
-      result = (
-        <Flexbox 
-          flexDirection="column" 
-          minHeight="100vh"
-        >
-          <div className="rows">
-            <MyHits handleSelect={this.handleSelect}/>
-          </div>
-        </Flexbox>
-      )
-    }
-
-    return (
-      <InstantSearch
-        appId="JZR96HCCHL"
-        apiKey="b6fb26478563473aa77c0930824eb913"
-        indexName="tags"
-      >
-        <CustomSearchBox
-          styles={styles}
-          openDisplay={this.props.openDisplay}
-          closeDisplay={this.props.closeDisplay}
-        />
-        <Flexbox>
-          {inputTags}
-        </Flexbox>
-        {result}
-
-      </InstantSearch>
-    )
-  }
-}
-
-const styles = {
-  container: {
-    border: '1px solid #ddd',
-    padding: '5px',
-    borderRadius: '5px',
-  },
-
-  hitStyle: {
-    margin: "3% 1% 0 1%"
-  },
-
-  input: {
-    outline: 'none',
-    border: 'none',
-    fontSize: '14px',
-    fontFamily: 'Helvetica, sans-serif'
-  },
-
-  items: {
-    display: 'inline-block',
-    padding: '2px',
-    border: '1px solid blue',
-    fontFamily: 'Helvetica, sans-serif',
-    borderRadius: '5px',
-    marginRight: '5px',
-    cursor: 'pointer'
-  },
-
-  hit: {
-    width: '30%',
-    height: '10%',
-    float: 'left',
-    marginBottom: '10px',
-    borderBottom: 'solid 1px #eee',
-    margin: '0.5%',
-    border: 'solid 1px #eee',
-    boxShadow: '0 0 3px #f6f6f6',
-    position: 'relative',
-    fontSize: '14px'
-  }
-}
+  // const handleSelect = value => {
+  //   if (this.state.tags.indexOf(value) === -1) {
+  //     this.setState(prevState => ({ 
+  //       tags:[...prevState.tags, value]
+  //     }));
+  //   };
+  // }

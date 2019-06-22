@@ -4,7 +4,14 @@ import Likes from "./commons/likes";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 const Post = props => {
-  const { author, title, tags, post_date_timestamp, objectID } = props.post;
+  const {
+    author,
+    likes,
+    title,
+    tags,
+    post_date_timestamp,
+    objectID
+  } = props.post;
 
   const contentStyles = {
     padding: "3% 1% 2% 1%",
@@ -51,7 +58,7 @@ const Post = props => {
               </div>
 
               <div>
-                <Likes likes={props.likes[objectID]} />
+                <Likes likes={props.persistedReducer.likes[objectID]} />
               </div>
             </div>
           </footer>
@@ -63,7 +70,7 @@ const Post = props => {
 
 const mapStateToProps = state => {
   return {
-    likes: state.likes
+    persistedReducer: state.persistedReducer
   };
 };
 

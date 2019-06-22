@@ -206,7 +206,7 @@ class Singup extends Component {
 
 const mapStateToProps = state => {
   return {
-    signupOpen: state.signupOpen
+    signupOpen: state.persistedReducer.signupOpen
   };
 };
 

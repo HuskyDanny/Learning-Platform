@@ -83,9 +83,9 @@ class Comments extends Component {
 
 const mapStateToProps = state => {
   return {
-    comments: state.comments,
-    username: state.username,
-    userID: state.userID
+    comments: state.persistedReducer.comments,
+    username: state.persistedReducer.username,
+    userID: state.persistedReducer.userID
   };
 };
 
