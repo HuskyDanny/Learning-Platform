@@ -39,7 +39,7 @@ class Publish extends Component {
       author: this.props.username,
       title: this.state.title,
       content: this.state.content,
-      tags: this.state.tags || []
+      tags: this.props.tags || []
     };
     this.setState({ loading: true });
 

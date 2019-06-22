@@ -24,7 +24,6 @@ const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
   tags: {
     type: [String],
-    enum: availableTags,
     lowercase: true
   },
   likes: { type: Number },
