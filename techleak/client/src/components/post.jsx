@@ -4,7 +4,7 @@ import Likes from "./commons/likes";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 const Post = props => {
-  const { author, title, tags, post_date_timestamp, objectID } = props.post;
+  const { author,likes,title, tags, post_date_timestamp, objectID } = props.post;
 
   const contentStyles = {
     padding: "3% 1% 2% 1%",
@@ -16,6 +16,7 @@ const Post = props => {
 
   const date = new Date(post_date_timestamp);
 
+    console.log(likes,objectID);
   return (
     <div className="column box is-4" style={postStyle}>
       <div>
