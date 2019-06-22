@@ -6,6 +6,7 @@ const Posts = props => {
   let rows = Math.ceil(posts.length / 3);
   rows = [...Array(rows)].map((val, index) => index);
 
+  console.log(posts);
   return (
     <React.Fragment>
       {rows.map(index => (

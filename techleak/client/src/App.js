@@ -9,6 +9,7 @@ import ErrorBoundary from "./components/UI/ErrorHandler/ErrorHandler";
 import Publish from "./components/publish/Publish";
 import Footer from "./components/footer/footer";
 import About from "./components/about/about";
+import UserProfile from "./components/userProfile/userProfile"
 
 class App extends Component {
   likeHandler = id => {
@@ -49,6 +50,16 @@ class App extends Component {
           path="/publish"
           exact
           component={props => <Publish {...props} />}
+        />
+        <Route
+          path="/userProfile"
+          exact
+          component={props =>
+            <React.Fragment>
+              <Navbar />
+              <UserProfile {...props} />
+            </React.Fragment>
+          }
         />
       </React.Fragment>
     );

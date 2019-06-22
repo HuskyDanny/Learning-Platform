@@ -16,6 +16,7 @@ const persistConfig = {
     "currentHits",
     "userID",
     "likedPosts",
+    "myPosts",
     "likes"
   ]
 };
@@ -23,10 +24,11 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 let store = createStore(
-  combineReducers({
-    tagReducer: tagReducer,
-    persistedReducer: persistedReducer
-  })
+  // combineReducers({
+  //   tagReducer: tagReducer,
+
+  // })
+  persistedReducer
 );
 let persistor = persistStore(store);
 

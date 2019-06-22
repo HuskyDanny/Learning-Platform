@@ -45,10 +45,26 @@ class Publish extends Component {
         Authorization: `Token ${token}`
       }
     };
+
     axios
       .post(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts`, post, headers)
       .then(res => {
-        console.log(res);
+        axios.post(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
+          this.props.userID
+          }`,
+          { postID: res.data._id },
+          headers
+        )
+          .then(res => {
+            console.log(res);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        var newMyPosts = this.props.myPosts;
+        newMyPosts.push(res.data._id);
+        this.props.handleMyPosts(newMyPosts);
       })
       .catch(err => {
         console.log(err);
@@ -248,7 +264,9 @@ class Publish extends Component {
 const mapStateToProps = state => {
   return {
     username: state.username,
-    tagReducer: state.tagReducer
+    tagReducer: state.tagReducer,
+    userID: state.userID,
+    myPosts: state.myPosts
   };
 };
 
@@ -265,7 +283,12 @@ const mapDispatchToProps = dispatch => {
     },
     removeTag: (tag) => {
       dispatch(removeTag(tag));
-    }
+    },
+    handleMyPosts: (newMyPosts) =>
+      dispatch({
+        type: "PUBLISHEDNEWPOST",
+        myPosts: newMyPosts
+      })
   }
 }
 

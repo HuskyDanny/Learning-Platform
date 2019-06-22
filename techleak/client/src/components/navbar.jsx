@@ -36,9 +36,9 @@ const Navbar = props => {
               <i className="fas fa-plus-circle" /> <strong> New Post</strong>
             </Link>
 
-            <div className="button is-primary">
+            <Link className="button is-primary" to="/userProfile">
               <strong>My Profile </strong>
-            </div>
+            </Link>
 
             <div className="button is-primary" onClick={props.handleLogOut}>
               <strong>Log Out</strong>

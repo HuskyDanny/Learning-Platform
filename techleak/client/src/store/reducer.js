@@ -6,7 +6,8 @@ const initialState = {
   username: "",
   userID: "",
   likes: {},
-  likedPosts: []
+  likedPosts: [],
+  myPosts: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,7 +17,8 @@ const reducer = (state = initialState, action) => {
       loggedIn: true,
       userID: action.userID,
       username: action.username,
-      likedPosts: action.likedPosts
+      likedPosts: action.likedPosts,
+      myPosts: action.myPosts
     };
   }
   if (action.type === "LOGOUT") {
@@ -67,6 +69,12 @@ const reducer = (state = initialState, action) => {
       ...state,
       likes: { ...state.likes, [action.id]: state.likes[action.id] + delta },
       likedPosts: newLikePosts
+    };
+  }
+  if (action.type === "PUBLISHEDNEWPOST") {
+    return {
+      ...state,
+      myPosts: action.myPosts
     };
   }
 
