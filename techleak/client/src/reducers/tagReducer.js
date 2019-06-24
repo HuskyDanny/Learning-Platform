@@ -18,9 +18,11 @@ const tagReducer = (state = initialState, action) => {
       }
       break;
     case "HANDLE_SELECT":
-      state = {
-        ...state,
-        tags: [...state.tags, action.payload]
+      if (state.tags.indexOf(action.payload) === -1) {
+        state = {
+          ...state,
+          tags: [...state.tags, action.payload]
+        }
       }
       break;
     case "HANDLE_REMOVE":

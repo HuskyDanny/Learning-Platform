@@ -13,7 +13,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("3");
   if (action.type === "LOGIN") {
     return {
       ...state,

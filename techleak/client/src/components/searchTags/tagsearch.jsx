@@ -38,19 +38,7 @@ const MyHits = connectHits(({ hits, handleSelect, styles }) => {
 })
 
 const TagSearch = (props) => {
-  console.log(props)
-  let inputTags = (
-    props.tags.map((tag) => 
-      <li key={tag} style={props.styles.items}>
-        {tag}
-        <button
-          onClick={() => props.handleRemoveItem(tag)}
-        >
-          (x)
-        </button>
-      </li>
-    )
-  )
+
   
   let result = (
     <div className="container-fluid" id="results">
@@ -62,7 +50,6 @@ const TagSearch = (props) => {
     result = (
       <Flexbox 
         flexDirection="column" 
-        minHeight="100vh"
       >
         <div className="rows">
           <MyHits handleSelect={props.handleSelect} styles={props.styles}/>
@@ -79,9 +66,6 @@ const TagSearch = (props) => {
         openDisplay={props.openDisplay}
         closeDisplay={props.closeDisplay}
       />
-      <Flexbox>
-        {inputTags}
-      </Flexbox>
       {result}
 
     </InstantSearch>
@@ -89,25 +73,3 @@ const TagSearch = (props) => {
 }
 
 export default TagSearch;
-
-  // const openDisplay = () => {
-  //   this.setState({ hitsDisplay: true })
-  // }
-
-  // const closeDisplay = () => {
-  //   this.setState({ hitsDisplay: false })
-  // }
-
-  // const handleRemoveItem = (target) => {
-  //   this.setState(state => ({
-  //     tags: state.tags.filter((tag) => tag !== target)
-  //   }));
-  // }
-
-  // const handleSelect = value => {
-  //   if (this.state.tags.indexOf(value) === -1) {
-  //     this.setState(prevState => ({ 
-  //       tags:[...prevState.tags, value]
-  //     }));
-  //   };
-  // }
