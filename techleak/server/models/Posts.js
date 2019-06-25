@@ -3,23 +3,6 @@ const mongoose = require("mongoose");
 const { commentSchema } = require("../models/Comments");
 const Joi = require("joi");
 
-const availableTags = [
-  "Python",
-  "javascript",
-  "Java",
-  "golang",
-  "Interview",
-  "database",
-  "10xcoder",
-  "network",
-  "database",
-  "compiler",
-  "concurrency",
-  "C",
-  "C++",
-  "OS"
-];
-
 const postSchema = new mongoose.Schema({
   title: { type: String, required: true },
   tags: {
@@ -46,7 +29,7 @@ const validatePost = post => {
       .max(50),
     author: Joi.string().required(),
     content: Joi.string().required(),
-    tags: Joi.array(),
+    tags: Joi.array().required(),
     likes: Joi.number()
   };
   return Joi.validate(post, joiPostSchema);

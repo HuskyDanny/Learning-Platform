@@ -21,29 +21,35 @@ class SearchBuilder extends Component {
     return (
       <div>
         <InstantSearch
-          indexName="ProGrammingTestData"
+          indexName="posts"
           searchClient={searchClient}
           refresh
         >
           <Configure hitsPerPage={6} analytics={true} distinct />
           <div style={{ justifyContent: "center", display: "flex" }}>
             <SortBy
-              defaultRefinement="ProGrammingTestData"
+              defaultRefinement="posts"
               items={[
-                { value: "ProGrammingTestData", label: "Sorted By" },
+                { 
+                  value: "posts", 
+                  label: "Sorted By" 
+                },
                 {
-                  value: "ProGrammingTestData_post_date_decs",
+                  value: "posts_post_date_decs",
                   label: "Date desc."
                 },
                 {
-                  value: "ProGrammingTestData_posts_date_asc",
+                  value: "posts_posts_date_asc",
                   label: "Date asc."
                 },
                 {
-                  value: "ProGrammingTestData_likes_desc",
+                  value: "posts_likes_desc",
                   label: "Likes desc."
                 },
-                { value: "ProGrammingTestData_likes_asc", label: "Likes asc." }
+                { 
+                  value: "posts_likes_asc", 
+                  label: "Likes asc." 
+                }
               ]}
             />
             <SearchBox />
