@@ -48,7 +48,7 @@ class Comments extends Component {
         <br />
 
         {this.props.comments.map((comment, index) => (
-          <Comment key={index} comment={comment} />
+          <Comment key={index} comment={comment} blogID={this.props.blogID} />
         ))}
         <article className="media">
           <figure className="media-left">

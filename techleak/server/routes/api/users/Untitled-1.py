@@ -167,3 +167,4 @@ print(mergeSets([[6,8],[2,4],[1,9],[4,7]]))
 #                 maximum = max(maximum, forward[i]+backward[len(A)-1-i]-1)
         
 #         return maximum
+

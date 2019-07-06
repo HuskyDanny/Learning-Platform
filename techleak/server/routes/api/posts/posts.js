@@ -100,7 +100,6 @@ router.patch("/likes/:id", auth.required, (req, res) => {
 });
 
 router.patch("/comments/:id", auth.required, async (req, res) => {
-  console.log(req.body.comment);
   const { error } = await commentValidator(req.body.comment);
   if (error) return res.status(400).send(error.message);
 
@@ -142,19 +141,23 @@ router.patch("/tags/:id", auth.required, async (req, res) => {
 });
 
 router.patch("/comments/reply/:id", auth.required, async (req, res) => {
-  const { error } = await replyValidator(req.body);
+  const { error } = await replyValidator(req.body.reply);
   if (error) return res.status(400).send(error.message);
 
   try {
     let post = await Post.findOne({ _id: req.params.id });
 
+    console.log(req.query.commentId);
     let result = await post.comments.id(req.query.commentId);
 
-    result.replies.push(new Reply(req.body));
+    let newReply = new Reply(req.body.reply);
+    result.replies.push(newReply);
 
     post = await post.save();
-    res.json(post);
+    console.log(newReply);
+    res.json(newReply);
   } catch (error) {
+    console.log(error);
     res.json(error.message);
   }
 });

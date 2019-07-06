@@ -13,7 +13,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  console.log("3");
   if (action.type === "LOGIN") {
     return {
       ...state,
@@ -73,6 +72,7 @@ const reducer = (state = initialState, action) => {
   if (action.type === "ADDCOMMENT") {
     let temp = [...state.comments];
     temp.push(action.comment);
+    console.log(action.comment);
 
     return {
       ...state,
