@@ -3,6 +3,7 @@ const initialState = {
   signupOpen: false,
   loginOpen: false,
   contactUsOpen: false,
+  shareOpen:false,
   username: "",
   userID: "",
   likes: {},
@@ -51,6 +52,12 @@ const reducer = (state = initialState, action) => {
       ...state,
       contactUsOpen: !state.contactUsOpen
     };
+  }
+  if (action.type === "SHAREMODAL") {
+    return {
+      ...state,
+      shareOpen: !state.shareOpen
+    }
   }
   if (action.type === "GETBLOG") {
     let tempComments = [];
