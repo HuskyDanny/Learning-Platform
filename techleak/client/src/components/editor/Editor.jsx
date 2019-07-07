@@ -30,7 +30,7 @@ const EditorComponent = props => {
 
   const config = {
     height: 300,
-    width: 775.98,
+    width: "100%",
     imageUploadURL: `${YOURSERVER}/api/uploads/images`,
     requestHeaders: {
       Authorization: `Token ${TOKEN}`

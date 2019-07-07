@@ -28,7 +28,8 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       loggedIn: false,
-      username: ""
+      username: "",
+      userID: ""
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -116,7 +117,6 @@ const reducer = (state = initialState, action) => {
     action.liked
       ? (newLikePosts = newLikePosts.filter(post => post !== action.id))
       : newLikePosts.push(action.id);
-
     return {
       ...state,
       likes: { ...state.likes, [action.id]: state.likes[action.id] + delta },
@@ -127,6 +127,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       myPosts: action.myPosts
+    };
+  }
+  if (action.type === "USERLIKEDPOSTSUPDATED") {
+    return {
+      ...state,
+      likedPosts: action.likedPosts
     };
   }
 

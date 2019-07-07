@@ -2,7 +2,7 @@ import React from "react";
 
 const Reply = props => {
   return (
-    <div class="content">
+    <div className="content">
       <p>
         <strong>{props.reply.username}</strong>
         <br />
