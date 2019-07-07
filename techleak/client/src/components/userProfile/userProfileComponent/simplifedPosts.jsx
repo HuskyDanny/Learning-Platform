@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import SimplifiedPost from "./simplifiedPost";
+import { stat } from "fs";
 
 var faker = require("faker");
 
@@ -13,6 +14,35 @@ class SimplifiedPosts extends React.Component {
       simpPosts: []
     };
     this.handleCancelClick = this.handleCancelClick.bind(this);
+  }
+
+  handleAdjustLikedPost(id, status) {
+    // retrieve the post id that has been deleted by the original aurthor
+    // to update a user's likedposts in database and redux
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
+    if (status == 400) {
+      axios
+        .delete(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+          this.props.userID
+          }?postID=${id}`,
+          headers
+        )
+        .then(res => {
+          this.props.handleUpdatedLikedPosts(res.data.likedPosts)
+        }
+        )
+        .catch(err =>
+          console.log(err)
+        )
+    }
   }
 
   retrievePosts(PostType) {
@@ -46,7 +76,12 @@ class SimplifiedPosts extends React.Component {
           tempPosts.push(temp);
           this.setState({ simpPosts: tempPosts });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          var url = err.response.config.url;
+          var id = url.substring(url.lastIndexOf('/') + 1);
+          var status = err.response.status;
+          this.handleAdjustLikedPost(id, status);
+        });
     }
   }
 
@@ -107,4 +142,17 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(SimplifiedPosts);
+const mapDispatchToProps = dispatch => {
+  return {
+    handleUpdatedLikedPosts: (updatedLikedPosts) =>
+      dispatch({
+        type: "USERLIKEDPOSTSUPDATED",
+        likedPosts: updatedLikedPosts
+      })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SimplifiedPosts);

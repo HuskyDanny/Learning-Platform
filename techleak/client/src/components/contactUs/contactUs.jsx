@@ -116,7 +116,7 @@ class ContactUs extends React.Component {
           <div className="form-group" style={{ marginBottom: "40px" }}>
             <label className="form-label">Message:</label>
             <textarea
-              class="contact-input contact-input-textarea"
+              className="contact-input contact-input-textarea"
               placeholder="Comment here.."
               type="text"
               required

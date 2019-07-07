@@ -206,7 +206,7 @@ class Publish extends Component {
                   value={this.state.title}
                   onChange={this.handleTitle}
                 />
-                <div style={{ margin: "auto auto" }}>
+                <div>
                   <br />
                   <Editor
                     updateContent={this.updateContent}

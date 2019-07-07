@@ -16,12 +16,12 @@ class HeadingSection extends React.Component {
               <img alt="" src={faker.image.avatar()} />
             </span>
           </div>
-          <div class="column is-6-tablet is-10-mobile name">
+          <div className="column is-6-tablet is-10-mobile name">
             <p>
-              <span class="title is-bold">{this.props.username}</span>
+              <span className="title is-bold">{this.props.username}</span>
               <br />
               <a
-                class="button is-primary is-outlined"
+                className="button is-primary is-outlined"
                 href="#"
                 id="edit-preferences"
                 style={{ margin: "5px 0" }}
@@ -29,20 +29,20 @@ class HeadingSection extends React.Component {
                 Edit Preferences
               </a>
             </p>
-            <p class="tagline">
+            <p className="tagline">
               The users profile bio would go here, of course. It could be two
               lines or more or whatever. We should probably limit the amount of
               characters to ~500 at most though.
             </p>
           </div>
-          <div class="column is-2-tablet is-4-mobile has-text-centered" />
-          <div class="column is-1-tablet is-4-mobile has-text-centered">
-            <p class="stat-val">30</p>
-            <p class="stat-key">reputation</p>
+          <div className="column is-2-tablet is-4-mobile has-text-centered" />
+          <div className="column is-1-tablet is-4-mobile has-text-centered">
+            <p className="stat-val">30</p>
+            <p className="stat-key">reputation</p>
           </div>
-          <div class="column is-1-tablet is-4-mobile has-text-centered">
-            <p class="stat-val">10</p>
-            <p class="stat-key">likes</p>
+          <div className="column is-1-tablet is-4-mobile has-text-centered">
+            <p className="stat-val">10</p>
+            <p className="stat-key">likes</p>
           </div>
         </div>
       </div>

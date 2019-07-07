@@ -67,7 +67,6 @@ const TagSearch = (props) => {
         closeDisplay={props.closeDisplay}
       />
       {result}
-
     </InstantSearch>
   );
 }

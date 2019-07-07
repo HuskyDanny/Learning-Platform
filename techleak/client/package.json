@@ -13,6 +13,7 @@
     "lodash": "^4.17.11",
     "normalizr": "^3.4.0",
     "react": "^16.8.6",
+    "react-custom-confirm-alert": "^2.0.7",
     "react-dom": "^16.8.6",
     "react-froala-wysiwyg": "^3.0.0-rc.1",
     "react-html-parser": "^2.0.2",
