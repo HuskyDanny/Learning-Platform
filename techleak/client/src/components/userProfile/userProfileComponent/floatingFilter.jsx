@@ -26,12 +26,12 @@ class FloatingFilter extends React.Component {
                         <div className="boxwrapper" style={{ padding: "10px" }}>
                             <section style={{ paddingBottom: "30px" }}>
                                 <h4>Posts Filter:</h4>
-                                <div class="field is-grouped">
-                                    <p class="control is-expanded">
-                                        <input class="input is-primary" type="text" placeholder="Find a post" />
+                                <div className="field is-grouped">
+                                    <p className="control is-expanded">
+                                        <input className="input is-primary" type="text" placeholder="Find a post" />
                                     </p>
-                                    <p class="control">
-                                        <a class="button is-success">
+                                    <p className="control">
+                                        <a className="button is-success">
                                             Search
                                   </a>
                                     </p>
@@ -40,7 +40,7 @@ class FloatingFilter extends React.Component {
 
                             <section style={{ paddingBottom: "30px" }}>
                                 <h4>Tags:</h4>
-                                <div class="field">
+                                <div className="field">
                                     <div className="form-group" style={{ marginBottom: "5px" }}>
                                         <input
                                             className="contact-input"
@@ -50,11 +50,11 @@ class FloatingFilter extends React.Component {
                                     </div>
                                     <p>suggested:
                                     <div style={{ margin: "5px", display: "inline-block" }}></div>
-                                        <a class="button is-primary is-small">
+                                        <a className="button is-primary is-small">
                                             <span>Java</span>
                                         </a>
                                         <div style={{ margin: "5px", display: "inline-block" }}></div>
-                                        <a class="button is-primary is-small">
+                                        <a className="button is-primary is-small">
                                             <span>Python</span>
                                         </a>
                                     </p>

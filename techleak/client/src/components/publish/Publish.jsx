@@ -39,7 +39,7 @@ class Publish extends Component {
       author: this.props.username,
       title: this.state.title,
       content: this.state.content,
-      tags: this.props.tags || []
+      tags: this.props.tagReducer.tags || []
     };
     this.setState({ loading: true });
 
@@ -135,22 +135,37 @@ class Publish extends Component {
   }
 
   render() {
-    let submit = (
-      <div class="level-left">
-        <button className="button is-primary level-item" type="submit">
-          Post
-        </button>
-        <button
-          className="button is-primary level-item"
-          onClick={this.handleCancel}
-        >
-          Cancel
-        </button>
-      </div>
-    );
 
-    if (this.state.hitsDisplay) {
-      submit = <div />;
+    let inputTags = (
+      this.props.tagReducer.tags.map((tag) => 
+        <li key={tag} style={styles.items}>
+          {tag}
+          <button
+            onClick={() => this.props.removeTag(tag)}
+          >
+            (x)
+          </button>
+        </li>
+      )
+    )
+
+    let selection = (
+      <div></div>
+    )
+
+    if (this.props.tagReducer.tags.length === 0) {
+      selection = (
+        <div>
+          <br />
+        </div>
+      )
+    } else {
+      selection = (
+        <div>
+          {inputTags}
+          <br />
+        </div>
+      )
     }
 
     return (
@@ -191,12 +206,14 @@ class Publish extends Component {
                   value={this.state.title}
                   onChange={this.handleTitle}
                 />
-                <div style={{ margin: "auto auto" }}>
+                <div>
+                  <br />
                   <Editor
                     updateContent={this.updateContent}
                     value={this.state.content}
                   />
                 </div>
+                {selection}
                 <label>Tags</label>
                 <TagSearch
                   hitsDisplay={this.props.tagReducer.hitsDisplay}
@@ -207,7 +224,18 @@ class Publish extends Component {
                   closeDisplay={() => this.props.closeDisplay()}
                   styles={styles}
                 />
-                {submit}
+                <br />
+                <div className="level-left">
+                  <button className="button is-primary level-item" type="submit">
+                    Post
+                  </button>
+                  <button
+                    className="button is-primary level-item"
+                    onClick={this.handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </form>
             </React.Fragment>
           )}

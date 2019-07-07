@@ -3,6 +3,7 @@ const initialState = {
   signupOpen: false,
   loginOpen: false,
   contactUsOpen: false,
+  shareOpen:false,
   username: "",
   userID: "",
   likes: {},
@@ -27,7 +28,8 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       loggedIn: false,
-      username: ""
+      username: "",
+      userID: ""
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -51,6 +53,12 @@ const reducer = (state = initialState, action) => {
       ...state,
       contactUsOpen: !state.contactUsOpen
     };
+  }
+  if (action.type === "SHAREMODAL") {
+    return {
+      ...state,
+      shareOpen: !state.shareOpen
+    }
   }
   if (action.type === "GETBLOG") {
     let tempComments = [];
@@ -110,7 +118,6 @@ const reducer = (state = initialState, action) => {
     action.liked
       ? (newLikePosts = newLikePosts.filter(post => post !== action.id))
       : newLikePosts.push(action.id);
-
     return {
       ...state,
       likes: { ...state.likes, [action.id]: state.likes[action.id] + delta },
@@ -121,6 +128,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       myPosts: action.myPosts
+    };
+  }
+  if (action.type === "USERLIKEDPOSTSUPDATED") {
+    return {
+      ...state,
+      likedPosts: action.likedPosts
     };
   }
 

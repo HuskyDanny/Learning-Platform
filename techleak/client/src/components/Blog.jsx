@@ -5,6 +5,7 @@ import Comments from "./comment/comments";
 import { connect } from "react-redux";
 import axios from "../axios-blogs";
 import withHandler from "./UI/ErrorHandler/ErrorHandler";
+import Share from './share/share'
 
 class Blog extends Component {
   constructor(props) {
@@ -18,7 +19,8 @@ class Blog extends Component {
       username: "",
       userID: "",
       content: "",
-      title: ""
+      title: "",
+      pageID: ""
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -45,13 +47,17 @@ class Blog extends Component {
           username: res.data.username,
           userID: res.data.userID,
           content: res.data.content,
-          title: res.data.title
+          title: res.data.title,
+          pageID: this.props.match.params.id
         });
-
         this.props.getBlog(res.data);
       })
       .catch(err => console.log(err));
   };
+  
+  handleShare = () => {
+
+  }
 
   handleLike = type => {
     const token = localStorage.getItem("token");
@@ -73,14 +79,19 @@ class Blog extends Component {
             }?postID=${this.props.match.params.id}`,
             headers
           )
-          .then(res => console.log(res))
+          .then(res => console.log("delete"))
       : axios.post(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
             this.props.userID
           }`,
           { postID: this.props.match.params.id },
           headers
-        );
+        )
+        .then(res => console.log("post"))
+        .catch(error => {
+          console.log(error);
+          console.log(error.message);
+        })
 
     //handling like# in Post route
     //catch here to revert the change
@@ -92,7 +103,8 @@ class Blog extends Component {
         { liked: liked },
         headers
       )
-      .catch(() => this.props.handleLike(this.props.match.params.id, !liked));
+      .catch(() => {this.props.handleLike(this.props.match.params.id, !liked);
+                    console.log("catch")});
 
     this.props.handleLike(this.props.match.params.id, liked);
   };
@@ -147,7 +159,7 @@ class Blog extends Component {
                   >
                     <button
                       className="level-item button "
-                      onClick={() => this.handleLike("shared")}
+                      onClick={this.props.onSwitchShareModal}
                     >
                       <span className="icon is-small">
                         <i className="far fa-share-square" aria-hidden="true" />
@@ -175,6 +187,7 @@ class Blog extends Component {
             </div>
           </section>
         </div>
+        <Share pageID={this.state.pageID} title={this.state.title} />
       </React.Fragment>
     );
   }
@@ -183,7 +196,8 @@ class Blog extends Component {
 const mapStateToProps = state => {
   return {
     userID: state.persistedReducer.userID,
-    likedPosts: state.persistedReducer.likedPosts
+    likedPosts: state.persistedReducer.likedPosts,
+    shareOpen: state.persistedReducer.shareOpen
   };
 };
 
@@ -191,7 +205,8 @@ const mapDispatchToProps = dispatch => {
   return {
     handleLike: (id, liked) =>
       dispatch({ type: "HANDLELIKE", id: id, liked: liked }),
-    getBlog: blog => dispatch({ type: "GETBLOG", blog: blog })
+    getBlog: blog => dispatch({ type: "GETBLOG", blog: blog }),
+    onSwitchShareModal: () => dispatch({ type: "SHAREMODAL" })
   };
 };
 

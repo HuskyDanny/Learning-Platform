@@ -3,12 +3,14 @@ import Modal from "react-responsive-modal";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { confirmAlert } from "react-custom-confirm-alert";
+import 'react-custom-confirm-alert/src/react-confirm-alert.css'
 
 class SimplifiedPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openComment: false
+      openComment: false,
     };
     this.handleComment = this.handleComment.bind(this);
     this.handleStopPropagation = this.handleStopPropagation.bind(this);
@@ -24,7 +26,7 @@ class SimplifiedPost extends React.Component {
       <React.Fragment>
         {tagNames.map(tagName => (
           <React.Fragment>
-            <a class="button is-primary is-small">
+            <a className="button is-primary is-small">
               <span>{tagName}</span>
             </a>
             {this.spaceDividor()}
@@ -77,27 +79,85 @@ class SimplifiedPost extends React.Component {
   }
 
   deleteControl() {
-    const { title, objectID, PostType } = this.props;
+    const { title, objectID, PostType, userID, myPosts } = this.props;
     if (PostType === "MyPosts") {
       return (
-        <a class="level-item" aria-label="cancel">
-          <span class="icon is-small">
-            <i class="fas fa-times" style={{ color: "#808080" }} />
+        <a className="level-item" 
+           aria-label="cancel"
+           onClick={(e) => {
+            confirmAlert({
+              message: 'Your post will be deleted permanently, are you sure to do this?',
+              buttons: [
+                {
+                  label: 'Yes',
+                  onClick: () => {
+                    const token = localStorage.getItem("token");
+                    const headers = {
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Token ${token}`
+                      }
+                    };
+
+                    axios
+                      .delete(
+                        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
+                          objectID
+                        }`, 
+                          headers
+                      )
+                      .then(res => {
+                            console.log(res);
+                            axios
+                            .delete(
+                              `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
+                                userID
+                              }?postID=${objectID}`,
+                              headers
+                            )
+                            .then(res => {
+                              console.log("removed my posts successfully: " + res);
+                            })
+                            .catch(err => {
+                              console.log(err);
+                            });
+                          var newMyPosts = myPosts.filter(myPost => myPost != objectID);
+                          this.props.handleMyPosts(newMyPosts);                            
+                      })
+                      .catch(err => {
+                        console.log(err);
+                      });                    
+                  }
+                },
+                {
+                  label: 'No',
+                  onClick: () => {
+                    console.log(objectID);
+                  }
+                }
+              ]
+            });                   
+            e.preventDefault();
+           }}
+           >
+             
+          <span className="icon is-small">
+            <i className="fas fa-times" />
           </span>
         </a>
       );
     } else {
       return (
         <a
-          class="level-item"
+          className="level-item"
           aria-label="cancel"
           onClick={e => {
             this.props.handleCancelClick(e, title);
             this.handleDelete(e, objectID);
           }}
         >
-          <span class="icon is-small">
-            <i class="fas fa-times" />
+          <span className="icon is-small">
+            <i className="fas fa-times" />
           </span>
         </a>
       );
@@ -105,32 +165,32 @@ class SimplifiedPost extends React.Component {
   }
 
   render() {
-    const { title, views, answers, img, objectID, PostType } = this.props;
+    const { title, views, answers, img, objectID } = this.props;
     const { openComment } = this.state;
     return (
-      <div class="box" style={{ marginBottom: "0.5rem", padding: "0.8rem" }}>
+      <div className="box" style={{ marginBottom: "0.5rem", padding: "0.8rem" }}>
         <Link to={`/blog/${objectID}`}>
-          <article class="media">
+          <article className="media">
             <div
-              class="media-left"
+              className="media-left"
               onClick={e => this.handleStopPropagation(e)}
             >
-              <figure class="image is-64x64">
+              <figure className="image is-64x64">
                 <img src={img} alt="Image" />
               </figure>
             </div>
-            <div class="media-content">
-              <div class="content">
-                <nav class="level is-mobile" style={{ float: "right" }}>
-                  <div class="level-left">
+            <div className="media-content">
+              <div className="content">
+                <nav className="level is-mobile" style={{ float: "right" }}>
+                  <div className="level-left">
                     <a
-                      class="level-item"
+                      className="level-item"
                       aria-label="comment"
                       onClick={e => this.handleComment(e)}
                       style={{ marginRight: "0.25rem" }}
                     >
-                      <span class="icon is-small">
-                        <i class="fas fa-comment" />
+                      <span className="icon is-small">
+                        <i className="fas fa-comment" />
                       </span>
                     </a>
                     {this.deleteControl()}
@@ -150,27 +210,27 @@ class SimplifiedPost extends React.Component {
           </article>
         </Link>
         <Modal open={openComment} onClose={e => this.handleComment(e)} center>
-          <article class="media">
-            <figure class="media-left">
-              <p class="image is-64x64">
+          <article className="media">
+            <figure className="media-left">
+              <p className="image is-64x64">
                 <img src="https://versions.bulma.io/0.7.0/images/placeholders/128x128.png" />
               </p>
             </figure>
-            <div class="media-content">
-              <div class="field">
-                <p class="control">
-                  <textarea class="textarea" placeholder="Add a comment..." />
+            <div className="media-content">
+              <div className="field">
+                <p className="control">
+                  <textarea className="textarea" placeholder="Add a comment..." />
                 </p>
               </div>
-              <nav class="level">
-                <div class="level-left">
-                  <div class="level-item">
-                    <a class="button is-info">Submit</a>
+              <nav className="level">
+                <div className="level-left">
+                  <div className="level-item">
+                    <a className="button is-info">Submit</a>
                   </div>
                 </div>
-                <div class="level-right">
-                  <div class="level-item">
-                    <label class="checkbox">
+                <div className="level-right">
+                  <div className="level-item">
+                    <label className="checkbox">
                       <input type="checkbox" /> Press enter to submit
                     </label>
                   </div>
@@ -178,7 +238,7 @@ class SimplifiedPost extends React.Component {
               </nav>
             </div>
           </article>
-        </Modal>
+        </Modal>       
       </div>
     );
   }
@@ -187,14 +247,20 @@ class SimplifiedPost extends React.Component {
 const mapStateToProps = state => {
   return {
     userID: state.persistedReducer.userID,
-    likedPosts: state.persistedReducer.likedPosts
+    likedPosts: state.persistedReducer.likedPosts,
+    myPosts: state.persistedReducer.myPosts
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
+      dispatch({ type: "HANDLELIKE", id: id, liked: liked }),
+    handleMyPosts: newMyPosts =>
+      dispatch({
+        type: "PUBLISHEDNEWPOST",
+        myPosts: newMyPosts
+      })
   };
 };
 
