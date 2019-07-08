@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axios from "../axios-blogs";
 import Modal from "react-responsive-modal";
 import Spinner from "./UI/Spinner/Spinner";
 import { connect } from "react-redux";
@@ -31,7 +31,7 @@ class Login extends Component {
       }
     };
     axios
-      .post("http://127.0.0.1:3000/api/users/login", user)
+      .post("/api/users/login", user)
       .then(res => {
         this.setState({ loading: false, email: "", password: "" });
         this.props.handleLogIn(
@@ -48,6 +48,7 @@ class Login extends Component {
       .catch(err => {
         //Here we pass in status code into error, and we handle
         //error codes by err.response
+        console.log(err);
         this.setState({
           loading: false,
           errStatus: err.response.status

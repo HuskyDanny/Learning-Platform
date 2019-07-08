@@ -13,7 +13,6 @@ class Comment extends Component {
     this.setState({ body: e.target.value });
   };
   handleReply = () => {
-    console.log("sss");
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
