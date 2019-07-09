@@ -5,11 +5,11 @@ import image from "../assets/img/logo.jpg";
 import { Link } from "react-router-dom";
 import ContactUs from "./contactUs/contactUs";
 import { connect } from "react-redux";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import faBars from '@fortawesome/fontawesome-free-solid/faBars';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import faBars from "@fortawesome/fontawesome-free-solid/faBars";
 
 const Navbar = props => {
-  let top_menu_class = `top-menu ${props.menu_class}`
+  let top_menu_class = `top-menu ${props.menu_class}`;
 
   let status = (
     <div className="navbar-end">
@@ -37,9 +37,9 @@ const Navbar = props => {
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <Link className='button is-primary' to="/publish" >
-              <i className="fas fa-plus-circle" /> 
-              <strong >New Post</strong>
+            <Link className="button is-primary" to="/publish">
+              {/* <i className="fas fa-plus-circle" /> */}
+              <strong>New Post</strong>
             </Link>
 
             <Link className="button is-primary" to="/userProfile">
@@ -57,7 +57,11 @@ const Navbar = props => {
 
   return (
     <React.Fragment>
-      <nav className={`navbar ${top_menu_class}`} role="navigation" aria-label="main navigation">
+      <nav
+        className={`navbar ${top_menu_class}`}
+        role="navigation"
+        aria-label="main navigation"
+      >
         <div className="navbar-brand">
           <div className="navbar-item">
             <Link to="/index">
@@ -75,13 +79,14 @@ const Navbar = props => {
             <Link className="navbar-item" onClick={props.onSwitchContactModal}>
               Contact Us
             </Link>
-
           </div>
-          <div className="right">
-            {status}
-          </div>
+          <div className="right">{status}</div>
         </div>
-        <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={props.handleToggleMenu}/>
+        <FontAwesomeIcon
+          icon={faBars}
+          className="top-menu-icon"
+          onClick={props.handleToggleMenu}
+        />
       </nav>
       <Signup />
       <Login />

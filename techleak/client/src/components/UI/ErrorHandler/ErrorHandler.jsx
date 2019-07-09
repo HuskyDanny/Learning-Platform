@@ -61,7 +61,8 @@ const WithHandler = (WrappedComponent, axios) => {
             center
             styles={modalBg}
           >
-            {message} <i className="fas fa-exclamation" style={{ color: "red" }} />
+            {message}{" "}
+            <i className="fas fa-exclamation" style={{ color: "red" }} />
           </Modal>
           <WrappedComponent {...this.props} />
         </div>

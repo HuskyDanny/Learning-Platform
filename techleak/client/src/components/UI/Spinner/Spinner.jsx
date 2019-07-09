@@ -1,7 +1,6 @@
 import React from "react";
-import "../../../App.css";
 const Spinner = props => {
-  return <div className="loader"> </div>;
+  return <div className="loader"> I am trying...</div>;
 };
 
 export default Spinner;
