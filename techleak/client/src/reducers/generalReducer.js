@@ -10,7 +10,8 @@ const initialState = {
   likedPosts: [],
   comments: [],
   replies: [],
-  myPosts: []
+  myPosts: [],
+  menu_class: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -58,6 +59,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       shareOpen: !state.shareOpen
+    }
+  }
+  if (action.type === "TOGGLEMENUCLASS") {
+    return {
+      ...state,
+      menu_class: (state.menu_class === '') ? 'toggled' : ''
     }
   }
   if (action.type === "GETBLOG") {

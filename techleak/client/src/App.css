@@ -102,3 +102,68 @@
 .height-percent {
   height: 100%;
 }
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+.top-menu *:hover{
+    cursor: pointer;
+}
+
+.clear-fix {
+    clear: both;
+}
+
+.top-menu-icon {
+    padding: 0;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    display: none;
+}
+
+@media screen and (max-width: 1090px) {
+    .top-menu {
+        max-height: 0;
+        overflow: hidden;
+    }
+
+    .top-menu > .left, .top-menu > .right {
+        display: none;
+    }
+
+    .top-menu-icon {
+        display: block !important;
+    }
+}
+
+@media screen and (max-width: 1090px) {
+    .top-menu.toggled {
+        padding: 0;
+        max-height: 1500px;
+        transition: max-height 1s;
+    }
+
+    .top-menu.toggled > .left {
+        border-bottom: 1px solid black;
+        margin: 10px 0 0 0;
+    }
+
+    .button {
+      border-bottom: 1px solid black;
+      margin-top: 10px;
+    }
+
+    .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {
+        float: none;
+        display: block !important;
+        text-align: left;
+        margin: 0;
+    }
+
+}

@@ -5,10 +5,19 @@ import { Passers } from "prop-passer";
 import ShareCss from "./shareCss";
 
 import { 
-  FacebookShareButton, 
+  FacebookShareButton,
   TwitterShareButton,
+  LinkedinShareButton,
+  WhatsappShareButton,
+  PinterestShareButton,
+  VKShareButton,
+
   FacebookIcon,
-  TwitterIcon
+  TwitterIcon,
+  LinkedinIcon,
+  WhatsappIcon,
+  PinterestIcon,
+  VKIcon,
 } from 'react-share';
 
 class Share extends Component {
@@ -16,17 +25,18 @@ class Share extends Component {
 
     const modalBg = {
       modal: {
-        background: "black",
-        maxHeight: "20%",
+        background: "white",
+        maxHeight: "18%",
         height: "100%",
         maxWidth: "30%",
-        width: "100%"
+        width: "100%",
       }
     };
 
     const {
       url = String(window.location),
       title = this.props.title,
+      shareImage = "https://www.steadylearner.com/static/images/brand/prop-passer.png",
       size = 30,
     } = this.props;
 
@@ -60,16 +70,48 @@ class Share extends Component {
         `}>
           <ShareCss>
             <ShareList>
-              <FacebookShareButton
-                quote={title}
-              >
-                <FacebookIcon size={size} />
-              </FacebookShareButton>
-              <TwitterShareButton
-                quote={title}
-              >
-                <TwitterIcon size={size} />
-              </TwitterShareButton>
+            <FacebookShareButton
+              quote={title}
+            >
+              <FacebookIcon
+                size={size}
+              />
+            </FacebookShareButton>
+
+            <TwitterShareButton
+              title={title}
+            >
+              <TwitterIcon
+                size={size}
+              />
+            </TwitterShareButton>
+
+            <WhatsappShareButton
+              title={title}
+              separator=":: "
+            >
+              <WhatsappIcon size={size} />
+            </WhatsappShareButton>
+
+            <LinkedinShareButton
+              title={title}
+              windowWidth={750}
+              windowHeight={600}
+            >
+              <LinkedinIcon
+                size={size}
+
+              />
+            </LinkedinShareButton>
+
+            <PinterestShareButton
+              url={String(window.location)}
+              media={`${shareImage}`}
+              windowWidth={1000}
+              windowHeight={730}
+            >
+              <PinterestIcon size={size} />
+            </PinterestShareButton>
             </ShareList>
           </ShareCss>
         </footer>
@@ -83,6 +125,7 @@ class Share extends Component {
         onClose={this.props.onSwitchShareModal}
         showCloseIcon={false}
         styles={modalBg}
+        center
       >
         {shareWindow}
       </Modal>

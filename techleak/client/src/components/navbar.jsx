@@ -5,7 +5,12 @@ import image from "../assets/img/logo.jpg";
 import { Link } from "react-router-dom";
 import ContactUs from "./contactUs/contactUs";
 import { connect } from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import faBars from '@fortawesome/fontawesome-free-solid/faBars';
+
 const Navbar = props => {
+  let top_menu_class = `top-menu ${props.menu_class}`
+
   let status = (
     <div className="navbar-end">
       <div className="navbar-item">
@@ -32,12 +37,13 @@ const Navbar = props => {
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <Link className="button is-primary" to="/publish">
-              <i className="fas fa-plus-circle" /> <strong> New Post</strong>
+            <Link className='button is-primary' to="/publish" >
+              <i className="fas fa-plus-circle" /> 
+              <strong >New Post</strong>
             </Link>
 
             <Link className="button is-primary" to="/userProfile">
-              <strong>My Profile </strong>
+              <strong>My Profile</strong>
             </Link>
 
             <div className="button is-primary" onClick={props.handleLogOut}>
@@ -51,7 +57,7 @@ const Navbar = props => {
 
   return (
     <React.Fragment>
-      <nav className="navbar" role="navigation" aria-label="main navigation">
+      <nav className={`navbar ${top_menu_class}`} role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <div className="navbar-item">
             <Link to="/index">
@@ -61,7 +67,7 @@ const Navbar = props => {
         </div>
 
         <div id="navbarBasicExample" className="navbar-menu">
-          <div className="navbar-start">
+          <div className="navbar-start left">
             <a className="navbar-item" href="#about">
               About
             </a>
@@ -70,12 +76,12 @@ const Navbar = props => {
               Contact Us
             </Link>
 
-            <div className="navbar-item has-dropdown is-hoverable">
-              <Link className="navbar-link">Jobs</Link>
-            </div>
           </div>
-          {status}
+          <div className="right">
+            {status}
+          </div>
         </div>
+        <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={props.handleToggleMenu}/>
       </nav>
       <Signup />
       <Login />
@@ -89,7 +95,8 @@ const mapStateToProps = state => {
     logIn: state.persistedReducer.loggedIn,
     signupOpen: state.persistedReducer.signupOpen,
     loginOpen: state.persistedReducer.loginOpen,
-    contactUsOpen: state.persistedReducer.contactUsOpen
+    contactUsOpen: state.persistedReducer.contactUsOpen,
+    menu_class: state.persistedReducer.menu_class
   };
 };
 
@@ -98,7 +105,8 @@ const mapDispatchToProps = dispatch => {
     handleLogOut: () => dispatch({ type: "LOGOUT" }),
     onSwitchSignupModal: () => dispatch({ type: "SIGNUPMODAL" }),
     onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" }),
-    onSwitchContactModal: () => dispatch({ type: "CONTACTMODAL" })
+    onSwitchContactModal: () => dispatch({ type: "CONTACTMODAL" }),
+    handleToggleMenu: () => dispatch({ type: "TOGGLEMENUCLASS" })
   };
 };
 
