@@ -20,7 +20,6 @@ class Blog extends Component {
       userID: "",
       content: "",
       title: "",
-      pageID: ""
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -54,10 +53,6 @@ class Blog extends Component {
       })
       .catch(err => console.log(err));
   };
-  
-  handleShare = () => {
-
-  }
 
   handleLike = type => {
     const token = localStorage.getItem("token");
