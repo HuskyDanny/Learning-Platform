@@ -8,7 +8,7 @@ import ContactUs from "./components/contactUs/contactUs";
 import Publish from "./components/publish/Publish";
 import Footer from "./components/footer/footer";
 import About from "./components/about/about";
-import UserProfile from "./components/userProfile/userProfile"
+import UserProfile from "./components/userProfile/userProfile";
 
 class App extends Component {
   likeHandler = id => {
@@ -20,12 +20,8 @@ class App extends Component {
     return (
       <React.Fragment>
         <Route
-          exact
-          path="/"
-          render={props => <h1>"localhost:3000/index" to view the page</h1>}
-        />
-        <Route
           path="/index"
+          exact
           render={props => (
             <React.Fragment>
               <Navbar />
@@ -37,6 +33,7 @@ class App extends Component {
         />
         <Route
           path="/designer"
+          exact
           component={() => (window.location = "https://zhuorandeng.com")}
         />
         <Route
@@ -53,12 +50,12 @@ class App extends Component {
         <Route
           path="/userProfile"
           exact
-          component={props =>
+          component={props => (
             <React.Fragment>
               <Navbar />
               <UserProfile {...props} />
             </React.Fragment>
-          }
+          )}
         />
       </React.Fragment>
     );
