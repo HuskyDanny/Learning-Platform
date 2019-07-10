@@ -11,7 +11,8 @@ import About from "./components/about/about";
 import UserProfile from "./components/userProfile/userProfile";
 
 class App extends Component {
-  componentDidMount() {
+  async componentDidMount() {
+    await new Promise(resolve => setTimeout(resolve, 100000));
     const ele = document.getElementById("ipl-progress-indicator");
     if (ele) {
       // fade out

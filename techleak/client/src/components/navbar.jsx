@@ -64,7 +64,7 @@ const Navbar = props => {
       >
         <div className="navbar-brand">
           <div className="navbar-item">
-            <Link to="/index">
+            <Link to="/">
               <img src={image} width="112" height="48" alt="logo" />
             </Link>
           </div>
