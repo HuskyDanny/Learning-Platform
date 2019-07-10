@@ -11,16 +11,19 @@ import About from "./components/about/about";
 import UserProfile from "./components/userProfile/userProfile";
 
 class App extends Component {
-  likeHandler = id => {
-    this.state.posts.filter(post => post.id === id);
-    this.setState({});
-  };
-
+  componentDidMount() {
+    const ele = document.getElementById("ipl-progress-indicator");
+    if (ele) {
+      // fade out
+      ele.classList.add("available");
+      ele.outerHTML = "";
+    }
+  }
   render() {
     return (
       <React.Fragment>
         <Route
-          path="/index"
+          path="/"
           exact
           render={props => (
             <React.Fragment>
