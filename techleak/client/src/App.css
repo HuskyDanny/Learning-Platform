@@ -166,4 +166,40 @@
         margin: 0;
     }
 
+    /* #newpost {
+      background-color: white;
+      color: black;
+      display: block;
+      line-height: 1.5;
+      padding: 0.5rem 0.75rem;
+      position: relative;     
+    }
+
+    #newpost {
+      color: black;
+      display: block;
+      line-height: 1.5;
+      padding: 0.5rem 0.75rem;
+      position: relative;     
+    }     */
+
+    #buttonName {
+      /* color: black;      */
+      all : initial;
+      font-family: "Helvetica Neue", Helvetica, sans-serif;
+      color: #4a4a4a;
+    }
+
+    #signupBTN {
+      background-color: brown;
+    }
+
+    #loginBTN {
+      background-color: #f3f3f3;
+      color: #4a4a4a;
+      display: block;
+      line-height: 1.5;
+      padding: 0.5rem 0.75rem;
+      position: relative;     
+    }
 }

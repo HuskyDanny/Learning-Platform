@@ -17,12 +17,14 @@ const Navbar = props => {
         <div className="buttons">
           <button
             className="button is-primary"
+            id="signupBTN"
             onClick={props.onSwitchSignupModal}
           >
             <strong>Sign up</strong>
           </button>
           <button
             className="button is-primary"
+            id="loginBTN"
             onClick={props.onSwitchLoginModal}
           >
             <strong>Log in</strong>
@@ -37,18 +39,21 @@ const Navbar = props => {
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <Link className='button is-primary' to="/publish" >
-              <i className="fas fa-plus-circle" /> 
-              <strong >New Post</strong>
-            </Link>
+            <button className="button is-primary navbar-item" id="buttonName">
+              <Link to="/publish" style={{ color: "white" }}>
+                <strong id="buttonName">New Post</strong>
+              </Link>
+            </button>
 
-            <Link className="button is-primary" to="/userProfile">
-              <strong>My Profile</strong>
-            </Link>
+            <button className="button is-primary navbar-item" id="buttonName">
+              <Link to="/userProfile" style={{ color: "white" }}>
+                <strong id="buttonName">My Profile</strong>
+              </Link>
+            </button>
 
-            <div className="button is-primary" onClick={props.handleLogOut}>
-              <strong>Log Out</strong>
-            </div>
+            <button className="button is-primary navbar-item" id="buttonName" onClick={props.handleLogOut}>
+              <strong id="buttonName">Log Out</strong>
+            </button>
           </div>
         </div>
       </div>
@@ -81,7 +86,7 @@ const Navbar = props => {
             {status}
           </div>
         </div>
-        <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={props.handleToggleMenu}/>
+        <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={props.handleToggleMenu} />
       </nav>
       <Signup />
       <Login />
