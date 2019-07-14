@@ -121,7 +121,7 @@ class Publish extends Component {
           Successfully Posted
         </p>
         <Link
-          to="/index"
+          to="/"
           className="button is-success"
           style={{
             marginTop: "10%",
