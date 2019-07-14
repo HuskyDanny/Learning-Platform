@@ -20,18 +20,18 @@ class SearchBuilder extends Component {
   state = {
     refresh: false
   };
-  // componentDidMount() {
-  //   this.interval = setInterval(
-  //     () =>
-  //       this.setState({ refresh: true }, () => {
-  //         this.setState({ refresh: false });
-  //       }),
-  //     5000
-  //   );
-  // }
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
+  componentDidMount() {
+    this.interval = setInterval(
+      () =>
+        this.setState({ refresh: true }, () => {
+          this.setState({ refresh: false });
+        }),
+      5000
+    );
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
   render() {
     return (
       <div>

@@ -5,7 +5,7 @@ import Comments from "./comment/comments";
 import { connect } from "react-redux";
 import axios from "../axios-blogs";
 import withHandler from "./UI/ErrorHandler/ErrorHandler";
-import Share from './share/share'
+import Share from "./share/share";
 
 class Blog extends Component {
   constructor(props) {
@@ -19,10 +19,11 @@ class Blog extends Component {
       username: "",
       userID: "",
       content: "",
-      title: "",
+      title: ""
     };
 
     this.handleLike = this.handleLike.bind(this);
+    this.buttonChange = this.buttonChange.bind(this);
   }
 
   componentDidMount = () => {
@@ -54,7 +55,8 @@ class Blog extends Component {
       .catch(err => console.log(err));
   };
 
-  handleLike = type => {
+  handleLike = () => {
+    const liked = this.props.likedPosts.includes(this.props.match.params.id);
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -64,49 +66,74 @@ class Blog extends Component {
       }
     };
 
-    const liked = this.props.likedPosts.includes(this.props.match.params.id);
     //handling likeposts in User route
-    liked
-      ? axios
-          .delete(
-            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-              this.props.userID
-            }?postID=${this.props.match.params.id}`,
-            headers
-          )
-          .then(res => console.log("delete"))
+    const likePostPromise = liked
+      ? axios.delete(
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+            this.props.userID
+          }?postID=${this.props.match.params.id}`,
+          headers
+        )
       : axios.post(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
             this.props.userID
           }`,
           { postID: this.props.match.params.id },
           headers
-        )
-        .then(res => console.log("post"))
-        .catch(error => {
-          console.log(error);
-          console.log(error.message);
-        })
-
+        );
     //handling like# in Post route
     //catch here to revert the change
-    axios
-      .patch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-          this.props.match.params.id
-        }`,
-        { liked: liked },
-        headers
-      )
-      .catch(() => {this.props.handleLike(this.props.match.params.id, !liked);
-                    console.log("catch")});
+    const likeNumberPromise = axios.patch(
+      `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
+        this.props.match.params.id
+      }`,
+      { liked: liked },
+      headers
+    );
 
-    this.props.handleLike(this.props.match.params.id, liked);
+    Promise.all([likePostPromise, likeNumberPromise])
+      .then(() => {
+        this.props.handleLike(this.props.match.params.id, this.state.liked);
+        this.setState({ liked: !this.state.liked });
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  };
+
+  buttonChange = () => {
+    const liked = this.props.likedPosts.includes(this.props.match.params.id);
+    if (this.props.loggedIn) {
+      return (
+        <button
+          className={
+            liked ? "level-item button is-success" : "level-item button"
+          }
+          aria-label="like"
+          onClick={this.handleLike}
+        >
+          <span className="icon is-small">
+            <i className="far fa-thumbs-up" aria-hidden="true" />
+          </span>
+        </button>
+      );
+    } else {
+      return (
+        <button
+          className="level-item button"
+          aria-label="like"
+          onClick={this.handleLike}
+          disabled
+        >
+          <span className="icon is-small">
+            <i className="far fa-thumbs-up" aria-hidden="true" />
+          </span>
+        </button>
+      );
+    }
   };
 
   render() {
-    const liked = this.props.likedPosts.includes(this.props.match.params.id);
-    const saved = liked;
     return (
       <React.Fragment>
         <Navbar />
@@ -161,19 +188,7 @@ class Blog extends Component {
                       </span>
                     </button>
 
-                    <button
-                      className={
-                        liked
-                          ? "level-item button is-success"
-                          : "level-item button"
-                      }
-                      aria-label="like"
-                      onClick={() => this.handleLike("liked")}
-                    >
-                      <span className="icon is-small">
-                        <i className="far fa-thumbs-up" aria-hidden="true" />
-                      </span>
-                    </button>
+                    {this.buttonChange()}
                   </div>
                   <hr />
                 </div>
@@ -192,16 +207,17 @@ const mapStateToProps = state => {
   return {
     userID: state.persistedReducer.userID,
     likedPosts: state.persistedReducer.likedPosts,
-    shareOpen: state.persistedReducer.shareOpen
+    shareOpen: state.persistedReducer.shareOpen,
+    loggedIn: state.persistedReducer.loggedIn
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, liked: liked }),
     getBlog: blog => dispatch({ type: "GETBLOG", blog: blog }),
-    onSwitchShareModal: () => dispatch({ type: "SHAREMODAL" })
+    onSwitchShareModal: () => dispatch({ type: "SHAREMODAL" }),
+    handleLike: (id, liked) =>
+      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
   };
 };
 

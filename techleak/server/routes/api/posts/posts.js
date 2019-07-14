@@ -87,7 +87,7 @@ router.patch("/likes/:id", auth.required, (req, res) => {
     .getObject(req.params.id, ["likes"])
     .then(content =>
       index.partialUpdateObject({
-        likes: content.likes + 1,
+        likes: content.likes + increment,
         objectID: req.params.id
       })
     )
@@ -95,7 +95,7 @@ router.patch("/likes/:id", auth.required, (req, res) => {
 
   //only fetching the first object returned by algolia
   Promise.all([promiseAlgolia, promiseMongo])
-    .then(content => res.json(content[0]))
+    .then(content => res.json(content))
     .catch(err => res.status(500).json(err.message));
 });
 
