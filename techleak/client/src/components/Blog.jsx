@@ -19,11 +19,11 @@ class Blog extends Component {
       username: "",
       userID: "",
       content: "",
-      title: ""
+      title: "",
+      enableLike: this.props.loggedIn
     };
 
     this.handleLike = this.handleLike.bind(this);
-    this.buttonChange = this.buttonChange.bind(this);
   }
 
   componentDidMount = () => {
@@ -34,11 +34,6 @@ class Blog extends Component {
         }`
       )
       .then(res => {
-        console.log(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-            this.props.match.params.id
-          }`
-        );
         const date = new Date(res.data.post_date_timestamp);
         this.setState({
           comments: res.data.comments,
@@ -56,7 +51,9 @@ class Blog extends Component {
   };
 
   handleLike = () => {
-    const liked = this.props.likedPosts.includes(this.props.match.params.id);
+    //disable the like for a moment
+    this.setState({ enableLike: false });
+    const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -67,7 +64,7 @@ class Blog extends Component {
     };
 
     //handling likeposts in User route
-    const likePostPromise = liked
+    const likePostPromise = LIKED
       ? axios.delete(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
             this.props.userID
@@ -82,58 +79,35 @@ class Blog extends Component {
           headers
         );
     //handling like# in Post route
-    //catch here to revert the change
     const likeNumberPromise = axios.patch(
       `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
         this.props.match.params.id
       }`,
-      { liked: liked },
+      { liked: LIKED },
       headers
     );
 
     Promise.all([likePostPromise, likeNumberPromise])
       .then(() => {
-        this.props.handleLike(this.props.match.params.id, this.state.liked);
-        this.setState({ liked: !this.state.liked });
+        this.props.handleLike(this.props.match.params.id, LIKED);
+        this.setState({ enableLike: true });
       })
       .catch(err => {
-        console.log(err.message);
+        this.setState({ enableLike: true });
       });
   };
 
-  buttonChange = () => {
-    const liked = this.props.likedPosts.includes(this.props.match.params.id);
-    if (this.props.loggedIn) {
-      return (
-        <button
-          className={
-            liked ? "level-item button is-success" : "level-item button"
-          }
-          aria-label="like"
-          onClick={this.handleLike}
-        >
-          <span className="icon is-small">
-            <i className="far fa-thumbs-up" aria-hidden="true" />
-          </span>
-        </button>
-      );
-    } else {
-      return (
-        <button
-          className="level-item button"
-          aria-label="like"
-          onClick={this.handleLike}
-          disabled
-        >
-          <span className="icon is-small">
-            <i className="far fa-thumbs-up" aria-hidden="true" />
-          </span>
-        </button>
-      );
-    }
-  };
-
   render() {
+    //handling disabled button
+    const btn = document.getElementById("likeBtn");
+    if (btn) {
+      if (!this.state.enableLike) {
+        btn.setAttribute("disabled", "");
+      } else {
+        btn.removeAttribute("disabled");
+      }
+    }
+    const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
     return (
       <React.Fragment>
         <Navbar />
@@ -188,7 +162,18 @@ class Blog extends Component {
                       </span>
                     </button>
 
-                    {this.buttonChange()}
+                    <button
+                      id="likeBtn"
+                      className={`level-item button ${
+                        LIKED ? " is-success" : ""
+                      }`}
+                      aria-label="like"
+                      onClick={this.state.enableLike ? this.handleLike : null}
+                    >
+                      <span className="icon is-small">
+                        <i className="far fa-thumbs-up" aria-hidden="true" />
+                      </span>
+                    </button>
                   </div>
                   <hr />
                 </div>
