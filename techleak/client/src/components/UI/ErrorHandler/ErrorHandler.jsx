@@ -8,16 +8,16 @@ const WithHandler = (WrappedComponent, axios) => {
       error: false
     };
 
-    componentDidMount() {
+    componentWillMount() {
       // Add a request interceptor
-      axios.interceptors.request.use(req => {
+      this.reqInterceptor = axios.interceptors.request.use(req => {
         // Do something with request error
         this.setState({ error: false, errorMessage: "" });
         return req;
       });
 
       // Add a response interceptor
-      axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(
         res => res,
         error => {
           // Do something with response error
@@ -29,6 +29,12 @@ const WithHandler = (WrappedComponent, axios) => {
           return Promise.reject(error);
         }
       );
+    }
+
+    //Need to remove the interceptor after calls
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     }
 
     render() {
@@ -48,6 +54,9 @@ const WithHandler = (WrappedComponent, axios) => {
         case 403:
           message = "Please login, if you have logged in, please log in again";
           break;
+        case 400:
+          message = "Something went wrong, contact us!";
+          break;
       }
 
       const onClose = () => {
@@ -56,12 +65,14 @@ const WithHandler = (WrappedComponent, axios) => {
       return (
         <div>
           <Modal
+            blockScroll={false}
             open={this.state.error}
             onClose={onClose}
             center
             styles={modalBg}
           >
-            {message} <i className="fas fa-exclamation" style={{ color: "red" }} />
+            {message}{" "}
+            <i className="fas fa-exclamation" style={{ color: "red" }} />
           </Modal>
           <WrappedComponent {...this.props} />
         </div>

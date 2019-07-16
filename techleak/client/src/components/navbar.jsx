@@ -5,9 +5,6 @@ import image from "../assets/img/logo.jpg";
 import { Link } from "react-router-dom";
 import ContactUs from "./contactUs/contactUs";
 import { connect } from "react-redux";
-import ResponsiveMenu from 'react-responsive-navbar';
-import { MdMenu} from "react-icons/md";
-import { FaTimes } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import faBars from '@fortawesome/fontawesome-free-solid/faBars';
 
@@ -62,7 +59,7 @@ const Navbar = props => {
     <React.Fragment>
       <nav className={`navbar ${top_menu_class}`} role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <Link className="navbar-item" style={{width:"150px", height:"52px", position:"fix"}} to="/index">
+          <Link className="navbar-item" style={{width:"150px", height:"52px", position:"fix"}} to="/">
             <img src={image} width="112" height="48" alt="logo" />
           </Link>
         </div>

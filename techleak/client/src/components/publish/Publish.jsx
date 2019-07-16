@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios-blogs";
 import React, { Component } from "react";
 import Editor from "../editor/Editor";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import Spinner from "../UI/Spinner/Spinner";
 import Modal from "react-responsive-modal";
 import { connect } from "react-redux";
 import TagSearch from "../searchTags/tagsearch";
+import withHandler from "../UI/ErrorHandler/ErrorHandler";
 import {
   openDisplay,
   closeDisplay,
@@ -24,7 +25,8 @@ class Publish extends Component {
       loading: false,
       posted: false,
       content: "",
-      title: ""
+      title: "",
+      loading: false
     };
 
     this.handlePost = this.handlePost.bind(this);
@@ -51,18 +53,17 @@ class Publish extends Component {
     };
 
     axios
-      .post(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts`, post, headers)
+      .post("/api/posts", post, headers)
       .then(res => {
         axios
           .post(
-            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
-              this.props.userID
-            }`,
+            `/api/users/myPosts/${this.props.userID}`,
             { postID: res.data._id },
             headers
           )
           .then(res => {
             console.log(res);
+            this.setState({ loading: false });
           })
           .catch(err => {
             console.log(err);
@@ -74,7 +75,7 @@ class Publish extends Component {
       .catch(err => {
         console.log(err);
       });
-    this.setState({ posted: true, loading: false });
+    this.setState({ posted: true });
   }
 
   updateContent = value => {
@@ -120,7 +121,7 @@ class Publish extends Component {
           Successfully Posted
         </p>
         <Link
-          to="/index"
+          to="/"
           className="button is-success"
           style={{
             marginTop: "10%",
@@ -135,37 +136,28 @@ class Publish extends Component {
   }
 
   render() {
+    let inputTags = this.props.tagReducer.tags.map(tag => (
+      <li key={tag} style={styles.items}>
+        {tag}
+        <button onClick={() => this.props.removeTag(tag)}>(x)</button>
+      </li>
+    ));
 
-    let inputTags = (
-      this.props.tagReducer.tags.map((tag) => 
-        <li key={tag} style={styles.items}>
-          {tag}
-          <button
-            onClick={() => this.props.removeTag(tag)}
-          >
-            (x)
-          </button>
-        </li>
-      )
-    )
-
-    let selection = (
-      <div></div>
-    )
+    let selection = <div />;
 
     if (this.props.tagReducer.tags.length === 0) {
       selection = (
         <div>
           <br />
         </div>
-      )
+      );
     } else {
       selection = (
         <div>
           {inputTags}
           <br />
         </div>
-      )
+      );
     }
 
     return (
@@ -178,7 +170,7 @@ class Publish extends Component {
           >
             <div className="navbar-brand">
               <div className="navbar-item">
-                <Link to="/index">
+                <Link to="/">
                   <img src={image} width="112" height="48" alt="logo" />
                 </Link>
               </div>
@@ -226,7 +218,10 @@ class Publish extends Component {
                 />
                 <br />
                 <div className="level-left">
-                  <button className="button is-primary level-item" type="submit">
+                  <button
+                    className="button is-primary level-item"
+                    type="submit"
+                  >
                     Post
                   </button>
                   <button
@@ -334,7 +329,10 @@ const styles = {
   }
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Publish);
+export default withHandler(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Publish),
+  axios
+);

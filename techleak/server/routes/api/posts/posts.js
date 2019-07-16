@@ -69,34 +69,30 @@ router.delete("/:id", (req, res) => {
     .catch(err => res.status(500).json(err.message));
 });
 
-router.patch("/likes/:id", auth.required, (req, res) => {
-  let increment;
-  if (req.body.liked) {
-    increment = -1;
-  } else {
-    increment = 1;
-  }
+router.patch("/likes/:id", auth.required, async (req, res) => {
+  const increment = req.body.liked ? -1 : 1;
 
-  const promiseMongo = Post.findOneAndUpdate(
-    { _id: req.params.id },
-    { $inc: { likes: increment } },
-    { new: true }
-  );
+  try {
+    const content = await index.getObject(req.params.id, ["likes"]);
 
-  const promiseAlgolia = index
-    .getObject(req.params.id, ["likes"])
-    .then(content =>
-      index.partialUpdateObject({
-        likes: content.likes + 1,
+    //Because the aync feature of algolia
+    //We have to waittask for its update to keep consistency
+    await index.partialUpdateObject(
+      {
+        likes: content.likes + increment,
         objectID: req.params.id
-      })
-    )
-    .catch(err => res.status(500).json(err.message));
-
-  //only fetching the first object returned by algolia
-  Promise.all([promiseAlgolia, promiseMongo])
-    .then(content => res.json(content[0]))
-    .catch(err => res.status(500).json(err.message));
+      },
+      (err, { taskID } = {}) => {
+        index.waitTask(taskID, err => {
+          if (!err) {
+            return res.json({ message: "updated" });
+          }
+        });
+      }
+    );
+  } catch (error) {
+    return res.json({ message: error.message });
+  }
 });
 
 router.patch("/comments/:id", auth.required, async (req, res) => {
