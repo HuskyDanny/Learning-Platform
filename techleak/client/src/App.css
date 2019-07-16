@@ -55,6 +55,7 @@
   justify-content: center;
 }
 
+
 .height-percent {
   height: 100%;
 }
@@ -65,10 +66,6 @@
 
 .left {
   float: left;
-}
-
-.top-menu *:hover {
-  cursor: pointer;
 }
 
 .clear-fix {
@@ -83,43 +80,95 @@
   display: none;
 }
 
+#changableButton {
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 10px;
+  background-color: #10d3a9;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 5px 5px 0;
+  padding: 15px 35px;
+  border-radius: 5px;
+  width: 120px;
+}
+
+#changableButton:hover {
+  cursor: pointer;
+}
+
 @media screen and (max-width: 1090px) {
   .top-menu {
     max-height: 0;
     overflow: hidden;
   }
 
-  .top-menu > .left,
-  .top-menu > .right {
-    display: none;
-  }
+    .top-menu:hover{
+      cursor: default;
+    }
 
-  .top-menu-icon {
-    display: block !important;
-  }
+    .top-menu > .left, .top-menu > .right {
+        display: none;
+    }
+
+    .top-menu-icon {
+        display: block !important;
+    }
+
+    .top-menu-icon:hover {
+      cursor: pointer;
+    }
 }
 
 @media screen and (max-width: 1090px) {
-  .top-menu.toggled {
-    padding: 0;
-    max-height: 1500px;
-    transition: max-height 1s;
-  }
+    .top-menu.toggled {
+        padding: 0;
+        max-height: 1500px;
+        transition: max-height 1s;
+        margin: 0;
+    }
 
-  .top-menu.toggled > .left {
-    border-bottom: 1px solid black;
-    margin: 10px 0 0 0;
-  }
+    .top-menu.toggled > .left {
+        border-bottom: 1px solid black;
+        margin: 0 0 0 0;
+    }
 
-  .button {
-    border-bottom: 1px solid black;
-    margin-top: 10px;
-  }
+    .top-menu.toggled:hover {
+      cursor: default;
+    }
 
-  .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {
-    float: none;
-    display: block !important;
-    text-align: left;
-    margin: 0;
-  }
+    #changableButton {
+      background-color: #ffffff;
+      border: none;
+      color: #0e0f0fd2;
+      width: 1090px;
+      height: 40px;
+      padding: 20px 28px;
+      margin-top: 0;
+      margin-bottom: 0;
+      margin-left: -15px;
+      font-size: 16px;
+      padding-top: 10px;
+      padding-left: 16px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #changableButton:first-child{
+      margin-top:-10px;
+    }
+
+    #changableButton:hover {
+      cursor: pointer;
+      background-color: #f8f8f8;
+      color: #0696f7;
+    }
+
+
+    .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {
+        float: none;
+        display: block !important;
+        text-align: left;
+        margin: 0;
+    }
+
 }
