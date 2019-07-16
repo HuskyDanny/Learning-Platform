@@ -58,7 +58,7 @@ const Post = props => {
               </div>
 
               <div>
-                <Likes likes={props.persistedReducer.likes[objectID]} />
+                <Likes likes={likes} />
               </div>
             </div>
           </footer>

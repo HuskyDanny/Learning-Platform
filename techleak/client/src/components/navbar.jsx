@@ -11,8 +11,9 @@ import { FaTimes } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import faBars from '@fortawesome/fontawesome-free-solid/faBars';
 
+
 const Navbar = props => {
-  let top_menu_class = `top-menu ${props.menu_class}`
+  let top_menu_class = `top-menu ${props.menu_class}`;
 
   let status = (
     <div className="navbar-end">
@@ -60,7 +61,11 @@ const Navbar = props => {
 
   return (
     <React.Fragment>
-      <nav className={`navbar ${top_menu_class}`} role="navigation" aria-label="main navigation">
+      <nav
+        className={`navbar ${top_menu_class}`}
+        role="navigation"
+        aria-label="main navigation"
+      >
         <div className="navbar-brand">
           <Link className="navbar-item" style={{width:"150px", height:"52px", position:"fix"}} to="/index">
             <img src={image} width="112" height="48" alt="logo" />
@@ -76,13 +81,14 @@ const Navbar = props => {
             <Link className="navbar-item" onClick={props.onSwitchContactModal}>
               Contact Us
             </Link>
-
           </div>
-          <div className="right">
-            {status}
-          </div>
+          <div className="right">{status}</div>
         </div>
-        <FontAwesomeIcon icon={faBars} className='top-menu-icon' onClick={props.handleToggleMenu}/>
+        <FontAwesomeIcon
+          icon={faBars}
+          className="top-menu-icon"
+          onClick={props.handleToggleMenu}
+        />
       </nav>
       <Signup />
       <Login />
