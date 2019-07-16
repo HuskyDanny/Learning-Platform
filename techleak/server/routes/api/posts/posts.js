@@ -143,17 +143,15 @@ router.patch("/comments/reply/:id", auth.required, async (req, res) => {
   try {
     let post = await Post.findOne({ _id: req.params.id });
 
-    console.log(req.query.commentId);
     let result = await post.comments.id(req.query.commentId);
 
     let newReply = new Reply(req.body.reply);
     result.replies.push(newReply);
 
     post = await post.save();
-    console.log(newReply);
+
     res.json(newReply);
   } catch (error) {
-    console.log(error);
     res.json(error.message);
   }
 });

@@ -120,7 +120,7 @@ router.post("/likes/:id", auth.required, async (req, res) => {
   try {
     const result = await User.findByIdAndUpdate(
       { _id: req.params.id },
-      { $push: { likedPosts: req.body.postID } },
+      { $addToSet: { likedPosts: req.body.postID } },
       { new: true }
     );
 
