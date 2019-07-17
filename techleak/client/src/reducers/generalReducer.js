@@ -1,4 +1,4 @@
-const initialState = {
+let initialState = {
   loggedIn: false,
   signupOpen: false,
   loginOpen: false,
@@ -28,8 +28,15 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       loggedIn: false,
+      signupOpen: false,
+      loginOpen: false,
+      contactUsOpen: false,
+      shareOpen: false,
       username: "",
-      userID: ""
+      userID: "",
+      likedPosts: [],
+      myPosts: [],
+      menu_class: ""
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -86,7 +93,6 @@ const reducer = (state = initialState, action) => {
   if (action.type === "ADDCOMMENT") {
     let temp = [...state.comments];
     temp.push(action.comment);
-    console.log(action.comment);
 
     return {
       ...state,
@@ -104,13 +110,12 @@ const reducer = (state = initialState, action) => {
     };
   }
   if (action.type === "HANDLELIKE") {
-    let newLikePosts = [...state.likedPosts];
-    action.liked
-      ? (newLikePosts = newLikePosts.filter(post => post !== action.id))
-      : newLikePosts.push(action.id);
+    //remove duplicates
+    let newLikePosts = new Set([...state.likedPosts]);
+    action.liked ? newLikePosts.delete(action.id) : newLikePosts.add(action.id);
     return {
       ...state,
-      likedPosts: newLikePosts
+      likedPosts: [...newLikePosts]
     };
   }
   if (action.type === "PUBLISHEDNEWPOST") {

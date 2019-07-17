@@ -44,7 +44,7 @@ const EditorComponent = props => {
         //     console.log("image was deleted");
         //   }
         // };
-        xhttp.open("POST", `${YOURSERVER}/api/uploads/delete_image`, true);
+        xhttp.open("DELETE", `${YOURSERVER}/api/uploads/delete_image`, true);
         xhttp.setRequestHeader(
           "Content-Type",
           "application/json;charset=UTF-8"
@@ -57,15 +57,19 @@ const EditorComponent = props => {
           })
         );
       },
-
+      "image.uploadedToS3": function(link, key, response) {
+        // Do something here.
+        // this is the editor instance.
+        console.log(this);
+      },
       "image.beforeUpload": function(images) {
         // Return false if you want to stop the image upload.
       },
       "image.uploaded": function(response) {
         // Image was uploaded to the server.
-        const img = JSON.parse(response).link;
-        var img_url = YOURSERVER + img;
-        this.image.insert(img_url, false, null, this.image.get(), response);
+        const payload = JSON.parse(response);
+        const LOCATION = payload.Location;
+        this.image.insert(LOCATION, false, null, this.image.get(), response);
 
         return false;
       },

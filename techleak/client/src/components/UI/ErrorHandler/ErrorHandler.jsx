@@ -54,6 +54,9 @@ const WithHandler = (WrappedComponent, axios) => {
         case 403:
           message = "Please login, if you have logged in, please log in again";
           break;
+        case 400:
+          message = "Something went wrong, contact us!";
+          break;
       }
 
       const onClose = () => {

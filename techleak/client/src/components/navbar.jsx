@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Signup from "./Signup";
 import Login from "./Login";
 import image from "../assets/img/logo.jpg";
@@ -15,19 +15,11 @@ const Navbar = props => {
     <div className="navbar-end">
       <div className="navbar-item">
         <div className="buttons">
-          <button
-            className="button is-primary"
-            id="signupBTN"
-            onClick={props.onSwitchSignupModal}
-          >
-            <strong>Sign up</strong>
+          <button id="changableButton" onClick={props.onSwitchSignupModal}>
+            <p>Sign up</p>
           </button>
-          <button
-            className="button is-primary"
-            id="loginBTN"
-            onClick={props.onSwitchLoginModal}
-          >
-            <strong>Log in</strong>
+          <button id="changableButton" onClick={props.onSwitchLoginModal}>
+            <p>Log in</p>
           </button>
         </div>
       </div>
@@ -39,21 +31,18 @@ const Navbar = props => {
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <button className="button is-primary navbar-item" id="buttonName">
-              <Link to="/publish" style={{ color: "white" }}>
-                <strong id="buttonName">New Post</strong>
-              </Link>
-            </button>
+            <Link id="changableButton" to="/publish">
+              <i className="fas fa-plus-circle" />
+              <p>New Post</p>
+            </Link>
 
-            <button className="button is-primary navbar-item" id="buttonName">
-              <Link to="/userProfile" style={{ color: "white" }}>
-                <strong id="buttonName">My Profile</strong>
-              </Link>
-            </button>
+            <Link id="changableButton" to="/userProfile">
+              <p>My Profile</p>
+            </Link>
 
-            <button className="button is-primary navbar-item" id="buttonName" onClick={props.handleLogOut}>
-              <strong id="buttonName">Log Out</strong>
-            </button>
+            <Link id="changableButton" onClick={props.handleLogOut} to="/">
+              <p>Log Out</p>
+            </Link>
           </div>
         </div>
       </div>
@@ -68,11 +57,13 @@ const Navbar = props => {
         aria-label="main navigation"
       >
         <div className="navbar-brand">
-          <div className="navbar-item">
-            <Link to="/">
-              <img src={image} width="112" height="48" alt="logo" />
-            </Link>
-          </div>
+          <Link
+            className="navbar-item"
+            style={{ width: "150px", height: "52px", position: "fix" }}
+            to="/"
+          >
+            <img src={image} width="112" height="48" alt="logo" />
+          </Link>
         </div>
 
         <div id="navbarBasicExample" className="navbar-menu">
@@ -99,6 +90,94 @@ const Navbar = props => {
     </React.Fragment>
   );
 };
+
+// class Navbar extends Component {
+
+//   render() {
+
+//     let status = (
+//       <div className="navbar-end">
+//         <li className="navbar-item">
+//           <button
+//             className="button is-primary"
+//             onClick={this.props.onSwitchSignupModal}
+//           >
+//             <strong>Sign up</strong>
+//           </button>
+//         </li>
+//         <li className="navbar-item">
+//           <button
+//             className="button is-primary"
+//             onClick={this.props.onSwitchLoginModal}
+//           >
+//             <strong>Log in</strong>
+//           </button>
+//         </li>
+//       </div>
+//     );
+
+//     if (this.props.logIn) {
+//       status = (
+//         <div className="navbar-end">
+//           <li className="navbar-item">
+//             <Link className='button is-primary' to="/publish" >
+//               <i className="fas fa-plus-circle" />
+//               <strong >New Post</strong>
+//             </Link>
+//           </li>
+//           <li className="navbar-item">
+//             <Link className="button is-primary" to="/userProfile">
+//               <strong>My Profile</strong>
+//             </Link>
+//           </li>
+//           <li className="navbar-item">
+//             <div className="button is-primary" onClick={this.props.handleLogOut}>
+//               <strong>Log Out</strong>
+//             </div>
+//           </li>
+//         </div>
+//       );
+//     }
+
+//     return (
+//       <React.Fragment>
+//         <div className='flex'>
+//           <div className="navbar navbar-brand navbar-item" role="navigation" aria-label="main navigation">
+//             <Link to="/index">
+//               <img src={image} width="112" height="48" alt="logo" />
+//             </Link>
+//           </div>
+//           <ResponsiveMenu
+//             menuOpenButton={<div><MdMenu /></div>}
+//             menuCloseButton={<div><FaTimes/></div>}
+//             changeMenuOn="1090px"
+//             menu={
+//               <div className="navbar" role="navigation" aria-label="main navigation">
+//                 <div className="navbar-start">
+//                   <li className="navbar-item">
+//                     <a className="navbar-item" href="#about">
+//                       About
+//                     </a>
+//                   </li>
+//                   <li className="navbar-item">
+//                     <Link className="navbar-item" onClick={this.props.onSwitchContactModal}>
+//                       Contact Us
+//                     </Link>
+//                   </li>
+//                 </div>
+//                 {status}
+//               </div>
+//             }
+//           />
+
+//           <Signup />
+//           <Login />
+//           <ContactUs />
+//         </div>
+//       </React.Fragment>
+//     )
+//   }
+// }
 
 const mapStateToProps = state => {
   return {

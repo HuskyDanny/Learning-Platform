@@ -13,7 +13,7 @@ var transport = {
       clientId: creds.CID,
       clientSecret: creds.CIS,
       refreshToken: creds.RST,
-      accessToken: creds.ATK
+      accessToken: creds.ATK,
   }
 }
 
