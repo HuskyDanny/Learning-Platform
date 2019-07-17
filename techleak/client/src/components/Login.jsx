@@ -139,7 +139,10 @@ class Login extends Component {
       </div>
     );
     if (this.state.loading) {
-      login = <Spinner />;
+      login =
+        <div style={{ textAlign: "center", paddingTop: "25%", paddingBottom: "25%" }}>
+          <Spinner />
+        </div>
     }
     return (
       <Modal

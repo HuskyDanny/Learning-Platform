@@ -3,15 +3,14 @@ const initialState = {
   signupOpen: false,
   loginOpen: false,
   contactUsOpen: false,
-  shareOpen:false,
+  shareOpen: false,
   username: "",
   userID: "",
-  likes: {},
   likedPosts: [],
   comments: [],
   replies: [],
   myPosts: [],
-  menu_class: ''
+  menu_class: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -59,13 +58,13 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       shareOpen: !state.shareOpen
-    }
+    };
   }
   if (action.type === "TOGGLEMENUCLASS") {
     return {
       ...state,
-      menu_class: (state.menu_class === '') ? 'toggled' : ''
-    }
+      menu_class: state.menu_class === "" ? "toggled" : ""
+    };
   }
   if (action.type === "GETBLOG") {
     let tempComments = [];
@@ -104,30 +103,13 @@ const reducer = (state = initialState, action) => {
       replies: temp
     };
   }
-  if (action.type === "GETHITS") {
-    let tempLikes = { ...state.likes };
-
-    action.hits.map(hit => {
-      //if the hit not in current memory, then we use the data
-      if (!(hit.objectID in tempLikes)) {
-        tempLikes[hit.objectID] = hit.likes;
-      }
-    });
-
-    return {
-      ...state,
-      likes: tempLikes
-    };
-  }
   if (action.type === "HANDLELIKE") {
-    const delta = action.liked ? -1 : 1;
     let newLikePosts = [...state.likedPosts];
     action.liked
       ? (newLikePosts = newLikePosts.filter(post => post !== action.id))
       : newLikePosts.push(action.id);
     return {
       ...state,
-      likes: { ...state.likes, [action.id]: state.likes[action.id] + delta },
       likedPosts: newLikePosts
     };
   }

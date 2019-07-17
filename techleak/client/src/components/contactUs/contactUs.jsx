@@ -2,6 +2,7 @@ import React from "react";
 import Modal from "react-responsive-modal";
 import "./contactUs.css";
 import { connect } from "react-redux";
+import axios from "axios";
 class ContactUs extends React.Component {
   constructor(props) {
     super(props);
@@ -15,15 +16,48 @@ class ContactUs extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.resetForm = this.resetForm.bind(this);
   }
 
   handleChange(e, type) {
     this.setState({ [type]: e.target.value });
   }
 
+  resetForm() {
+    this.setState({
+      firstname: "",
+      familyname: "",
+      email: "",
+      phone: "",
+      title: "",
+      message: ""
+    })
+  }
+
   handleSubmit(e) {
-    alert("Your message is sent successfully, " + this.state.firstname);
+    const {firstname, familyname, email, phone, title, message} = this.state;
+    alert("Your message is sent successfully, " + firstname);
     e.preventDefault();
+    axios({
+      method: "POST",
+      url: `${process.env.REACT_APP_BACKEND_SERVER}/api/contact/contact`,
+      data: {
+        firstname: firstname, 
+        familyname: familyname,
+        email: email, 
+        phone: phone, 
+        title: title, 
+        message: message
+      }
+    })
+    .then((response)=>{
+      if (response.data.msg === 'success'){
+        alert("Message Sent."); 
+        this.resetForm();
+      } else if(response.data.msg === 'fail'){
+          alert("Message failed to send.")
+      }        
+    })
   }
 
   render() {
@@ -142,7 +176,7 @@ class ContactUs extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    contactUsOpen: state.contactUsOpen
+    contactUsOpen: state.persistedReducer.contactUsOpen
   };
 };
 

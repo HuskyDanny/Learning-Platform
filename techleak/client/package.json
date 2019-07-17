@@ -24,6 +24,7 @@
     "react-froala-wysiwyg": "^3.0.0-rc.1",
     "react-html-parser": "^2.0.2",
     "react-instantsearch-dom": "^5.6.0",
+    "react-loader-spinner": "^2.3.0",
     "react-redux": "^7.0.3",
     "react-responsive-modal": "^4.0.1",
     "react-router-dom": "^5.0.0",

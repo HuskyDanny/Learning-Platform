@@ -61,7 +61,7 @@ class SimplifiedPost extends React.Component {
 
     axios.delete(
       `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-        this.props.userID
+      this.props.userID
       }?postID=${objectID}`,
       headers
     );
@@ -82,9 +82,9 @@ class SimplifiedPost extends React.Component {
     const { title, objectID, PostType, userID, myPosts } = this.props;
     if (PostType === "MyPosts") {
       return (
-        <a className="level-item" 
-           aria-label="cancel"
-           onClick={(e) => {
+        <a className="level-item"
+          aria-label="cancel"
+          onClick={(e) => {
             confirmAlert({
               message: 'Your post will be deleted permanently, are you sure to do this?',
               buttons: [
@@ -102,31 +102,31 @@ class SimplifiedPost extends React.Component {
                     axios
                       .delete(
                         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-                          objectID
-                        }`, 
-                          headers
+                        objectID
+                        }`,
+                        headers
                       )
                       .then(res => {
-                            console.log(res);
-                            axios
-                            .delete(
-                              `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
-                                userID
-                              }?postID=${objectID}`,
-                              headers
-                            )
-                            .then(res => {
-                              console.log("removed my posts successfully: " + res);
-                            })
-                            .catch(err => {
-                              console.log(err);
-                            });
-                          var newMyPosts = myPosts.filter(myPost => myPost != objectID);
-                          this.props.handleMyPosts(newMyPosts);                            
+                        console.log(res);
+                        axios
+                          .delete(
+                            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
+                            userID
+                            }?postID=${objectID}`,
+                            headers
+                          )
+                          .then(res => {
+                            console.log("removed my posts successfully: " + res);
+                          })
+                          .catch(err => {
+                            console.log(err);
+                          });
+                        var newMyPosts = myPosts.filter(myPost => myPost != objectID);
+                        this.props.handleMyPosts(newMyPosts);
                       })
                       .catch(err => {
                         console.log(err);
-                      });                    
+                      });
                   }
                 },
                 {
@@ -136,11 +136,11 @@ class SimplifiedPost extends React.Component {
                   }
                 }
               ]
-            });                   
+            });
             e.preventDefault();
-           }}
-           >
-             
+          }}
+        >
+
           <span className="icon is-small">
             <i className="fas fa-times" />
           </span>
@@ -238,7 +238,7 @@ class SimplifiedPost extends React.Component {
               </nav>
             </div>
           </article>
-        </Modal>       
+        </Modal>
       </div>
     );
   }
