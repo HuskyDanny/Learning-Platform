@@ -5,7 +5,7 @@ export default class Spinner extends React.Component {
   render() {
     return (
       <Loader
-        style={{ margin: "10% 10%" }}
+        style={{ display: "inline-block" }}
         type="ThreeDots"
         color="#00BFFF"
         height="100"

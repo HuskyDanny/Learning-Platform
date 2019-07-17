@@ -188,7 +188,11 @@ class Singup extends Component {
     );
 
     if (this.state.loading) {
-      signUp = <Spinner />;
+
+      signUp =
+        <div style={{ textAlign: "center", paddingTop: "25%", paddingBottom: "25%" }}>
+          <Spinner />;
+      </div>
     }
     return (
       <Modal
