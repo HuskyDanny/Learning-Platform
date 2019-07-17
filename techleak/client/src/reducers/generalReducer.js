@@ -1,4 +1,4 @@
-const initialState = {
+let initialState = {
   loggedIn: false,
   signupOpen: false,
   loginOpen: false,
@@ -28,8 +28,15 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       loggedIn: false,
+      signupOpen: false,
+      loginOpen: false,
+      contactUsOpen: false,
+      shareOpen: false,
       username: "",
-      userID: ""
+      userID: "",
+      likedPosts: [],
+      myPosts: [],
+      menu_class: ""
     };
   }
   if (action.type === "SIGNUPMODAL") {
