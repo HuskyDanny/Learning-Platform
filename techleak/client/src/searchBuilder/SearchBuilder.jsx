@@ -20,23 +20,31 @@ class SearchBuilder extends Component {
   state = {
     refresh: false
   };
-  componentDidMount() {
-    this.interval = setInterval(
-      () =>
-        this.setState({ refresh: true }, () => {
-          this.setState({ refresh: false });
-        }),
-      5000
-    );
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+
+  //refresh periodically
+  // componentDidMount() {
+  //   this.interval = setInterval(
+  //     () =>
+  //       this.setState({ refresh: true }, () => {
+  //         this.setState({ refresh: false });
+  //       }),
+  //     5000
+  //   );
+  // }
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
+
+  refresh = () => {
+    this.setState({ refresh: true }, () => {
+      this.setState({ refresh: false });
+    });
+  };
   render() {
     return (
       <div>
         <InstantSearch
-          indexName="posts"
+          indexName="Test"
           searchClient={searchClient}
           refresh={this.state.refresh}
         >
@@ -68,6 +76,7 @@ class SearchBuilder extends Component {
               ]}
             />
             <SearchBox />
+            <button onClick={this.refresh}> Refresh</button>
           </div>
           <CustomHits />
           <Pagination
