@@ -82,15 +82,26 @@
 
 #changableButton {
   display: inline-block;
-  font-size: 14px;
-  margin-right: 10px;
+  white-space: nowrap;
+  font-size: 0.9vw;
   background-color: #10d3a9;
   color: #ffffff;
   text-align: center;
+  justify-content: center;
   margin: 0 5px 5px 0;
-  padding: 15px 35px;
+  padding: 15px;
   border-radius: 5px;
-  width: 120px;
+  height: 48px;
+  width: 100px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#changableButton > i {
+  margin-right: 5px;
+  display: inline-block
+}
+#changableButton > p {
+  display: inline-block
 }
 
 #changableButton:hover {
@@ -103,72 +114,83 @@
     overflow: hidden;
   }
 
-    .top-menu:hover{
-      cursor: default;
-    }
+  .top-menu:hover{
+    cursor: default;
+  }
 
-    .top-menu > .left, .top-menu > .right {
-        display: none;
-    }
+  .top-menu > .left, .top-menu > .right {
+      display: none;
+  }
 
-    .top-menu-icon {
-        display: block !important;
-    }
+  .top-menu-icon {
+      display: block !important;
+  }
 
-    .top-menu-icon:hover {
-      cursor: pointer;
-    }
+  .top-menu-icon:hover {
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 1090px) {
-    .top-menu.toggled {
-        padding: 0;
-        max-height: 1500px;
-        transition: max-height 1s;
-        margin: 0;
-    }
+  .top-menu.toggled {
+      padding: 0;
+      max-height: 1500px;
+      transition: max-height 1s;
+      margin: 0;
+  }
 
-    .top-menu.toggled > .left {
-        border-bottom: 1px solid black;
-        margin: 0 0 0 0;
-    }
+  .top-menu.toggled > .left {
+      border-bottom: 1px solid black;
+      margin: 0 0 0 0;
+  }
 
-    .top-menu.toggled:hover {
-      cursor: default;
-    }
+  .top-menu.toggled:hover {
+    cursor: default;
+  }
 
-    #changableButton {
-      background-color: #ffffff;
-      border: none;
-      color: #0e0f0fd2;
-      width: 1090px;
-      height: 40px;
-      padding: 20px 28px;
-      margin-top: 0;
-      margin-bottom: 0;
-      margin-left: -15px;
-      font-size: 16px;
-      padding-top: 10px;
-      padding-left: 16px;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+  #changableButton {
+    background-color: #ffffff;
+    border: none;
+    color: #0e0f0fd2;
+    width: 1090px;
+    height: 40px;
+    padding: 20px 28px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: -15px;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-left: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
 
-    #changableButton:first-child{
-      margin-top:-10px;
-    }
+  #changableButton > i {
+    padding: 5px;
+    margin-left: -5px;
+    margin-right: -2px;
+    display: inline-block;
+    float: left;
+  }
+  #changableButton > p {
+    display: inline-block
+  }
 
-    #changableButton:hover {
-      cursor: pointer;
-      background-color: #f8f8f8;
-      color: #0696f7;
-    }
+  #changableButton:first-child{
+    margin-top:-10px;
+  }
+
+  #changableButton:hover {
+    cursor: pointer;
+    background-color: #f8f8f8;
+    color: #0696f7;
+  }
 
 
-    .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {
-        float: none;
-        display: block !important;
-        text-align: left;
-        margin: 0;
-    }
+  .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {
+      float: none;
+      display: block !important;
+      text-align: left;
+      margin: 0;
+  }
 
 }
