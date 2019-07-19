@@ -10,7 +10,8 @@ let initialState = {
   comments: [],
   replies: [],
   myPosts: [],
-  menu_class: ""
+  menu_class: "",
+  avatar: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,7 +22,8 @@ const reducer = (state = initialState, action) => {
       userID: action.userID,
       username: action.username,
       likedPosts: action.likedPosts,
-      myPosts: action.myPosts
+      myPosts: action.myPosts,
+      avatar: action.avatar
     };
   }
   if (action.type === "LOGOUT") {
@@ -118,6 +120,13 @@ const reducer = (state = initialState, action) => {
       likedPosts: [...newLikePosts]
     };
   }
+  if (action.type === "UPDATEAVATAR") {
+    return {
+      ...state,
+      avatar: action.avatar
+    };
+  }
+
   if (action.type === "PUBLISHEDNEWPOST") {
     return {
       ...state,

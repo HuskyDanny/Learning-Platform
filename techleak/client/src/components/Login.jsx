@@ -38,7 +38,8 @@ class Login extends Component {
           res.data.username,
           res.data.id,
           res.data.likedPosts,
-          res.data.myPosts
+          res.data.myPosts,
+          res.data.avatar
         );
         //close modal
         this.props.onSwitchLoginModal();
@@ -139,10 +140,17 @@ class Login extends Component {
       </div>
     );
     if (this.state.loading) {
-      login =
-        <div style={{ textAlign: "center", paddingTop: "25%", paddingBottom: "25%" }}>
+      login = (
+        <div
+          style={{
+            textAlign: "center",
+            paddingTop: "25%",
+            paddingBottom: "25%"
+          }}
+        >
           <Spinner />
         </div>
+      );
     }
     return (
       <Modal
@@ -166,13 +174,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogIn: (username, userID, likedPosts, myPosts) =>
+    handleLogIn: (username, userID, likedPosts, myPosts, avatar) =>
       dispatch({
         type: "LOGIN",
         username: username,
         userID: userID,
         likedPosts: likedPosts,
-        myPosts: myPosts
+        myPosts: myPosts,
+        avatar: avatar
       }),
     onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" })
   };
