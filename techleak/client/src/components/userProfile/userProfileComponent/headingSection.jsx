@@ -26,10 +26,11 @@ class HeadingSection extends React.Component {
   };
 
   handleUpload = () => {
-    const data = new FormData();
-    data.append("avatar", this.state.selectedFile);
-    this.setState({ loading: true });
     if (this.state.selectedFile) {
+      const data = new FormData();
+      data.append("avatar", this.state.selectedFile);
+      this.setState({ loading: true });
+
       const token = localStorage.getItem("token");
       const headers = {
         headers: {
@@ -47,13 +48,16 @@ class HeadingSection extends React.Component {
         )
         .then(res => {
           // then print response status
+          new Promise(resolve => setTimeout(resolve, 3000));
           this.setState({ loading: false });
           console.log(res);
           this.props.updateAvatar(res.data.avatar);
+          this.setState({ selectedFile: null });
         })
         .catch(err => {
           console.log(err);
           this.setState({ loading: false });
+          this.setState({ selectedFile: null });
         });
     }
   };
@@ -72,6 +76,7 @@ class HeadingSection extends React.Component {
                 src={this.props.avatar}
                 width="128"
                 height="128"
+                style={{ filter: `blur(${this.state.loading ? 2 : 0}px)` }}
               />
               <div className="file is-small" style={{ paddingLeft: "25%" }}>
                 <label class="file-label">
