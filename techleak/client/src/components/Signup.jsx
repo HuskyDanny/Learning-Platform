@@ -88,14 +88,12 @@ class Singup extends Component {
         background: "white ",
         borderRadius: "10%",
         maxHeight: "70%",
-        height: "100%",
-        maxWidth: "30%",
-        width: "100%"
+        height: "100%"
       }
     };
 
     let signUp = (
-      <div style={{ padding: "4%" }}>
+      <div style={{ padding: "4% " }}>
         <form onSubmit={this.handleSubmit}>
           <div className="field">
             <label className="label">Username</label>
@@ -188,11 +186,17 @@ class Singup extends Component {
     );
 
     if (this.state.loading) {
-
-      signUp =
-        <div style={{ textAlign: "center", paddingTop: "25%", paddingBottom: "25%" }}>
+      signUp = (
+        <div
+          style={{
+            textAlign: "center",
+            paddingTop: "25%",
+            paddingBottom: "25%"
+          }}
+        >
           <Spinner />;
-      </div>
+        </div>
+      );
     }
     return (
       <Modal
@@ -201,6 +205,7 @@ class Singup extends Component {
         onClose={this.props.onSwitchModal}
         center
         styles={modalBg}
+        showCloseIcon={false}
       >
         {signUp}
       </Modal>

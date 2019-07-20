@@ -60,12 +60,7 @@ class Login extends Component {
   render() {
     const modalBg = {
       modal: {
-        background: "white ",
-        borderRadius: "10%",
-        maxHeight: "43%",
-        height: "100%",
-        maxWidth: "30%",
-        width: "100%"
+        borderRadius: "10%"
       }
     };
 
@@ -159,6 +154,7 @@ class Login extends Component {
         onClose={this.props.onSwitchLoginModal}
         center
         styles={modalBg}
+        showCloseIcon={false}
       >
         {login}
       </Modal>

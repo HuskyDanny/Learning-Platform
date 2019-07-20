@@ -82,6 +82,7 @@ class HeadingSection extends React.Component {
                 <label class="file-label">
                   <input
                     class="file-input"
+                    ode
                     type="file"
                     name="resume"
                     onChange={this.fileHandler}
