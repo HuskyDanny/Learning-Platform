@@ -111,6 +111,7 @@ class Login extends Component {
                 placeholder="Your Password"
                 minLength="8"
                 maxLength="20"
+                size="30"
                 required
                 onChange={e => this.handleChange(e, "password")}
                 value={this.state.password}
