@@ -3,15 +3,7 @@ var FroalaEditor = require("wysiwyg-editor-node-sdk");
 const auth = require("../../auth");
 const fs = require("fs");
 const path = require("path");
-const aws = require("aws-sdk");
-
-//configuring the AWS environment
-aws.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
-aws.config.region = "ap-east-1";
-const s3 = new aws.S3();
+const s3 = require("../../../config/aws");
 
 //Initiate router
 router = Router();
