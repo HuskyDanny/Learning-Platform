@@ -84,7 +84,7 @@ router.post("/signup", auth.optional, async (req, res) => {
 
     const url = `${
       process.env.BACKEND_SERVER
-    }/api/users/comfirmation/${newUser.generateJWT()}`;
+      }/api/users/comfirmation/${newUser.generateJWT()}`;
 
     //Use smtp service for email verification
     const msg = {
@@ -182,7 +182,7 @@ router.delete("/myPosts/:id", auth.required, async (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  return passport.authenticate("local", { session: false }, function(
+  return passport.authenticate("local", { session: false }, function (
     err,
     user,
     info

@@ -8,12 +8,12 @@ var transport = {
   port: 465,
   secure: true,
   auth: {
-      type: 'oauth2',
-      user: creds.USER,
-      clientId: creds.CID,
-      clientSecret: creds.CIS,
-      refreshToken: creds.RST,
-      accessToken: creds.ATK,
+    type: 'oauth2',
+    user: creds.USER,
+    clientId: creds.CID,
+    clientSecret: creds.CIS,
+    refreshToken: creds.RST,
+    accessToken: creds.ATK,
   }
 }
 
@@ -31,8 +31,8 @@ router.post("/contact", (req, res, next) => {
   var firstname = req.body.firstname
   var familyname = req.body.familyname
   var email = req.body.email
-  var phone = req.body.phone 
-  var title = req.body.title 
+  var phone = req.body.phone
+  var title = req.body.title
   var message = req.body.message
   var content = `firstname: ${firstname} \n familyname: ${familyname} \n email: ${email} \n phone: ${phone} \n message: ${message}`
 
@@ -40,7 +40,7 @@ router.post("/contact", (req, res, next) => {
     from: firstname,
     to: "exploreprograming@gmail.com",  //Change to email address that you want to receive messages on
     subject: `[ContactUs Message]: ${title}`,
-    text: content,   
+    text: content,
   }
 
   transporter.sendMail(mail, (err, data) => {
