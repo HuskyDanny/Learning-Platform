@@ -15,7 +15,7 @@ class HeadingSection extends React.Component {
       selectedFile: e.target.files[0]
     });
     var reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
       var dataURL = reader.result;
       var output = document.getElementById("profile");
       output.src = dataURL;
@@ -41,7 +41,7 @@ class HeadingSection extends React.Component {
       axios
         .post(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/profile/${
-            this.props.userID
+          this.props.userID
           }`,
           data,
           headers
@@ -65,21 +65,21 @@ class HeadingSection extends React.Component {
     return (
       <div className="section profile-heading">
         <div className="columns is-mobile is-multiline">
-          <div className="column is-2">
+          <div className="column is-2-tablet is-6-mobile name"
+            style={{ textAlign: "center" }}>
             <span
               className="header-icon user-profile-image"
-              style={{ paddingLeft: "25%" }}
             >
               <img
                 id="profile"
                 alt=""
                 src={this.props.avatar}
-                width="128"
-                height="128"
+                width="200px"
+                height="200px"
                 style={{ filter: `blur(${this.state.loading ? 2 : 0}px)` }}
               />
-              <div className="file is-small" style={{ paddingLeft: "25%" }}>
-                <label class="file-label">
+              <div className="file is-small">
+                <label class="file-label" style={{ margin: "auto" }}>
                   <input
                     class="file-input"
                     ode
@@ -98,19 +98,14 @@ class HeadingSection extends React.Component {
               <a
                 class={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
-                }`}
-                style={{
-                  textAlign: "center",
-                  marginLeft: "43%",
-                  marginTop: "3%"
-                }}
+                  }`}
                 onClick={this.handleUpload}
               >
                 Upload
               </a>
             </span>
           </div>
-          <div className="column is-6-tablet is-10-mobile name">
+          <div className="column is-6-tablet is-6-mobile name">
             <p>
               <span className="title is-bold">{this.props.username}</span>
               <br />
@@ -129,7 +124,7 @@ class HeadingSection extends React.Component {
               characters to ~500 at most though.
             </p>
           </div>
-          <div className="column is-2-tablet is-4-mobile has-text-centered" />
+          <div className="column is-1-tablet is-2-mobile has-text-centered" />
           <div className="column is-1-tablet is-4-mobile has-text-centered">
             <p className="stat-val">30</p>
             <p className="stat-key">reputation</p>
