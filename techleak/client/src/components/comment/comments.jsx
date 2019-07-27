@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Comment from "./comment";
 import axios from "../../axios-blogs";
 import { connect } from "react-redux";
-import withErrorHandler from "../UI/ErrorHandler/ErrorHandler";
 
 class Comments extends Component {
   state = {
@@ -54,7 +53,12 @@ class Comments extends Component {
         <article className="media">
           <figure className="media-left">
             <p className="image is-64x64">
-              <img src="https://bulma.io/images/placeholders/128x128.png" />
+              <img
+                src={
+                  this.props.avatar ||
+                  "https://bulma.io/images/placeholders/128x128.png"
+                }
+              />
             </p>
           </figure>
           <div className="media-content">
@@ -86,7 +90,8 @@ const mapStateToProps = state => {
   return {
     comments: state.persistedReducer.comments,
     username: state.persistedReducer.username,
-    userID: state.persistedReducer.userID
+    userID: state.persistedReducer.userID,
+    avatar: state.persistedReducer.avatar
   };
 };
 
