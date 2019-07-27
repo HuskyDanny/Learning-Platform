@@ -32,10 +32,10 @@ router.get("/:id", auth.optional, async (req, res) => {
 });
 
 router.post("/", auth.required, async (req, res, next) => {
-  const result = await postValidator(req.body);
-  if (result.error) return res.status(400).send(error.message);
-
   try {
+    const result = await postValidator(req.body);
+    if (result.error) return res.status(400).send(error.message);
+
     //save to db
     const dbSchema = {
       title: result.title,
@@ -55,7 +55,8 @@ router.post("/", auth.required, async (req, res, next) => {
 
     res.status(201).json(post);
   } catch (error) {
-    return res.status(400).json(error.message);
+    console.log(error);
+    return res.status(412).json(error.message);
   }
 });
 

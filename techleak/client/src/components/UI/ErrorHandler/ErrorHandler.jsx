@@ -21,7 +21,7 @@ const WithHandler = (WrappedComponent, axios) => {
         res => res,
         error => {
           // Do something with response error
-
+          console.log(error);
           this.setState({
             error: true,
             errorMessage: error.response.status
@@ -57,6 +57,8 @@ const WithHandler = (WrappedComponent, axios) => {
         case 400:
           message = "Something went wrong, contact us!";
           break;
+        case 412:
+          message = "Post not successful, please write some content or repost";
       }
 
       const onClose = () => {
