@@ -81,7 +81,10 @@ const reducer = (state = initialState, action) => {
     action.blog.comments.map(comment => {
       const { replies, ...clone } = comment;
       tempComments.push({ ...clone });
-      tempReplies.push({ ...replies[0], commentRef: comment._id });
+
+      if (replies[0]) {
+        tempReplies.push({ ...replies[0], commentRef: comment._id });
+      }
     });
 
     return {
