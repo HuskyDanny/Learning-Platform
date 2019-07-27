@@ -55,7 +55,6 @@ router.post("/", auth.required, async (req, res, next) => {
 
     res.status(201).json(post);
   } catch (error) {
-    console.log(error);
     return res.status(412).json(error.message);
   }
 });

@@ -16,12 +16,12 @@ class HeadingSection extends React.Component {
       selectedFile: e.target.files[0]
     });
     var reader = new FileReader();
-    reader.onload = function () {
+    reader.onload = function() {
       var dataURL = reader.result;
       var output = document.getElementById("profile");
       output.src = dataURL;
-      output.width = 128;
-      output.height = 128;
+      output.width = 200;
+      output.height = 200;
     };
     reader.readAsDataURL(e.target.files[0]);
   };
@@ -42,7 +42,7 @@ class HeadingSection extends React.Component {
       axios
         .post(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/profile/${
-          this.props.userID
+            this.props.userID
           }`,
           data,
           headers
@@ -64,23 +64,17 @@ class HeadingSection extends React.Component {
     return (
       <div className="section profile-heading">
         <div className="columns is-mobile is-multiline">
-          <div className="column is-2-tablet is-6-mobile name"
-            style={{ textAlign: "center" }}>
-            <span
-              className="header-icon user-profile-image"
-            >
+          <div
+            className="column is-2-tablet is-6-mobile name"
+            style={{ textAlign: "center" }}
+          >
+            <span className="header-icon user-profile-image">
               <img
                 id="profile"
                 alt=""
-<<<<<<< HEAD
                 src={this.props.avatar || profile}
-                width="128"
-                height="128"
-=======
-                src={this.props.avatar}
                 width="200px"
                 height="200px"
->>>>>>> 67bfd73391f637139408ece89cbcc939cae4d1d2
                 style={{ filter: `blur(${this.state.loading ? 2 : 0}px)` }}
               />
               <div className="file is-small">
@@ -103,7 +97,7 @@ class HeadingSection extends React.Component {
               <a
                 class={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
-                  }`}
+                }`}
                 onClick={this.handleUpload}
               >
                 Upload
