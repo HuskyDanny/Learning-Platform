@@ -9,6 +9,7 @@ import Publish from "./components/publish/Publish";
 import Footer from "./components/footer/footer";
 import About from "./components/about/about";
 import UserProfile from "./components/userProfile/userProfile";
+import ResetPasswordPage from "./components/resetpassword/ResetPasswordPage"
 
 class App extends Component {
   async componentDidMount() {
@@ -64,6 +65,11 @@ class App extends Component {
               <UserProfile {...props} />
             </React.Fragment>
           )}
+        />
+        <Route 
+          exact 
+          path="/reset-password" 
+          component={ResetPasswordPage} 
         />
       </React.Fragment>
     );
