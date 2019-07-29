@@ -53,6 +53,7 @@ class Blog extends Component {
   handleLike = () => {
     //disable the like for a moment
     this.setState({ enableLike: false });
+
     const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
     const token = localStorage.getItem("token");
     const headers = {
@@ -87,14 +88,14 @@ class Blog extends Component {
       headers
     );
 
-    Promise.all([likePostPromise, likeNumberPromise])
-      .then(() => {
-        this.props.handleLike(this.props.match.params.id, LIKED);
-        this.setState({ enableLike: true });
-      })
-      .catch(err => {
-        this.setState({ enableLike: true });
-      });
+    Promise.all([likePostPromise, likeNumberPromise]).catch(err => {
+      this.props.handleLike(this.props.match.params.id, !LIKED);
+    });
+
+    this.props.handleLike(this.props.match.params.id, LIKED);
+    new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+      this.setState({ enableLike: true });
+    });
   };
 
   render() {
@@ -202,7 +203,7 @@ const mapDispatchToProps = dispatch => {
     getBlog: blog => dispatch({ type: "GETBLOG", blog: blog }),
     onSwitchShareModal: () => dispatch({ type: "SHAREMODAL" }),
     handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
+      dispatch({ type: "HANDLELIKEPOSTS", id: id, liked: liked })
   };
 };
 

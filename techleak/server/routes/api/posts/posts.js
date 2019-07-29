@@ -73,23 +73,20 @@ router.patch("/likes/:id", auth.required, async (req, res) => {
   const increment = req.body.liked ? -1 : 1;
 
   try {
-    const content = await index.getObject(req.params.id, ["likes"]);
+    // const content = await index.getObject(req.params.id, ["likes"]);
+
+    const content = await Post.findOneAndUpdate(
+      { _id: req.params.id },
+      { $inc: { likes: increment } },
+      { new: true }
+    );
 
     //Because the aync feature of algolia
     //We have to waittask for its update to keep consistency
-    await index.partialUpdateObject(
-      {
-        likes: content.likes + increment,
-        objectID: req.params.id
-      },
-      (err, { taskID } = {}) => {
-        index.waitTask(taskID, err => {
-          if (!err) {
-            return res.json({ message: "updated" });
-          }
-        });
-      }
-    );
+    await index.partialUpdateObject({
+      likes: content.likes,
+      objectID: req.params.id
+    });
   } catch (error) {
     return res.json({ message: error.message });
   }
