@@ -12,7 +12,7 @@ let initialState = {
   myPosts: [],
   menu_class: "",
   avatar: "",
-  isPasswordReset: false
+  likes: new Map()
 };
 
 const reducer = (state = initialState, action) => {
@@ -82,7 +82,8 @@ const reducer = (state = initialState, action) => {
     action.blog.comments.map(comment => {
       const { replies, ...clone } = comment;
       tempComments.push({ ...clone });
-      if (replies.length > 0) {
+
+      if (replies[0]) {
         tempReplies.push({ ...replies[0], commentRef: comment._id });
       }
     });
@@ -103,6 +104,19 @@ const reducer = (state = initialState, action) => {
     };
   }
 
+  if (action.type === "HANDLELIKE") {
+    let temp = new Map(Array.from(state.likes));
+
+    action.hits.map(hit => {
+      if (!temp.has(hit)) {
+        temp.set(hit.objectID, hit.likes);
+      }
+    });
+    return {
+      ...state,
+      likes: temp
+    };
+  }
   if (action.type === "ADDREPLY") {
     let temp = [...state.replies];
     temp.push(action.reply);
@@ -112,13 +126,17 @@ const reducer = (state = initialState, action) => {
       replies: temp
     };
   }
-  if (action.type === "HANDLELIKE") {
+  if (action.type === "HANDLELIKEPOSTS") {
+    let temp = new Map(Array.from(state.likes));
+    temp.set(action.id, temp.get(action.id) + action.liked ? -1 : 1);
+    console.log(action.liked);
     //remove duplicates
     let newLikePosts = new Set([...state.likedPosts]);
     action.liked ? newLikePosts.delete(action.id) : newLikePosts.add(action.id);
     return {
       ...state,
-      likedPosts: [...newLikePosts]
+      likedPosts: [...newLikePosts],
+      likes: temp
     };
   }
   if (action.type === "UPDATEAVATAR") {

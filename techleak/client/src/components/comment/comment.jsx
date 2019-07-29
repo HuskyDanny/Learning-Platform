@@ -75,7 +75,10 @@ class Comment extends Component {
         <figure className="media-left">
           <p className="image is-64x64">
             <img
-              src="https://bulma.io/images/placeholders/128x128.png"
+              src={
+                this.props.avatar ||
+                "https://bulma.io/images/placeholders/128x128.png"
+              }
               alt="placeholder"
             />
           </p>
@@ -111,7 +114,8 @@ const mapStateToProps = state => {
   return {
     replies: state.persistedReducer.replies,
     userID: state.persistedReducer.userID,
-    username: state.persistedReducer.username
+    username: state.persistedReducer.username,
+    avatar: state.persistedReducer.avatar
   };
 };
 

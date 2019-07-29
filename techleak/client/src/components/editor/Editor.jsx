@@ -31,6 +31,8 @@ const EditorComponent = props => {
   const config = {
     height: 300,
     width: "100%",
+    imageMaxSize: 1024 * 1024 * 3,
+    attribution: false,
     imageUploadURL: `${YOURSERVER}/api/uploads/images`,
     requestHeaders: {
       Authorization: `Token ${TOKEN}`

@@ -32,10 +32,10 @@ router.get("/:id", auth.optional, async (req, res) => {
 });
 
 router.post("/", auth.required, async (req, res, next) => {
-  const result = await postValidator(req.body);
-  if (result.error) return res.status(400).send(error.message);
-
   try {
+    const result = await postValidator(req.body);
+    if (result.error) return res.status(400).send(error.message);
+
     //save to db
     const dbSchema = {
       title: result.title,
@@ -55,7 +55,7 @@ router.post("/", auth.required, async (req, res, next) => {
 
     res.status(201).json(post);
   } catch (error) {
-    return res.status(400).json(error.message);
+    return res.status(412).json(error.message);
   }
 });
 
@@ -73,23 +73,20 @@ router.patch("/likes/:id", auth.required, async (req, res) => {
   const increment = req.body.liked ? -1 : 1;
 
   try {
-    const content = await index.getObject(req.params.id, ["likes"]);
+    // const content = await index.getObject(req.params.id, ["likes"]);
+
+    const content = await Post.findOneAndUpdate(
+      { _id: req.params.id },
+      { $inc: { likes: increment } },
+      { new: true }
+    );
 
     //Because the aync feature of algolia
     //We have to waittask for its update to keep consistency
-    await index.partialUpdateObject(
-      {
-        likes: content.likes + increment,
-        objectID: req.params.id
-      },
-      (err, { taskID } = {}) => {
-        index.waitTask(taskID, err => {
-          if (!err) {
-            return res.json({ message: "updated" });
-          }
-        });
-      }
-    );
+    await index.partialUpdateObject({
+      likes: content.likes,
+      objectID: req.params.id
+    });
   } catch (error) {
     return res.json({ message: error.message });
   }

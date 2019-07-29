@@ -31,17 +31,14 @@ class SimplifiedPosts extends React.Component {
       axios
         .delete(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-          this.props.userID
+            this.props.userID
           }?postID=${id}`,
           headers
         )
         .then(res => {
-          this.props.handleUpdatedLikedPosts(res.data.likedPosts)
-        }
-        )
-        .catch(err =>
-          console.log(err)
-        )
+          this.props.handleUpdatedLikedPosts(res.data.likedPosts);
+        })
+        .catch(err => console.log(err));
     }
   }
 
@@ -78,7 +75,7 @@ class SimplifiedPosts extends React.Component {
         })
         .catch(err => {
           var url = err.response.config.url;
-          var id = url.substring(url.lastIndexOf('/') + 1);
+          var id = url.substring(url.lastIndexOf("/") + 1);
           var status = err.response.status;
           this.handleAdjustLikedPost(id, status);
         });
@@ -121,7 +118,10 @@ class SimplifiedPosts extends React.Component {
               views={simPost.views}
               answers={simPost.answers}
               tagNames={simPost.tagNames}
-              img={simPost.img}
+              img={
+                this.props.avatar ||
+                "https://bulma.io/images/placeholders/128x128.png"
+              }
               objectID={simPost.objectID}
               handleCancelClick={this.handleCancelClick}
               PostType={this.props.PostType}
@@ -138,13 +138,14 @@ const mapStateToProps = state => {
     userID: state.persistedReducer.userID,
     loggedIn: state.persistedReducer.loggedIn,
     likedPosts: state.persistedReducer.likedPosts,
-    myPosts: state.persistedReducer.myPosts
+    myPosts: state.persistedReducer.myPosts,
+    avatar: state.persistedReducer.avatar
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleUpdatedLikedPosts: (updatedLikedPosts) =>
+    handleUpdatedLikedPosts: updatedLikedPosts =>
       dispatch({
         type: "USERLIKEDPOSTSUPDATED",
         likedPosts: updatedLikedPosts

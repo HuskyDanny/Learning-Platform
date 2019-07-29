@@ -118,7 +118,7 @@ router.post("/signup", auth.optional, async (req, res) => {
 
     const url = `${
       process.env.BACKEND_SERVER
-    }/api/users/comfirmation/${newUser.generateJWT()}`;
+      }/api/users/comfirmation/${newUser.generateJWT()}`;
 
     // localhost:3005/reset-password
 
@@ -284,7 +284,7 @@ router.delete("/myPosts/:id", auth.required, async (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  return passport.authenticate("local", { session: false }, function(
+  return passport.authenticate("local", { session: false }, function (
     err,
     user,
     info
