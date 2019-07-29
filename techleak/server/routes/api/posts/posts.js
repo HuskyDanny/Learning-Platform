@@ -81,6 +81,7 @@ router.patch("/likes/:id", auth.required, async (req, res) => {
       { new: true }
     );
 
+    console.log(content);
     //Because the aync feature of algolia
     //We have to waittask for its update to keep consistency
     await index.partialUpdateObject({

@@ -12,7 +12,7 @@ let initialState = {
   myPosts: [],
   menu_class: "",
   avatar: "",
-  likes: new Map()
+  likes: {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -105,11 +105,11 @@ const reducer = (state = initialState, action) => {
   }
 
   if (action.type === "HANDLELIKE") {
-    let temp = new Map(Array.from(state.likes));
+    let temp = { ...state.likes };
 
     action.hits.map(hit => {
-      if (!temp.has(hit)) {
-        temp.set(hit.objectID, hit.likes);
+      if (temp[hit.objectID] === undefined) {
+        temp[hit.objectID] = hit.likes;
       }
     });
     return {
@@ -127,9 +127,8 @@ const reducer = (state = initialState, action) => {
     };
   }
   if (action.type === "HANDLELIKEPOSTS") {
-    let temp = new Map(Array.from(state.likes));
-    temp.set(action.id, temp.get(action.id) + action.liked ? -1 : 1);
-    console.log(action.liked);
+    let temp = { ...state.likes };
+    temp[action.id] += action.liked ? -1 : 1;
     //remove duplicates
     let newLikePosts = new Set([...state.likedPosts]);
     action.liked ? newLikePosts.delete(action.id) : newLikePosts.add(action.id);

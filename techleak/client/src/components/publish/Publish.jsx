@@ -62,10 +62,11 @@ class Publish extends Component {
             headers
           )
           .then(res => {
-            this.setState({ loading: false });
-            this.setState({ posted: true });
+            //cannot divide the call into two setState calls
+            this.setState({ loading: false, posted: true });
           })
           .catch(err => {
+            console.log(err);
             this.setState({ loading: false });
           });
         var newMyPosts = this.props.myPosts;
