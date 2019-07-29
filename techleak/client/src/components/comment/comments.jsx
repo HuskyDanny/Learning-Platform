@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Comment from "./comment";
 import axios from "../../axios-blogs";
 import { connect } from "react-redux";
+import withErrorHandler from "../UI/ErrorHandler/ErrorHandler";
 
 class Comments extends Component {
   state = {

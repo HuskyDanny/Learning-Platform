@@ -7,6 +7,6 @@ aws.config.update({
 });
 aws.config.region = "ap-east-1";
 
-var s3 = new aws.S3();
+const s3 = new aws.S3();
 
 module.exports = s3;

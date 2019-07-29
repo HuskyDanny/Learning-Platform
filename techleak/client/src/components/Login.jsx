@@ -38,7 +38,8 @@ class Login extends Component {
           res.data.username,
           res.data.id,
           res.data.likedPosts,
-          res.data.myPosts
+          res.data.myPosts,
+          res.data.avatar
         );
         //close modal
         this.props.onSwitchLoginModal();
@@ -59,12 +60,7 @@ class Login extends Component {
   render() {
     const modalBg = {
       modal: {
-        background: "white ",
-        borderRadius: "10%",
-        maxHeight: "43%",
-        height: "100%",
-        maxWidth: "30%",
-        width: "100%"
+        borderRadius: "10%"
       }
     };
 
@@ -115,6 +111,7 @@ class Login extends Component {
                 placeholder="Your Password"
                 minLength="8"
                 maxLength="20"
+                size="30"
                 required
                 onChange={e => this.handleChange(e, "password")}
                 value={this.state.password}
@@ -139,7 +136,17 @@ class Login extends Component {
       </div>
     );
     if (this.state.loading) {
-      login = <Spinner />;
+      login = (
+        <div
+          style={{
+            textAlign: "center",
+            paddingTop: "25%",
+            paddingBottom: "25%"
+          }}
+        >
+          <Spinner />
+        </div>
+      );
     }
     return (
       <Modal
@@ -148,6 +155,7 @@ class Login extends Component {
         onClose={this.props.onSwitchLoginModal}
         center
         styles={modalBg}
+        showCloseIcon={false}
       >
         {login}
       </Modal>
@@ -163,13 +171,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogIn: (username, userID, likedPosts, myPosts) =>
+    handleLogIn: (username, userID, likedPosts, myPosts, avatar) =>
       dispatch({
         type: "LOGIN",
         username: username,
         userID: userID,
         likedPosts: likedPosts,
-        myPosts: myPosts
+        myPosts: myPosts,
+        avatar: avatar
       }),
     onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" })
   };

@@ -1,4 +1,4 @@
-const initialState = {
+let initialState = {
   loggedIn: false,
   signupOpen: false,
   loginOpen: false,
@@ -10,7 +10,8 @@ const initialState = {
   comments: [],
   replies: [],
   myPosts: [],
-  menu_class: ""
+  menu_class: "",
+  avatar: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,15 +22,23 @@ const reducer = (state = initialState, action) => {
       userID: action.userID,
       username: action.username,
       likedPosts: action.likedPosts,
-      myPosts: action.myPosts
+      myPosts: action.myPosts,
+      avatar: action.avatar
     };
   }
   if (action.type === "LOGOUT") {
     return {
       ...state,
       loggedIn: false,
+      signupOpen: false,
+      loginOpen: false,
+      contactUsOpen: false,
+      shareOpen: false,
       username: "",
-      userID: ""
+      userID: "",
+      likedPosts: [],
+      myPosts: [],
+      menu_class: ""
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -111,6 +120,13 @@ const reducer = (state = initialState, action) => {
       likedPosts: [...newLikePosts]
     };
   }
+  if (action.type === "UPDATEAVATAR") {
+    return {
+      ...state,
+      avatar: action.avatar
+    };
+  }
+
   if (action.type === "PUBLISHEDNEWPOST") {
     return {
       ...state,
