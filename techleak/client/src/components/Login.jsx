@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "../axios-blogs";
 import Modal from "react-responsive-modal";
 import Spinner from "./UI/Spinner/Spinner";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 class Login extends Component {
   state = {
@@ -122,6 +123,11 @@ class Login extends Component {
             </div>
           </div>
           {userError()}
+          <div className="forgetPwd">
+            <Link to='/reset-password'>
+              <p>Forget Password?</p>
+            </Link>
+          </div>
           <div
             className="field is-grouped"
             style={{ justifyContent: "center" }}

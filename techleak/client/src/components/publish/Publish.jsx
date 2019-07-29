@@ -13,7 +13,8 @@ import {
   openDisplay,
   closeDisplay,
   addTag,
-  removeTag
+  removeTag,
+  handlePosted
 } from "../../actions/tagActions";
 
 class Publish extends Component {
@@ -75,6 +76,8 @@ class Publish extends Component {
       .catch(err => {
         this.setState({ loading: false });
       });
+    this.setState({ posted: true });
+    this.props.handlePosted();
   }
 
   updateContent = value => {
@@ -84,6 +87,10 @@ class Publish extends Component {
   handleCancel = () => {
     this.setState({ warning: true });
   };
+
+  handlePostCancel = () => {
+    this.props.handlePosted();
+  }
 
   onCloseModal = () => {
     this.setState({ warning: false });
@@ -254,7 +261,7 @@ class Publish extends Component {
               <strong>Warning</strong>
             </h1>
             <p style={{ color: "red" }}>Your Post Will Not Be Saved</p>
-            <Link className="button is-link" to="/">
+            <Link className="button is-link" onClick={this.handlePostCancel} to="/">
               Okay, I Got It
             </Link>
           </div>
@@ -287,11 +294,15 @@ const mapDispatchToProps = dispatch => {
     removeTag: tag => {
       dispatch(removeTag(tag));
     },
-    handleMyPosts: newMyPosts =>
+    handlePosted: () => {
+      dispatch(handlePosted());
+    },
+    handleMyPosts: newMyPosts => {
       dispatch({
         type: "PUBLISHEDNEWPOST",
         myPosts: newMyPosts
       })
+    }
   };
 };
 

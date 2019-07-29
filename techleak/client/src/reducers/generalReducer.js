@@ -158,6 +158,19 @@ const reducer = (state = initialState, action) => {
       likedPosts: action.likedPosts
     };
   }
+  if (action.type === 'AUTHENTICATION_PASSWORD_RESET_CLEAR')
+  if (action.type === 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE') {
+    return {
+      ...state,
+      isPasswordReset: false
+    };
+  }
+  if (action.type === 'AUTHENTICATION_PASSWORD_RESET_HASH_CREATED') {
+    return {
+      ...state,
+      isPasswordReset: true
+    };
+  }
 
   return state;
 };
