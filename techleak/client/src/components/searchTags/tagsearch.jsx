@@ -60,7 +60,7 @@ const TagSearch = (props) => {
 
   return (
     <InstantSearch indexName="tags" searchClient={searchClient}>
-      <Configure hitsPerPage={12} analytics={true} distinct />
+      <Configure hitsPerPage={6} analytics={true} distinct />
       <CustomSearchBox
         styles={props.styles}
         openDisplay={props.openDisplay}

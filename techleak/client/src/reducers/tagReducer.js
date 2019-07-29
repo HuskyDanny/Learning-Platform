@@ -30,6 +30,13 @@ const tagReducer = (state = initialState, action) => {
         ...state,
         tags: state.tags.filter((tag) => tag !== action.payload)
       }
+      break;
+    case "HANDLE_POSTED":
+      state = {
+        tags: [],
+        hitsDisplay: false
+      }
+      break;
   }
   return state;
 };

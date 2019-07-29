@@ -120,6 +120,8 @@ router.post("/signup", auth.optional, async (req, res) => {
       process.env.BACKEND_SERVER
     }/api/users/comfirmation/${newUser.generateJWT()}`;
 
+    // localhost:3005/reset-password
+
     //Use smtp service for email verification
     const msg = {
       to: newUser.email,
@@ -148,6 +150,72 @@ router.post("/signup", auth.optional, async (req, res) => {
     }
   }
 });
+
+// Send confirmation email to user
+router.post("/reset-send-email", auth.optional, async (req, res) => {
+  let result;
+  const email = req.body.email;
+
+  const confirmation = Math.floor(100000 + Math.random() * 900000);
+  const query = User.findOne({ email: email });
+  const foundUser = await query.exec();
+  if (foundUser) {
+    try {
+    
+      const msg = {
+        to: email,
+        from: "welcome@techleak.com",
+        templateId: "d-55aeeafbdc834ef7879e7f33c5726199",
+        subject: "Password Reset Confirmation Code",
+        dynamic_template_data: {
+          confirmation: confirmation
+        }
+      };
+      // update the confirmation
+      User.update(
+        {email: email}, 
+        {$set: 
+          {
+            confirmation: confirmation
+          }
+        }
+      )
+      sgMail.send(msg);
+      result = res.send(JSON.stringify({ success: true }));
+    } catch (error) {
+      console.log("This is a check" + error);
+    }
+  }
+  return result
+})
+
+router.post("/reset-password", auth.optional, async (req, res) => {
+  let result
+  const email = req.body.email;
+  const password = req.body.password;
+  const confirmation = req.body.confirmation;
+  const usercfm = User.findOne({ email: email }, { confirmation: 1, _id: 0 })
+  const user = User.findOne({ email: email })
+
+  try {
+    if (confirmation === usercfm) {
+      user.setPassword(password);
+      const cfmReset = Math.floor(100000 + Math.random() * 900000);
+      User.update(
+        {email: email}, 
+        {$set: 
+          {
+            confirmation: cfmReset
+          }
+        }
+      )
+      result = res.send(JSON.stringify({ success: true }));
+    }
+  } catch (error) {
+    return res.json(error)
+  }
+  return result
+})
 
 //Append id of post to User likedposts database
 router.post("/likes/:id", auth.required, async (req, res) => {
