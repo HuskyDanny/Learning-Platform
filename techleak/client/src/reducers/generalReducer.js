@@ -11,7 +11,8 @@ let initialState = {
   replies: [],
   myPosts: [],
   menu_class: "",
-  avatar: ""
+  avatar: "",
+  isPasswordReset: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -137,6 +138,19 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       likedPosts: action.likedPosts
+    };
+  }
+  if (action.type === 'AUTHENTICATION_PASSWORD_RESET_CLEAR')
+  if (action.type === 'AUTHENTICATION_PASSWORD_RESET_HASH_FAILURE') {
+    return {
+      ...state,
+      isPasswordReset: false
+    };
+  }
+  if (action.type === 'AUTHENTICATION_PASSWORD_RESET_HASH_CREATED') {
+    return {
+      ...state,
+      isPasswordReset: true
     };
   }
 
