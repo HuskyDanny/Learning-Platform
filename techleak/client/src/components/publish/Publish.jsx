@@ -77,7 +77,7 @@ class Publish extends Component {
       .catch(err => {
         this.setState({ loading: false });
       });
-    this.setState({ posted: true });
+
     this.props.handlePosted();
   }
 
@@ -91,7 +91,7 @@ class Publish extends Component {
 
   handlePostCancel = () => {
     this.props.handlePosted();
-  }
+  };
 
   onCloseModal = () => {
     this.setState({ warning: false });
@@ -242,6 +242,7 @@ class Publish extends Component {
                   </button>
                   <button
                     className="button is-primary level-item"
+                    type="button"
                     onClick={this.handleCancel}
                   >
                     Cancel
@@ -262,7 +263,11 @@ class Publish extends Component {
               <strong>Warning</strong>
             </h1>
             <p style={{ color: "red" }}>Your Post Will Not Be Saved</p>
-            <Link className="button is-link" onClick={this.handlePostCancel} to="/">
+            <Link
+              className="button is-link"
+              onClick={this.handlePostCancel}
+              to="/"
+            >
               Okay, I Got It
             </Link>
           </div>
@@ -302,7 +307,7 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "PUBLISHEDNEWPOST",
         myPosts: newMyPosts
-      })
+      });
     }
   };
 };

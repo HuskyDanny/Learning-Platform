@@ -20,8 +20,7 @@ class HeadingSection extends React.Component {
       var dataURL = reader.result;
       var output = document.getElementById("profile");
       output.src = dataURL;
-      output.width = 200;
-      output.height = 200;
+      output.width = "128px";
     };
     reader.readAsDataURL(e.target.files[0]);
   };
@@ -69,14 +68,14 @@ class HeadingSection extends React.Component {
             style={{ textAlign: "center" }}
           >
             <span className="header-icon user-profile-image">
-              <img
-                id="profile"
-                alt=""
-                src={this.props.avatar || profile}
-                width="200px"
-                height="200px"
-                style={{ filter: `blur(${this.state.loading ? 2 : 0}px)` }}
-              />
+              <figure className="image is-square">
+                <img
+                  id="profile"
+                  src={this.props.avatar || profile}
+                  style={{ filter: `blur(${this.state.loading ? 2 : 0}px)` }}
+                  width="128px"
+                />
+              </figure>
               <div className="file is-small">
                 <label class="file-label" style={{ margin: "auto" }}>
                   <input

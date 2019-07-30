@@ -146,16 +146,9 @@ class Blog extends Component {
                   </div>
                   <hr />
 
-                  <div
-                    className="level-left"
-                    style={{
-                      justifyContent: "space-between",
-                      width: "80%",
-                      margin: "3% auto 3% auto"
-                    }}
-                  >
+                  <div className="level is-mobile">
                     <button
-                      className="level-item button "
+                      className="level-item has-text-centered button "
                       onClick={this.props.onSwitchShareModal}
                     >
                       <span className="icon is-small">
@@ -165,7 +158,7 @@ class Blog extends Component {
 
                     <button
                       id="likeBtn"
-                      className={`level-item button ${
+                      className={`level-item has-text-centered button ${
                         LIKED ? " is-success" : ""
                       }`}
                       aria-label="like"
