@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Signup from "./Signup";
 import Login from "./Login";
-import image from "../assets/img/logo.jpg";
+import image from "../assets/img/logo1.jpg";
 import { Link } from "react-router-dom";
 import ContactUs from "./contactUs/contactUs";
 import { connect } from "react-redux";

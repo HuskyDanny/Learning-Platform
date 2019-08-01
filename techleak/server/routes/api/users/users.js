@@ -1,4 +1,5 @@
 const { userValidator, User } = require("../../../models/Users");
+const { OTC, OTCValidator } = require("../../../models/OTC");
 const { Router } = require("express");
 const passport = require("passport");
 const auth = require("../../auth");
@@ -8,6 +9,7 @@ const router = Router();
 const s3 = require("../../../config/aws");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
+const randomize = require('randomatic');
 
 var upload = multer({
   storage: multerS3({
@@ -99,6 +101,11 @@ router.post("/signup", auth.optional, async (req, res) => {
   const {
     body: { user }
   } = req;
+  const confirmation = randomize('A0', 6);
+  const otc = {
+    email: user.email,
+    confirmation: confirmation
+  }
 
   //validate content
   const { error } = userValidator(user);
@@ -108,6 +115,12 @@ router.post("/signup", auth.optional, async (req, res) => {
   //salt and hash the newuser
   let newUser = new User(user);
   newUser.setPassword(user.password);
+
+  //Create new OTC for each new user
+  let newOTC = new OTC(otc)
+  const { errorOTC } = OTCValidator(newOTC);
+
+  if (errorOTC) return res.status(400).json(error.message);
 
   //save to mongodb
   try {
@@ -156,10 +169,11 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
   let result;
   const email = req.body.email;
 
-  const confirmation = Math.floor(100000 + Math.random() * 900000);
-  const query = User.findOne({ email: email });
-  const foundUser = await query.exec();
-  if (foundUser) {
+  const confirmation = randomize('A0', 6);
+
+  const query = OTC.findOne({ email: email });
+  const foundOTC = await query.exec();
+  if (foundOTC) {
     try {
     
       const msg = {
@@ -172,7 +186,7 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
         }
       };
       // update the confirmation
-      User.update(
+      OTC.update(
         {email: email}, 
         {$set: 
           {
@@ -194,14 +208,14 @@ router.post("/reset-password", auth.optional, async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmation = req.body.confirmation;
-  const usercfm = User.findOne({ email: email }, { confirmation: 1, _id: 0 })
+  const usercfm = OTC.findOne({ email: email }, { confirmation: 1, _id: 0 })
   const user = User.findOne({ email: email })
 
   try {
     if (confirmation === usercfm) {
       user.setPassword(password);
-      const cfmReset = Math.floor(100000 + Math.random() * 900000);
-      User.update(
+      const cfmReset = randomize('A0', 6);
+      OTC.update(
         {email: email}, 
         {$set: 
           {
