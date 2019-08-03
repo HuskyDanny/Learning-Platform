@@ -103,8 +103,8 @@ router.post("/signup", auth.optional, async (req, res) => {
   } = req;
   const confirmation = randomize('A0', 6);
   const otc = {
-    email: user.email,
-    confirmation: confirmation
+      email: user.email,
+      confirmation: confirmation
   }
 
   //validate content
@@ -117,7 +117,7 @@ router.post("/signup", auth.optional, async (req, res) => {
   newUser.setPassword(user.password);
 
   //Create new OTC for each new user
-  let newOTC = new OTC(otc)
+  let newOTC = new OTC(otc);
   const { errorOTC } = OTCValidator(newOTC);
 
   if (errorOTC) return res.status(400).json(error.message);
@@ -125,15 +125,17 @@ router.post("/signup", auth.optional, async (req, res) => {
   //save to mongodb
   try {
     console.log(newUser);
+    
     newUser = await newUser.save();
+
+    console.log(newOTC);
+    newOTC = await newOTC.save();
     console.log("After Save");
     res.status(201).json({ message: "Created Account" });
 
     const url = `${
       process.env.BACKEND_SERVER
       }/api/users/comfirmation/${newUser.generateJWT()}`;
-
-    // localhost:3005/reset-password
 
     //Use smtp service for email verification
     const msg = {
@@ -179,13 +181,14 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
       const msg = {
         to: email,
         from: "welcome@techleak.com",
-        templateId: "d-55aeeafbdc834ef7879e7f33c5726199",
+        templateId: "d-6dea1ef361ce40b5a0b9d1ba94640c6f",
         subject: "Password Reset Confirmation Code",
         dynamic_template_data: {
-          confirmation: confirmation
+          code: confirmation
         }
       };
       // update the confirmation
+      console.log(confirmation);
       OTC.update(
         {email: email}, 
         {$set: 
