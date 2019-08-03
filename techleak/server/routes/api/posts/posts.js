@@ -42,7 +42,8 @@ router.post("/", auth.required, async (req, res, next) => {
       author: result.author,
       content: result.content,
       tags: result.tags ? result.tags : [],
-      likes: result.likes ? result.likes : 0
+      likes: result.likes ? result.likes : 0,
+      post_date_timestamp: new Date().getTime()
     };
 
     let post = new Post(dbSchema);
@@ -55,6 +56,7 @@ router.post("/", auth.required, async (req, res, next) => {
 
     res.status(201).json(post);
   } catch (error) {
+    console.log(error);
     return res.status(412).json(error.message);
   }
 });

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Replies from "./replies";
 import { connect } from "react-redux";
 import axios from "../../axios-blogs";
+import elapsed from "../../utils/getElapsed";
 
 class Comment extends Component {
   state = { replyBox: false, body: "" };
@@ -30,7 +31,8 @@ class Comment extends Component {
           reply: {
             body: this.state.body,
             username: this.props.username,
-            userID: this.props.userID
+            userID: this.props.userID,
+            post_date_timestamp: new Date().getTime()
           }
         },
         headers
@@ -92,7 +94,11 @@ class Comment extends Component {
               <br />
               <small>
                 <a>{`Like ${this.props.comment.like}`}</a> ·{" "}
-                <a onClick={this.openReply}>Reply</a> · 3 hrs
+                <a onClick={this.openReply}>Reply</a> ·{" "}
+                {elapsed(
+                  new Date().getTime() - this.props.comment.post_date_timestamp
+                )}{" "}
+                Ago
               </small>
             </p>
             {this.showReplyBox()}

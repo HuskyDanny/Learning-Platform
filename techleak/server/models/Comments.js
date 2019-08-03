@@ -4,8 +4,7 @@ const Joi = require("joi");
 const replySchema = new mongoose.Schema({
   body: { type: String, required: true },
   post_date_timestamp: {
-    type: Number,
-    default: new Date().getTime()
+    type: Number
   },
   like: { type: Number, default: 0 },
   username: { type: String, required: true },
@@ -15,8 +14,7 @@ const replySchema = new mongoose.Schema({
 const commentSchema = new mongoose.Schema({
   body: { type: String, required: true },
   post_date_timestamp: {
-    type: Number,
-    default: new Date().getTime()
+    type: Number
   },
   like: { type: Number, default: 0 },
   replies: [replySchema],
@@ -30,10 +28,10 @@ const Reply = mongoose.model("Reply", replySchema);
 const commentValidator = comment => {
   const joiCommentSchema = {
     body: Joi.string().required(),
-    date: Joi.string(),
     replies: Joi.array(),
     username: Joi.string().required(),
-    userID: Joi.string().required()
+    userID: Joi.string().required(),
+    post_date_timestamp: Joi.number().required()
   };
 
   return Joi.validate(comment, joiCommentSchema);
@@ -46,7 +44,8 @@ const replyValidator = reply => {
     username: Joi.string()
       .required()
       .error(new Error("empty username")),
-    userID: Joi.string().required()
+    userID: Joi.string().required(),
+    post_date_timestamp: Joi.number().required()
   };
   return Joi.validate(reply, joiReplySchema);
 };
