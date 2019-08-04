@@ -20,7 +20,7 @@ class Blog extends Component {
       userID: "",
       content: "",
       title: "",
-      enableLike: this.props.loggedIn
+      enableLike: true
     };
 
     this.handleLike = this.handleLike.bind(this);

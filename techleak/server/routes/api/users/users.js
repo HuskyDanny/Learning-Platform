@@ -9,7 +9,7 @@ const router = Router();
 const s3 = require("../../../config/aws");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
-const randomize = require('randomatic');
+const randomize = require("randomatic");
 
 var upload = multer({
   storage: multerS3({
@@ -44,7 +44,7 @@ router.post(
 
 router.get("/comfirmation/:token", auth.optional, async (req, res) => {
   const secret = process.env.JWT_SECRET;
-  const redirectUrl = process.env.REDIRECTURL || "http://localhost:3000/index";
+  const redirectUrl = process.env.REDIRECTURL || "http://localhost:3001";
   try {
     const { _id } = jwt.verify(req.params.token, secret);
     await User.findOneAndUpdate({ _id: _id }, { confirmed: true });
@@ -101,11 +101,11 @@ router.post("/signup", auth.optional, async (req, res) => {
   const {
     body: { user }
   } = req;
-  const confirmation = randomize('A0', 6);
+  const confirmation = randomize("A0", 6);
   const otc = {
-      email: user.email,
-      confirmation: confirmation
-  }
+    email: user.email,
+    confirmation: confirmation
+  };
 
   //validate content
   const { error } = userValidator(user);
@@ -125,7 +125,7 @@ router.post("/signup", auth.optional, async (req, res) => {
   //save to mongodb
   try {
     console.log(newUser);
-    
+
     newUser = await newUser.save();
 
     console.log(newOTC);
@@ -135,7 +135,7 @@ router.post("/signup", auth.optional, async (req, res) => {
 
     const url = `${
       process.env.BACKEND_SERVER
-      }/api/users/comfirmation/${newUser.generateJWT()}`;
+    }/api/users/comfirmation/${newUser.generateJWT()}`;
 
     //Use smtp service for email verification
     const msg = {
@@ -171,13 +171,12 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
   let result;
   const email = req.body.email;
 
-  const confirmation = randomize('A0', 6);
+  const confirmation = randomize("A0", 6);
 
   const query = OTC.findOne({ email: email });
   const foundOTC = await query.exec();
   if (foundOTC) {
     try {
-    
       const msg = {
         to: email,
         from: "welcome@techleak.com",
@@ -190,49 +189,49 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
       // update the confirmation
       console.log(confirmation);
       OTC.update(
-        {email: email}, 
-        {$set: 
-          {
+        { email: email },
+        {
+          $set: {
             confirmation: confirmation
           }
         }
-      )
+      );
       sgMail.send(msg);
       result = res.send(JSON.stringify({ success: true }));
     } catch (error) {
       console.log("This is a check" + error);
     }
   }
-  return result
-})
+  return result;
+});
 
 router.post("/reset-password", auth.optional, async (req, res) => {
-  let result
+  let result;
   const email = req.body.email;
   const password = req.body.password;
   const confirmation = req.body.confirmation;
-  const usercfm = OTC.findOne({ email: email }, { confirmation: 1, _id: 0 })
-  const user = User.findOne({ email: email })
+  const usercfm = OTC.findOne({ email: email }, { confirmation: 1, _id: 0 });
+  const user = User.findOne({ email: email });
 
   try {
     if (confirmation === usercfm) {
       user.setPassword(password);
-      const cfmReset = randomize('A0', 6);
+      const cfmReset = randomize("A0", 6);
       OTC.update(
-        {email: email}, 
-        {$set: 
-          {
+        { email: email },
+        {
+          $set: {
             confirmation: cfmReset
           }
         }
-      )
+      );
       result = res.send(JSON.stringify({ success: true }));
     }
   } catch (error) {
-    return res.json(error)
+    return res.json(error);
   }
-  return result
-})
+  return result;
+});
 
 //Append id of post to User likedposts database
 router.post("/likes/:id", auth.required, async (req, res) => {
@@ -301,7 +300,7 @@ router.delete("/myPosts/:id", auth.required, async (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  return passport.authenticate("local", { session: false }, function (
+  return passport.authenticate("local", { session: false }, function(
     err,
     user,
     info

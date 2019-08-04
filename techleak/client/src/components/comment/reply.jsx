@@ -18,3 +18,5 @@ const Reply = props => {
 };
 
 export default Reply;
+
+console.log(new Date().getTime());
