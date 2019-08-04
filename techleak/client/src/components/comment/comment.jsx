@@ -95,7 +95,7 @@ class Comment extends Component {
       </a>
     );
     return (
-      <article className="media">
+      <article className="media" style={{ marginBottom: "1%" }}>
         <figure className="media-left">
           <p className="image is-64x64">
             <img
