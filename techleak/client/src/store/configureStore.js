@@ -19,7 +19,9 @@ const persistConfig = {
     "replies",
     "myPosts",
     "likes",
-    "avatar"
+    "avatar",
+    "likedPostsDetail",
+    "myPostsDetail"
   ]
 };
 

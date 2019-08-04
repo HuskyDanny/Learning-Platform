@@ -21,13 +21,13 @@ class SimplifiedPost extends React.Component {
   }
 
   createTagGroup() {
-    const { tagNames } = this.props;
+    const { tags } = this.props;
     return (
       <React.Fragment>
-        {tagNames.map(tagName => (
+        {tags.map(tag => (
           <React.Fragment>
             <a className="button is-primary is-small">
-              <span>{tagName}</span>
+              <span>{tag}</span>
             </a>
             {this.spaceDividor()}
           </React.Fragment>
@@ -47,6 +47,7 @@ class SimplifiedPost extends React.Component {
     e.nativeEvent.stopImmediatePropagation();
   }
 
+  // delete like posts in the backend
   handleDelete(e, objectID) {
     const token = localStorage.getItem("token");
     const headers = {
@@ -78,19 +79,20 @@ class SimplifiedPost extends React.Component {
       .catch(err => err);
   }
 
-  deleteControl() {
+  deleteControl = () => {
     const { title, objectID, PostType, userID, myPosts } = this.props;
     if (PostType === "MyPosts") {
       return (
         <a className="level-item"
           aria-label="cancel"
           onClick={(e) => {
+            e.persist();
             confirmAlert({
               message: 'Your post will be deleted permanently, are you sure to do this?',
               buttons: [
                 {
                   label: 'Yes',
-                  onClick: () => {
+                  onClick: async () => {
                     const token = localStorage.getItem("token");
                     const headers = {
                       headers: {
@@ -98,35 +100,26 @@ class SimplifiedPost extends React.Component {
                         Authorization: `Token ${token}`
                       }
                     };
-
-                    axios
-                      .delete(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-                        objectID
-                        }`,
+                    try {
+                      // delete the post in the "Post" pool backend
+                      let deletedPostData = axios.delete(
+                        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${objectID}`,
                         headers
                       )
-                      .then(res => {
-                        console.log(res);
-                        axios
-                          .delete(
-                            `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
-                            userID
-                            }?postID=${objectID}`,
-                            headers
-                          )
-                          .then(res => {
-                            console.log("removed my posts successfully: " + res);
-                          })
-                          .catch(err => {
-                            console.log(err);
-                          });
-                        var newMyPosts = myPosts.filter(myPost => myPost != objectID);
-                        this.props.handleMyPosts(newMyPosts);
-                      })
-                      .catch(err => {
-                        console.log(err);
-                      });
+                      // delete the post in the author's "myPost" backend
+                      let deletedmyPostID = axios.delete(
+                        `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
+                        userID
+                        }?postID=${objectID}`,
+                        headers
+                      )
+                      // waiting for the above two promise to finish
+                      await Promise.all([deletedPostData, deletedmyPostID]);
+                      // handle the front end rendering after one "myPost" was deleted
+                      this.props.handleCancelClick(e, objectID, PostType);
+                    } catch (e) {
+                      console.log(e);
+                    }
                   }
                 },
                 {
@@ -146,13 +139,15 @@ class SimplifiedPost extends React.Component {
           </span>
         </a>
       );
-    } else {
+    } else if (PostType === "MyLikes") {
       return (
         <a
           className="level-item"
           aria-label="cancel"
           onClick={e => {
-            this.props.handleCancelClick(e, title);
+            // handle the front end rendering
+            this.props.handleCancelClick(e, objectID, PostType);
+            // handle the backend data stroge in data base
             this.handleDelete(e, objectID);
           }}
         >
@@ -165,7 +160,7 @@ class SimplifiedPost extends React.Component {
   }
 
   render() {
-    const { title, views, answers, img, objectID } = this.props;
+    const { title, views, comments, img, objectID } = this.props;
     const { openComment } = this.state;
     return (
       <div className="box" style={{ marginBottom: "0.5rem", padding: "0.8rem" }}>
@@ -196,15 +191,15 @@ class SimplifiedPost extends React.Component {
                     {this.deleteControl()}
                   </div>
                 </nav>
-                <p>
+                <div>
                   <h3>{title}</h3>
                   <div style={{ float: "left" }}>{this.createTagGroup()}</div>
                   <p style={{ float: "right" }}>
                     <small>{views} Views</small>
                     {this.spaceDividor()}
-                    <small>{answers} Answers</small>
+                    <small>{comments.length} Replies</small>
                   </p>
-                </p>
+                </div>
               </div>
             </div>
           </article>
@@ -255,12 +250,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, liked: liked }),
-    handleMyPosts: newMyPosts =>
-      dispatch({
-        type: "PUBLISHEDNEWPOST",
-        myPosts: newMyPosts
-      })
+      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
   };
 };
 

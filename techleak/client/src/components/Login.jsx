@@ -20,7 +20,7 @@ class Login extends Component {
     this.setState({ [type]: e.target.value });
   };
 
-  handleSubmit = e => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     this.setState({ loading: true });
@@ -31,32 +31,65 @@ class Login extends Component {
         password: password
       }
     };
-    axios
-      .post("/api/users/login", user)
-      .then(res => {
-        this.setState({ loading: false, email: "", password: "" });
-        this.props.handleLogIn(
-          res.data.username,
-          res.data.id,
-          res.data.likedPosts,
-          res.data.myPosts,
-          res.data.avatar
-        );
-        //close modal
-        this.props.onSwitchLoginModal();
-        //save tokens
-        localStorage.setItem("token", res.data.token);
-      })
-      .catch(err => {
-        //Here we pass in status code into error, and we handle
-        //error codes by err.response
-        console.log(err);
-        this.setState({
-          loading: false,
-          errStatus: err.response.status
-        });
+
+    try {
+      let res = await axios.post("/api/users/login", user)
+      let data = res.data;
+      // asyn function that retrieve all details about likedPosts and myPosts
+      let allPostDetail = await this.fetchAllPostDetails(data);
+      let likedPostsDetail = allPostDetail[0];
+      let myPostsDetail = allPostDetail[1];
+      this.setState({ loading: false, email: "", password: "" });
+      this.props.handleLogIn(
+        data.username,
+        data.id,
+        data.likedPosts,
+        data.myPosts,
+        data.avatar,
+        likedPostsDetail,
+        myPostsDetail
+      );
+      //close modal
+      this.props.onSwitchLoginModal();
+      //save tokens
+      localStorage.setItem("token", res.data.token);
+
+    } catch (err) {
+      //Here we pass in status code into error, and we handle
+      //error codes by err.response
+      console.log(err);
+      this.setState({
+        loading: false,
+        errStatus: err.response.status
       });
+    }
   };
+
+  // responsible for fetching data about my posts and liked posts from 
+  // the database. the output is later used for setting states in redux
+  fetchAllPostDetails = async (data) => {
+    const likedPosts = data.likedPosts;
+    const myPosts = data.myPosts;
+    let singleLikedPostDetailPromise = [];
+    let singleMyPostDetailPromise = [];
+    for (var i = 0; i < likedPosts.length; i++) {
+      let l_promise = this.fetchSinglePostDetail(likedPosts[i]);
+      singleLikedPostDetailPromise.unshift(l_promise);
+    }
+    for (var j = 0; j < myPosts.length; j++) {
+      let m_promise = this.fetchSinglePostDetail(myPosts[j]);
+      singleMyPostDetailPromise.unshift(m_promise);
+    }
+    let allLikedPostDetails = Promise.all(singleLikedPostDetailPromise);
+    let allmyPostDetails = Promise.all(singleMyPostDetailPromise);
+    let allPostDetails = await Promise.all([allLikedPostDetails, allmyPostDetails]);
+    return allPostDetails;
+  }
+
+  fetchSinglePostDetail = async (postID) => {
+    let userDetail = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${postID}`);
+    return userDetail.data;
+  }
 
   render() {
     const modalBg = {
@@ -177,14 +210,16 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogIn: (username, userID, likedPosts, myPosts, avatar) =>
+    handleLogIn: (username, userID, likedPosts, myPosts, avatar, likedPostsDetail, myPostsDetail) =>
       dispatch({
         type: "LOGIN",
         username: username,
         userID: userID,
         likedPosts: likedPosts,
         myPosts: myPosts,
-        avatar: avatar
+        avatar: avatar,
+        likedPostsDetail: likedPostsDetail,
+        myPostsDetail: myPostsDetail
       }),
     onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" })
   };

@@ -16,7 +16,7 @@ class HeadingSection extends React.Component {
       selectedFile: e.target.files[0]
     });
     var reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
       var dataURL = reader.result;
       var output = document.getElementById("profile");
       output.src = dataURL;
@@ -41,7 +41,7 @@ class HeadingSection extends React.Component {
       axios
         .post(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/profile/${
-            this.props.userID
+          this.props.userID
           }`,
           data,
           headers
@@ -96,7 +96,7 @@ class HeadingSection extends React.Component {
               <a
                 class={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
-                }`}
+                  }`}
                 onClick={this.handleUpload}
               >
                 Upload
