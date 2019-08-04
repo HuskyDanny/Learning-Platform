@@ -3,7 +3,6 @@ import Replies from "./replies";
 import { connect } from "react-redux";
 import axios from "../../axios-blogs";
 import elapsed from "../../utils/getElapsed";
-import withHandler from "../UI/ErrorHandler/ErrorHandler";
 
 class Comment extends Component {
   state = { replyBox: false, body: "" };
@@ -159,10 +158,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withHandler(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Comment),
-  axios
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Comment);

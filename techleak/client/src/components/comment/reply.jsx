@@ -2,7 +2,7 @@ import axios from "../../axios-blogs";
 import React from "react";
 import elapsed from "../../utils/getElapsed";
 import { connect } from "react-redux";
-import withHandler from "../UI/ErrorHandler/ErrorHandler";
+
 const Reply = props => {
   const handleDelete = () => {
     const token = localStorage.getItem("token");
@@ -62,10 +62,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withHandler(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Reply),
-  axios
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Reply);

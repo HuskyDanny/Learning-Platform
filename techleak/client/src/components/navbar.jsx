@@ -9,6 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import faBars from "@fortawesome/fontawesome-free-solid/faBars";
 
 const Navbar = props => {
+  const handleLogOut = () => {
+    localStorage.clear();
+    props.handleLogOut();
+  };
+
   let top_menu_class = `top-menu ${props.menu_class}`;
 
   let status = (
@@ -40,7 +45,7 @@ const Navbar = props => {
               <p>My Profile</p>
             </Link>
 
-            <Link id="changableButton" onClick={props.handleLogOut} to="/">
+            <Link id="changableButton" onClick={handleLogOut} to="/">
               <p>Log Out</p>
             </Link>
           </div>
