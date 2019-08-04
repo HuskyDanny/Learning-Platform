@@ -124,13 +124,13 @@ router.post("/signup", auth.optional, async (req, res) => {
 
   //save to mongodb
   try {
-    console.log(newUser);
+    
 
     newUser = await newUser.save();
 
-    console.log(newOTC);
+    
     newOTC = await newOTC.save();
-    console.log("After Save");
+    
     res.status(201).json({ message: "Created Account" });
 
     const url = `${
