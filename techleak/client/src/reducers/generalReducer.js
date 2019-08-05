@@ -7,9 +7,11 @@ let initialState = {
   username: "",
   userID: "",
   likedPosts: [],
+  likedPostsDetail: [],
   comments: [],
   replies: [],
   myPosts: [],
+  myPostsDetail: [],
   menu_class: "",
   avatar: "",
   likes: {}
@@ -24,7 +26,9 @@ const reducer = (state = initialState, action) => {
       username: action.username,
       likedPosts: action.likedPosts,
       myPosts: action.myPosts,
-      avatar: action.avatar
+      avatar: action.avatar,
+      likedPostsDetail: action.likedPostsDetail,
+      myPostsDetail: action.myPostsDetail
     };
   }
   if (action.type === "LOGOUT") {
@@ -39,7 +43,9 @@ const reducer = (state = initialState, action) => {
       userID: "",
       likedPosts: [],
       myPosts: [],
-      menu_class: ""
+      menu_class: "",
+      likedPostsDetail: [],
+      myPostsDetail: []
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -132,9 +138,18 @@ const reducer = (state = initialState, action) => {
     //remove duplicates
     let newLikePosts = new Set([...state.likedPosts]);
     action.liked ? newLikePosts.delete(action.id) : newLikePosts.add(action.id);
+    let newLikePostsDetail = new Set([...state.likedPostsDetail]);
+    action.liked
+      ? newLikePostsDetail.forEach(function (lPostDetail) {
+        if (lPostDetail._id === action.id) {
+          newLikePostsDetail.delete(lPostDetail)
+        }
+      })
+      : newLikePostsDetail.add(action.rawPostData);
     return {
       ...state,
       likedPosts: [...newLikePosts],
+      likedPostsDetail: [...newLikePostsDetail],
       likes: temp
     };
   }
@@ -144,17 +159,18 @@ const reducer = (state = initialState, action) => {
       avatar: action.avatar
     };
   }
-
-  if (action.type === "PUBLISHEDNEWPOST") {
+  if (action.type === "USERMYPOSTSUPDATED") {
     return {
       ...state,
-      myPosts: action.myPosts
+      myPosts: action.myPosts,
+      myPostsDetail: action.myPostsDetail
     };
   }
   if (action.type === "USERLIKEDPOSTSUPDATED") {
     return {
       ...state,
-      likedPosts: action.likedPosts
+      likedPosts: action.likedPosts,
+      likedPostsDetail: action.likedPostsDetail
     };
   }
   if (action.type === "AUTHENTICATION_PASSWORD_RESET_CLEAR")

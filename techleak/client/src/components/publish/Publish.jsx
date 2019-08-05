@@ -35,7 +35,7 @@ class Publish extends Component {
     this.updateContent = this.updateContent.bind(this);
   }
 
-  handlePost() {
+  handlePost = async () => {
     const token = localStorage.getItem("token");
 
     const post = {
@@ -70,9 +70,11 @@ class Publish extends Component {
             console.log(err);
             this.setState({ loading: false });
           });
-        var newMyPosts = this.props.myPosts;
-        newMyPosts.push(res.data._id);
-        this.props.handleMyPosts(newMyPosts);
+        var updatedMyPosts = [...this.props.myPosts];
+        updatedMyPosts.push(res.data._id);
+        var updatedMyPostsDetail = [...this.props.myPostsDetail]
+        updatedMyPostsDetail.push(res.data)
+        this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
       })
       .catch(err => {
         this.setState({ loading: false });
@@ -203,54 +205,54 @@ class Publish extends Component {
           ) : this.state.posted ? (
             this.successPosted()
           ) : (
-            <React.Fragment>
-              <form onSubmit={this.handlePost}>
-                <label>Title</label>
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  required
-                  minLength="5"
-                  value={this.state.title}
-                  onChange={this.handleTitle}
-                />
-                <div>
-                  <br />
-                  <Editor
-                    updateContent={this.updateContent}
-                    value={this.state.content}
-                  />
-                </div>
-                {selection}
-                <label>Tags</label>
-                <TagSearch
-                  hitsDisplay={this.props.tagReducer.hitsDisplay}
-                  tags={this.props.tagReducer.tags}
-                  handleSelect={tag => this.props.addTag(tag)}
-                  handleRemoveItem={tag => this.props.removeTag(tag)}
-                  openDisplay={() => this.props.openDisplay()}
-                  closeDisplay={() => this.props.closeDisplay()}
-                  styles={styles}
-                />
-                <br />
-                <div className="level-left">
-                  <button
-                    className="button is-primary level-item"
-                    type="submit"
-                  >
-                    Post
+                <React.Fragment>
+                  <form onSubmit={this.handlePost}>
+                    <label>Title</label>
+                    <input
+                      className="input is-rounded"
+                      type="text"
+                      required
+                      minLength="5"
+                      value={this.state.title}
+                      onChange={this.handleTitle}
+                    />
+                    <div>
+                      <br />
+                      <Editor
+                        updateContent={this.updateContent}
+                        value={this.state.content}
+                      />
+                    </div>
+                    {selection}
+                    <label>Tags</label>
+                    <TagSearch
+                      hitsDisplay={this.props.tagReducer.hitsDisplay}
+                      tags={this.props.tagReducer.tags}
+                      handleSelect={tag => this.props.addTag(tag)}
+                      handleRemoveItem={tag => this.props.removeTag(tag)}
+                      openDisplay={() => this.props.openDisplay()}
+                      closeDisplay={() => this.props.closeDisplay()}
+                      styles={styles}
+                    />
+                    <br />
+                    <div className="level-left">
+                      <button
+                        className="button is-primary level-item"
+                        type="submit"
+                      >
+                        Post
                   </button>
-                  <button
-                    className="button is-primary level-item"
-                    type="button"
-                    onClick={this.handleCancel}
-                  >
-                    Cancel
+                      <button
+                        className="button is-primary level-item"
+                        type="button"
+                        onClick={this.handleCancel}
+                      >
+                        Cancel
                   </button>
-                </div>
-              </form>
-            </React.Fragment>
-          )}
+                    </div>
+                  </form>
+                </React.Fragment>
+              )}
         </div>
         <Modal
           className="modal-lg"
@@ -282,7 +284,8 @@ const mapStateToProps = state => {
     username: state.persistedReducer.username,
     tagReducer: state.tagReducer,
     userID: state.persistedReducer.userID,
-    myPosts: state.persistedReducer.myPosts
+    myPosts: state.persistedReducer.myPosts,
+    myPostsDetail: state.persistedReducer.myPostsDetail
   };
 };
 
@@ -303,12 +306,12 @@ const mapDispatchToProps = dispatch => {
     handlePosted: () => {
       dispatch(handlePosted());
     },
-    handleMyPosts: newMyPosts => {
+    handleUpdatedMyPosts: (updatedMyPostsDetail, updatedMyPosts) =>
       dispatch({
-        type: "PUBLISHEDNEWPOST",
-        myPosts: newMyPosts
-      });
-    }
+        type: "USERMYPOSTSUPDATED",
+        myPostsDetail: updatedMyPostsDetail,
+        myPosts: updatedMyPosts
+      })
   };
 };
 
