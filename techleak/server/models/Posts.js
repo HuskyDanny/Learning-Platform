@@ -11,8 +11,7 @@ const postSchema = new mongoose.Schema({
   },
   likes: { type: Number },
   post_date_timestamp: {
-    type: Number,
-    default: new Date().getTime()
+    type: Number
   },
   author: { type: String, require: true },
   content: { type: String, required: true },

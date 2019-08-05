@@ -69,18 +69,18 @@ class Blog extends Component {
     //handling likeposts in User route
     const likePostPromise = LIKED
       ? axios.delete(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-        this.props.userID
-        }?postID=${this.props.match.params.id}`,
-        headers
-      )
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+            this.props.userID ? this.props.userID : "dummy"
+          }?postID=${this.props.match.params.id}`,
+          headers
+        )
       : axios.post(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-        this.props.userID
-        }`,
-        { postID: this.props.match.params.id },
-        headers
-      );
+          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+            this.props.userID ? this.props.userID : "dummy"
+          }`,
+          { postID: this.props.match.params.id },
+          headers
+        );
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
       `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${

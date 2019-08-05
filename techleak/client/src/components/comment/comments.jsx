@@ -27,7 +27,8 @@ class Comments extends Component {
           comment: {
             body: this.state.body,
             username: this.props.username,
-            userID: this.props.userID
+            userID: this.props.userID,
+            post_date_timestamp: new Date().getTime()
           }
         },
         headers
