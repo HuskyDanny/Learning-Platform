@@ -9,6 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import faBars from "@fortawesome/fontawesome-free-solid/faBars";
 
 const Navbar = props => {
+  const handleLogOut = () => {
+    localStorage.clear();
+    props.handleLogOut();
+  };
+
   let top_menu_class = `top-menu ${props.menu_class}`;
 
   let status = (
@@ -40,7 +45,7 @@ const Navbar = props => {
               <p>My Profile</p>
             </Link>
 
-            <Link id="changableButton" onClick={props.handleLogOut} to="/">
+            <Link id="changableButton" onClick={handleLogOut} to="/">
               <p>Log Out</p>
             </Link>
           </div>
@@ -90,94 +95,6 @@ const Navbar = props => {
     </React.Fragment>
   );
 };
-
-// class Navbar extends Component {
-
-//   render() {
-
-//     let status = (
-//       <div className="navbar-end">
-//         <li className="navbar-item">
-//           <button
-//             className="button is-primary"
-//             onClick={this.props.onSwitchSignupModal}
-//           >
-//             <strong>Sign up</strong>
-//           </button>
-//         </li>
-//         <li className="navbar-item">
-//           <button
-//             className="button is-primary"
-//             onClick={this.props.onSwitchLoginModal}
-//           >
-//             <strong>Log in</strong>
-//           </button>
-//         </li>
-//       </div>
-//     );
-
-//     if (this.props.logIn) {
-//       status = (
-//         <div className="navbar-end">
-//           <li className="navbar-item">
-//             <Link className='button is-primary' to="/publish" >
-//               <i className="fas fa-plus-circle" />
-//               <strong >New Post</strong>
-//             </Link>
-//           </li>
-//           <li className="navbar-item">
-//             <Link className="button is-primary" to="/userProfile">
-//               <strong>My Profile</strong>
-//             </Link>
-//           </li>
-//           <li className="navbar-item">
-//             <div className="button is-primary" onClick={this.props.handleLogOut}>
-//               <strong>Log Out</strong>
-//             </div>
-//           </li>
-//         </div>
-//       );
-//     }
-
-//     return (
-//       <React.Fragment>
-//         <div className='flex'>
-//           <div className="navbar navbar-brand navbar-item" role="navigation" aria-label="main navigation">
-//             <Link to="/index">
-//               <img src={image} width="112" height="48" alt="logo" />
-//             </Link>
-//           </div>
-//           <ResponsiveMenu
-//             menuOpenButton={<div><MdMenu /></div>}
-//             menuCloseButton={<div><FaTimes/></div>}
-//             changeMenuOn="1090px"
-//             menu={
-//               <div className="navbar" role="navigation" aria-label="main navigation">
-//                 <div className="navbar-start">
-//                   <li className="navbar-item">
-//                     <a className="navbar-item" href="#about">
-//                       About
-//                     </a>
-//                   </li>
-//                   <li className="navbar-item">
-//                     <Link className="navbar-item" onClick={this.props.onSwitchContactModal}>
-//                       Contact Us
-//                     </Link>
-//                   </li>
-//                 </div>
-//                 {status}
-//               </div>
-//             }
-//           />
-
-//           <Signup />
-//           <Login />
-//           <ContactUs />
-//         </div>
-//       </React.Fragment>
-//     )
-//   }
-// }
 
 const mapStateToProps = state => {
   return {

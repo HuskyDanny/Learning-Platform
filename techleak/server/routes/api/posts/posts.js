@@ -42,7 +42,8 @@ router.post("/", auth.required, async (req, res, next) => {
       author: result.author,
       content: result.content,
       tags: result.tags ? result.tags : [],
-      likes: result.likes ? result.likes : 0
+      likes: result.likes ? result.likes : 0,
+      post_date_timestamp: new Date().getTime()
     };
 
     let post = new Post(dbSchema);
@@ -55,6 +56,7 @@ router.post("/", auth.required, async (req, res, next) => {
 
     res.status(201).json(post);
   } catch (error) {
+    console.log(error);
     return res.status(412).json(error.message);
   }
 });
@@ -117,6 +119,24 @@ router.patch("/comments/:id", auth.required, async (req, res) => {
   }
 });
 
+router.delete("/comments/:id", async (req, res) => {
+  try {
+    const post = await Post.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $pull: { comments: { _id: req.query.commentId } }
+      },
+      { new: true }
+    );
+
+    if (!post) return res.status(400).send("Post not Found");
+
+    return res.json(post);
+  } catch (error) {
+    return res.status(403).send(error.message);
+  }
+});
+
 router.patch("/tags/:id", auth.required, async (req, res) => {
   try {
     const post = await Post.findOneAndUpdate(
@@ -134,10 +154,10 @@ router.patch("/tags/:id", auth.required, async (req, res) => {
 });
 
 router.patch("/comments/reply/:id", auth.required, async (req, res) => {
-  const { error } = await replyValidator(req.body.reply);
-  if (error) return res.status(400).send(error.message);
-
   try {
+    const { error } = await replyValidator(req.body.reply);
+    if (error) return res.status(400).send(error.message);
+
     let post = await Post.findOne({ _id: req.params.id });
 
     let result = await post.comments.id(req.query.commentId);
@@ -148,6 +168,22 @@ router.patch("/comments/reply/:id", auth.required, async (req, res) => {
     post = await post.save();
 
     res.json(newReply);
+  } catch (error) {
+    res.json(error.message);
+  }
+});
+
+router.delete("/comments/reply/:postId", auth.required, async (req, res) => {
+  try {
+    let post = await Post.findOne({ _id: req.params.postId });
+
+    let result = await post.comments.id(req.query.commentId);
+
+    await result.replies.id(req.query.replyId).remove();
+
+    post = await post.save();
+
+    res.json(post);
   } catch (error) {
     res.json(error.message);
   }

@@ -52,7 +52,7 @@ const WithHandler = (WrappedComponent, axios) => {
       let message;
       switch (this.state.errorMessage) {
         case 403:
-          message = "Please login, if you have logged in, please log in again";
+          message = "Please login, login status is expired";
           break;
         case 400:
           message = "Something went wrong, contact us!";

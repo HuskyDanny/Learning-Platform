@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Replies from "./replies";
 import { connect } from "react-redux";
 import axios from "../../axios-blogs";
+import elapsed from "../../utils/getElapsed";
 
 class Comment extends Component {
   state = { replyBox: false, body: "" };
@@ -11,6 +12,26 @@ class Comment extends Component {
   onChange = e => {
     e.preventDefault();
     this.setState({ body: e.target.value });
+  };
+  handleDelete = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
+    axios
+      .delete(
+        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/comments/${
+          this.props.blogID
+        }?commentId=${this.props.comment._id}`,
+        headers
+      )
+      .then(res => {
+        this.props.deleteComment(this.props.comment._id);
+      });
   };
   handleReply = () => {
     const token = localStorage.getItem("token");
@@ -30,7 +51,8 @@ class Comment extends Component {
           reply: {
             body: this.state.body,
             username: this.props.username,
-            userID: this.props.userID
+            userID: this.props.userID,
+            post_date_timestamp: new Date().getTime()
           }
         },
         headers
@@ -41,10 +63,6 @@ class Comment extends Component {
           commentRef: this.props.comment._id
         });
         this.setState({ body: "" });
-      })
-      .catch(err => {
-        console.log(err);
-        console.log("error");
       });
   };
   showReplyBox = () => {
@@ -70,8 +88,13 @@ class Comment extends Component {
     }
   };
   render() {
+    const deleteButton = (
+      <a onClick={this.handleDelete}>
+        <i class="fas fa-backspace" />
+      </a>
+    );
     return (
-      <article className="media">
+      <article className="media" style={{ marginBottom: "1%" }}>
         <figure className="media-left">
           <p className="image is-64x64">
             <img
@@ -86,13 +109,21 @@ class Comment extends Component {
         <div className="media-content">
           <div className="content">
             <p>
-              <strong>{this.props.comment.username}</strong>
-              <br />
+              <div className="level" style={{ marginBottom: "0px" }}>
+                <strong>{this.props.comment.username}</strong>
+                {this.props.comment.userID === this.props.userID
+                  ? deleteButton
+                  : null}
+              </div>
               {this.props.comment.body}
               <br />
               <small>
                 <a>{`Like ${this.props.comment.like}`}</a> ·{" "}
-                <a onClick={this.openReply}>Reply</a> · 3 hrs
+                <a onClick={this.openReply}>Reply</a> ·{" "}
+                {elapsed(
+                  new Date().getTime() - this.props.comment.post_date_timestamp
+                )}{" "}
+                Ago
               </small>
             </p>
             {this.showReplyBox()}
@@ -102,6 +133,7 @@ class Comment extends Component {
               replies={this.props.replies.filter(
                 reply => reply.commentRef === this.props.comment._id
               )}
+              blogId={this.props.blogID}
             />
           ) : null}
         </div>
@@ -121,7 +153,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addReply: reply => dispatch({ type: "ADDREPLY", reply: reply })
+    addReply: reply => dispatch({ type: "ADDREPLY", reply: reply }),
+    deleteComment: id => dispatch({ type: "DELETECOMMENT", id: id })
   };
 };
 

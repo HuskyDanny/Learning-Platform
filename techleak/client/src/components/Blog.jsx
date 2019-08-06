@@ -20,7 +20,8 @@ class Blog extends Component {
       userID: "",
       content: "",
       title: "",
-      enableLike: this.props.loggedIn
+      enableLike: this.props.loggedIn,
+      rawPostData: ""
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -30,7 +31,7 @@ class Blog extends Component {
     axios
       .get(
         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-          this.props.match.params.id
+        this.props.match.params.id
         }`
       )
       .then(res => {
@@ -43,7 +44,8 @@ class Blog extends Component {
           userID: res.data.userID,
           content: res.data.content,
           title: res.data.title,
-          pageID: this.props.match.params.id
+          pageID: this.props.match.params.id,
+          rawPostData: res.data
         });
         this.props.getBlog(res.data);
       })
@@ -68,13 +70,13 @@ class Blog extends Component {
     const likePostPromise = LIKED
       ? axios.delete(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID
+            this.props.userID ? this.props.userID : "dummy"
           }?postID=${this.props.match.params.id}`,
           headers
         )
       : axios.post(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID
+            this.props.userID ? this.props.userID : "dummy"
           }`,
           { postID: this.props.match.params.id },
           headers
@@ -82,17 +84,16 @@ class Blog extends Component {
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
       `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-        this.props.match.params.id
+      this.props.match.params.id
       }`,
       { liked: LIKED },
       headers
     );
 
     Promise.all([likePostPromise, likeNumberPromise]).catch(err => {
-      this.props.handleLike(this.props.match.params.id, !LIKED);
+      this.props.handleLike(this.props.match.params.id, this.state.rawPostData, !LIKED);
     });
-
-    this.props.handleLike(this.props.match.params.id, LIKED);
+    this.props.handleLike(this.props.match.params.id, this.state.rawPostData, LIKED);
     new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
       this.setState({ enableLike: true });
     });
@@ -160,7 +161,7 @@ class Blog extends Component {
                       id="likeBtn"
                       className={`level-item has-text-centered button ${
                         LIKED ? " is-success" : ""
-                      }`}
+                        }`}
                       aria-label="like"
                       onClick={this.state.enableLike ? this.handleLike : null}
                     >
@@ -195,8 +196,13 @@ const mapDispatchToProps = dispatch => {
   return {
     getBlog: blog => dispatch({ type: "GETBLOG", blog: blog }),
     onSwitchShareModal: () => dispatch({ type: "SHAREMODAL" }),
-    handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKEPOSTS", id: id, liked: liked })
+    handleLike: (id, rawPostData, liked) =>
+      dispatch({
+        type: "HANDLELIKEPOSTS",
+        id: id,
+        rawPostData: rawPostData,
+        liked: liked
+      })
   };
 };
 

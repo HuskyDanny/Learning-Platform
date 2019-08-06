@@ -46,7 +46,7 @@ router.post(
 
 router.get("/comfirmation/:token", auth.optional, async (req, res) => {
   const secret = process.env.JWT_SECRET;
-  const redirectUrl = process.env.REDIRECTURL || "http://localhost:3000/index";
+  const redirectUrl = process.env.REDIRECTURL || "http://localhost:3001";
   try {
     const { _id } = jwt.verify(req.params.token, secret);
     await User.findOneAndUpdate({ _id: _id }, { confirmed: true });
@@ -115,15 +115,12 @@ router.post("/signup", auth.optional, async (req, res) => {
 
   //save to mongodb
   try {
-    console.log(newUser);    
     newUser = await newUser.save();
-
-    console.log("After Save");
     res.status(201).json({ message: "Created Account" });
 
     const url = `${
       process.env.BACKEND_SERVER
-      }/api/users/comfirmation/${newUser.generateJWT()}`;
+    }/api/users/comfirmation/${newUser.generateJWT()}`;
 
     //Use smtp service for email verification
     const msg = {
@@ -203,8 +200,8 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
   } catch (error) {
     console.log("This is a check" + error);
   }
-  return result
-})
+  return result;
+});
 
 router.post("/reset-password", auth.optional, async (req, res) => {
   const email = req.body.email;
@@ -241,7 +238,7 @@ router.post("/reset-password", auth.optional, async (req, res) => {
     });
     return res.json({ message: "Success" });
   } catch (error) {
-    return res.json(error)
+    return res.json(error);
   }
 })
 
@@ -312,7 +309,7 @@ router.delete("/myPosts/:id", auth.required, async (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  return passport.authenticate("local", { session: false }, function (
+  return passport.authenticate("local", { session: false }, function(
     err,
     user,
     info

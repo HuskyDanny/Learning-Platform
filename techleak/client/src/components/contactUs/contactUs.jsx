@@ -3,6 +3,8 @@ import Modal from "react-responsive-modal";
 import "./contactUs.css";
 import { connect } from "react-redux";
 import axios from "axios";
+import { confirmAlert } from "react-custom-confirm-alert";
+
 class ContactUs extends React.Component {
   constructor(props) {
     super(props);
@@ -35,29 +37,36 @@ class ContactUs extends React.Component {
   }
 
   handleSubmit(e) {
-    const {firstname, familyname, email, phone, title, message} = this.state;
-    alert("Your message is sent successfully, " + firstname);
+    const { firstname, familyname, email, phone, title, message } = this.state;
     e.preventDefault();
     axios({
       method: "POST",
       url: `${process.env.REACT_APP_BACKEND_SERVER}/api/contact/contact`,
       data: {
-        firstname: firstname, 
+        firstname: firstname,
         familyname: familyname,
-        email: email, 
-        phone: phone, 
-        title: title, 
+        email: email,
+        phone: phone,
+        title: title,
         message: message
       }
     })
-    .then((response)=>{
-      if (response.data.msg === 'success'){
-        alert("Message Sent."); 
-        this.resetForm();
-      } else if(response.data.msg === 'fail'){
-          alert("Message failed to send.")
-      }        
-    })
+      .then((response) => {
+        console.log(response);
+        if (response.data.msg === 'success') {
+          confirmAlert({
+            message: "Your message has been sent successfully. We will reply you soon",
+            buttons: [{ label: "OK" }]
+          });
+          this.resetForm();
+          this.props.onSwitchContactModal();
+        } else if (response.data.msg === 'fail') {
+          confirmAlert({
+            message: "Sorry, your message was failed to delivered. Please try again",
+            buttons: [{ label: "OK" }]
+          });
+        }
+      })
   }
 
   render() {
