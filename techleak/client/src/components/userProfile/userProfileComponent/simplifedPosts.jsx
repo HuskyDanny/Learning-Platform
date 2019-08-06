@@ -34,7 +34,7 @@ class SimplifiedPosts extends React.Component {
       axios
         .delete(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-          this.props.userID
+            this.props.userID
           }?postID=${id}`,
           headers
         )
@@ -51,9 +51,11 @@ class SimplifiedPosts extends React.Component {
     e.preventDefault();
 
     if (PostType === "MyLikes") {
-      const updatedLikedPostsDetail = this.state.likedPostsDetail.filter(function (lPostDetail) {
-        return lPostDetail._id != objectID;
-      })
+      const updatedLikedPostsDetail = this.state.likedPostsDetail.filter(
+        function(lPostDetail) {
+          return lPostDetail._id != objectID;
+        }
+      );
       const updatedLikedPosts = this.state.likedPosts.filter(likedPost => {
         return likedPost !== objectID;
       });
@@ -61,15 +63,20 @@ class SimplifiedPosts extends React.Component {
       this.setState({
         likedPostsDetail: updatedLikedPostsDetail,
         likedPosts: updatedLikedPosts
-      })
+      });
       // this portion update the redux to finalize the delete
-      this.props.handleUpdatedLikedPosts(updatedLikedPostsDetail, updatedLikedPosts);
+      this.props.handleUpdatedLikedPosts(
+        updatedLikedPostsDetail,
+        updatedLikedPosts
+      );
     }
 
     if (PostType === "MyPosts") {
-      const updatedMyPostsDetail = this.state.myPostsDetail.filter(function (mPostDetail) {
+      const updatedMyPostsDetail = this.state.myPostsDetail.filter(function(
+        mPostDetail
+      ) {
         return mPostDetail._id != objectID;
-      })
+      });
       const updatedMyPosts = this.state.myPosts.filter(myPost => {
         return myPost !== objectID;
       });
@@ -77,7 +84,7 @@ class SimplifiedPosts extends React.Component {
       this.setState({
         myPostsDetail: updatedMyPostsDetail,
         myPosts: updatedMyPosts
-      })
+      });
       // this portion update the redux to finalize the delete
       this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
     }
@@ -94,23 +101,27 @@ class SimplifiedPosts extends React.Component {
     }
     return (
       <React.Fragment>
-        {simpPosts.map(simPost => {
-          return (
-            <SimplifiedPost
-              title={simPost.title}
-              views={faker.random.number()}
-              comments={simPost.comments}
-              tags={simPost.tags}
-              img={
-                this.props.avatar ||
-                "https://bulma.io/images/placeholders/128x128.png"
-              }
-              objectID={simPost._id}
-              handleCancelClick={this.handleCancelClick}
-              PostType={PostType}
-            />
-          );
-        }).reverse()}
+        {simpPosts
+          .map(simPost => {
+            if (simPost) {
+              return (
+                <SimplifiedPost
+                  title={simPost.title}
+                  views={faker.random.number()}
+                  comments={simPost.comments}
+                  tags={simPost.tags}
+                  img={
+                    simPost.avatar ||
+                    "https://bulma.io/images/placeholders/128x128.png"
+                  }
+                  objectID={simPost._id}
+                  handleCancelClick={this.handleCancelClick}
+                  PostType={PostType}
+                />
+              );
+            }
+          })
+          .reverse()}
       </React.Fragment>
     );
   }
