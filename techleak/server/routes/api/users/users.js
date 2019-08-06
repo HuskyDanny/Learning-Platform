@@ -1,5 +1,6 @@
 const { userValidator, User } = require("../../../models/Users");
 const { OTC, OTCValidator } = require("../../../models/OTC");
+const MongoClient = require('mongodb').MongoClient;
 const { Router } = require("express");
 const passport = require("passport");
 const auth = require("../../auth");
@@ -10,6 +11,7 @@ const s3 = require("../../../config/aws");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const randomize = require('randomatic');
+var url = "mongodb://127.0.0.1:27017/";
 
 var upload = multer({
   storage: multerS3({
@@ -101,11 +103,6 @@ router.post("/signup", auth.optional, async (req, res) => {
   const {
     body: { user }
   } = req;
-  const confirmation = randomize('A0', 6);
-  const otc = {
-      email: user.email,
-      confirmation: confirmation
-  }
 
   //validate content
   const { error } = userValidator(user);
@@ -116,20 +113,11 @@ router.post("/signup", auth.optional, async (req, res) => {
   let newUser = new User(user);
   newUser.setPassword(user.password);
 
-  //Create new OTC for each new user
-  let newOTC = new OTC(otc);
-  const { errorOTC } = OTCValidator(newOTC);
-
-  if (errorOTC) return res.status(400).json(error.message);
-
   //save to mongodb
   try {
-    console.log(newUser);
-    
+    console.log(newUser);    
     newUser = await newUser.save();
 
-    console.log(newOTC);
-    newOTC = await newOTC.save();
     console.log("After Save");
     res.status(201).json({ message: "Created Account" });
 
@@ -171,67 +159,90 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
   let result;
   const email = req.body.email;
 
-  const confirmation = randomize('A0', 6);
+  const confirmation = randomize('0A', 6);
+  const otc = {
+    email: email,
+    confirmation: confirmation
+  }
+  //Create new OTC for each new user
+  let query = OTC.findOne({email: email});
+  let foundUser = await query.exec();
+  if (!foundUser) {
+    let newOTC = new OTC(otc);
+    const { errorOTC } = OTCValidator(newOTC);
+    console.log(newOTC);
+    if (errorOTC) return res.status(400).json(error.message);
+    newOTC = await newOTC.save();
+  } else {
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("project");
+      var myquery = { email: email };
+      var newvalues = { $set: {confirmation: confirmation} };
+      dbo.collection("otcs").updateOne(myquery, newvalues, function(err, res) {
+        if (err) throw err;
+        console.log("1 document updated");
+        db.close();
+      });
+    });
+  }
 
-  const query = OTC.findOne({ email: email });
-  const foundOTC = await query.exec();
-  if (foundOTC) {
-    try {
-    
-      const msg = {
-        to: email,
-        from: "welcome@techleak.com",
-        templateId: "d-6dea1ef361ce40b5a0b9d1ba94640c6f",
-        subject: "Password Reset Confirmation Code",
-        dynamic_template_data: {
-          code: confirmation
-        }
-      };
-      // update the confirmation
-      console.log(confirmation);
-      OTC.update(
-        {email: email}, 
-        {$set: 
-          {
-            confirmation: confirmation
-          }
-        }
-      )
-      sgMail.send(msg);
-      result = res.send(JSON.stringify({ success: true }));
-    } catch (error) {
-      console.log("This is a check" + error);
-    }
+  try {
+
+    const msg = {
+      to: email,
+      from: "welcome@techleak.com",
+      templateId: "d-6dea1ef361ce40b5a0b9d1ba94640c6f",
+      subject: "Password Reset Confirmation Code",
+      dynamic_template_data: {
+        code: confirmation
+      }
+    };
+    sgMail.send(msg);
+    result = res.send(JSON.stringify({ success: true }));
+  } catch (error) {
+    console.log("This is a check" + error);
   }
   return result
 })
 
 router.post("/reset-password", auth.optional, async (req, res) => {
-  let result
   const email = req.body.email;
   const password = req.body.password;
   const confirmation = req.body.confirmation;
-  const usercfm = OTC.findOne({ email: email }, { confirmation: 1, _id: 0 })
-  const user = User.findOne({ email: email })
 
   try {
-    if (confirmation === usercfm) {
-      user.setPassword(password);
-      const cfmReset = randomize('A0', 6);
-      OTC.update(
-        {email: email}, 
-        {$set: 
-          {
-            confirmation: cfmReset
-          }
-        }
-      )
-      result = res.send(JSON.stringify({ success: true }));
+    const user = await User.findOne({ email: email })
+    if (!user) return res.status(400);
+    const otc = await OTC.findOne({ email: email });
+    if (!otc.validateCmf(confirmation)) {
+      return res.status(403);
+    } else if (user.validatePassword(password)) {
+      return done(null, false, {
+        message: "Password Exist"
+      });
+    } else {
+      const newUser = new User(user);
+      newUser.setPassword(password);
+      newUser.save();
+      console.log("Reset Successfully");
     }
+    confirmation = randomize('0A', 6);
+    MongoClient.connect(url, function(err, db) {
+      if (err) throw err;
+      var dbo = db.db("project");
+      var myquery = { email: email };
+      var newvalues = { $set: {confirmation: confirmation} };
+      dbo.collection("otcs").updateOne(myquery, newvalues, function(err, res) {
+        if (err) throw err;
+        console.log("1 document updated");
+        db.close();
+      });
+    });
+    return res.json({ message: "Success" });
   } catch (error) {
     return res.json(error)
   }
-  return result
 })
 
 //Append id of post to User likedposts database
