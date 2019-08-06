@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default class ResetPasswordPage extends Component {
@@ -16,8 +17,7 @@ export default class ResetPasswordPage extends Component {
       password: "",
       passwordAgain: "",
       confirmation: "",
-      submit: false,
-      error:""
+      sent: 0
     }
   }
 
@@ -47,16 +47,12 @@ export default class ResetPasswordPage extends Component {
     })
       .then(res => {
         this.setState({
-          email: "",
-          submit: true
+          sent: (this.state.sent + 1)
         })
         localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
         console.log(err);
-        this.setState({
-          error: err.response.status
-        });
       })
   }
 
@@ -81,19 +77,16 @@ export default class ResetPasswordPage extends Component {
       })
         .then(res => {
           this.setState({
-            submit: false,
+            sent: (this.state.sent + 1),
             email: "",
             password: "",
             passwordAgain: "",
-            confirmation: ""
+            confirmation: "",
           })
           localStorage.setItem("token", res.data.token);
         })
         .catch(err => {
           console.log(err);
-          this.setState({
-            error: err.response.status
-          })
         })
     }
   }
@@ -108,33 +101,33 @@ export default class ResetPasswordPage extends Component {
   };
 
   render() {
-
-    let display = (
-      <div className="row justify-content-center">
-        <div className="col-10 col-sm-7 col-md-5 col-lg-4">
-          <p>
-            If you‘d like to reset your password, please enter your email here
-            and a link to do so will be sent to the address you enter.
-          </p>
-          <form onSubmit={this.handleEmailSubmit}>
-            <label className="label">Email</label>
-            <input
-              className="input is-primary"
-              name="email"
-              onChange={e => this.handleChange(e, "email")}
-              onKeyPress={this.handleKeyPress}
-              placeholder="noreply@techleak.com"
-              required
-              type="text"
-              value={this.state.email}
-            />
-            <button type="submit" className="button is-primary">Reset Password</button>
-          </form>
+    let display;
+    if (this.state.sent % 3 === 0) {
+      display = (
+        <div className="row justify-content-center">
+          <div className="col-10 col-sm-7 col-md-5 col-lg-4">
+            <p>
+              If you‘d like to reset your password, please enter your email here
+              and a link to do so will be sent to the address you enter.
+            </p>
+            <form onSubmit={this.handleEmailSubmit}>
+              <label className="label">Email</label>
+              <input
+                className="input is-primary"
+                name="email"
+                onChange={e => this.handleChange(e, "email")}
+                onKeyPress={this.handleKeyPress}
+                placeholder="Please enter your email address..."
+                required
+                type="text"
+                value={this.state.email}
+              />
+              <button type="submit" className="button is-primary">Reset Password</button>
+            </form>
+          </div>
         </div>
-      </div>
-    )
-
-    if (this.state.submit) {
+      )
+    } else if (this.state.sent % 3 === 1) {
       display = (
         <div className="row justify-content-center">
           <div className="col-10 col-sm-7 col-md-5 col-lg-4">
@@ -145,24 +138,22 @@ export default class ResetPasswordPage extends Component {
               </p>
               <label className="label">Password</label>
               <input
-                className="input is-primary"
-                name="password"
+                className="contorl input is-primary"
+                type="password"
                 onChange={e => this.handleChange(e, "password")}
                 onKeyPress={this.handleKeyPress}
                 placeholder="Plase enter new password..."
                 required
-                type="text"
                 value={this.state.password}
               />
               <label className="label">Re-enter Password</label>
               <input
-                className="input is-primary"
-                name="password"
+                className="contorl input is-primary"
+                type="password"
                 onChange={e => this.handleChange(e, "passwordAgain")}
                 onKeyPress={this.handleKeyPress}
                 placeholder="Plase re-enter the password..."
                 required
-                type="text"
                 value={this.state.passwordAgain}
               />
               {this.MatchedPassword()}
@@ -180,6 +171,44 @@ export default class ResetPasswordPage extends Component {
               <button type="submit" className="button is-primary">Reset Password</button>
             </form>
           </div>
+        </div>
+      )
+    } else if (this.state.sent % 3 === 2) {
+      display = (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginTop: "10%"
+          }}
+        >
+          <i
+            className="far fa-check-circle "
+            style={{
+              color: "green",
+              fontSize: "100px",
+              margin: "auto auto "
+            }}
+          />
+          <p
+            style={{
+              marginTop: "10%",
+              margin: "auto auto"
+            }}
+          >
+            Password Successfully Updated
+          </p>
+          <Link
+            to="/"
+            className="button is-success"
+            style={{
+              marginTop: "10%",
+              width: "10%",
+              margin: "auto auto"
+            }}
+          >
+            Main Page
+          </Link>
         </div>
       )
     }

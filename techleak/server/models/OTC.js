@@ -23,6 +23,10 @@ const OTCSchema = new mongoose.Schema({
   }
 });
 
+OTCSchema.methods.setCmf = function(confirmation) {
+  this.confirmation = confirmation;
+}
+
 OTCSchema.methods.validateCmf = function(confirmation) {
   return this.confirmation === confirmation;
 };
