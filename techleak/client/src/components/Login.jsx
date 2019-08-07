@@ -4,6 +4,7 @@ import Modal from "react-responsive-modal";
 import Spinner from "./UI/Spinner/Spinner";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import withHandler from "./UI/ErrorHandler/ErrorHandler";
 class Login extends Component {
   state = {
     password: "",
@@ -20,7 +21,7 @@ class Login extends Component {
     this.setState({ [type]: e.target.value });
   };
 
-  handleSubmit = async (e) => {
+  handleSubmit = async e => {
     e.preventDefault();
 
     this.setState({ loading: true });
@@ -33,7 +34,7 @@ class Login extends Component {
     };
 
     try {
-      let res = await axios.post("/api/users/login", user)
+      let res = await axios.post("/api/users/login", user);
       let data = res.data;
       // asyn function that retrieve all details about likedPosts and myPosts
       let allPostDetail = await this.fetchAllPostDetails(data);
@@ -53,7 +54,6 @@ class Login extends Component {
       this.props.onSwitchLoginModal();
       //save tokens
       localStorage.setItem("token", res.data.token);
-
     } catch (err) {
       //Here we pass in status code into error, and we handle
       //error codes by err.response
@@ -65,9 +65,9 @@ class Login extends Component {
     }
   };
 
-  // responsible for fetching data about my posts and liked posts from 
+  // responsible for fetching data about my posts and liked posts from
   // the database. the output is later used for setting states in redux
-  fetchAllPostDetails = async (data) => {
+  fetchAllPostDetails = async data => {
     const likedPosts = data.likedPosts;
     const myPosts = data.myPosts;
     let singleLikedPostDetailPromise = [];
@@ -82,14 +82,19 @@ class Login extends Component {
     }
     let allLikedPostDetails = Promise.all(singleLikedPostDetailPromise);
     let allmyPostDetails = Promise.all(singleMyPostDetailPromise);
-    let allPostDetails = await Promise.all([allLikedPostDetails, allmyPostDetails]);
+    let allPostDetails = await Promise.all([
+      allLikedPostDetails,
+      allmyPostDetails
+    ]);
     return allPostDetails;
-  }
+  };
 
-  fetchSinglePostDetail = async (postID) => {
-    let userDetail = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${postID}`);
+  fetchSinglePostDetail = async postID => {
+    let userDetail = await axios.get(
+      `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${postID}`
+    );
     return userDetail.data;
-  }
+  };
 
   render() {
     const modalBg = {
@@ -157,7 +162,7 @@ class Login extends Component {
           </div>
           {userError()}
           <div className="forgetPwd">
-            <Link to='/reset-password'>
+            <Link to="/reset-password">
               <p>Forget Password?</p>
             </Link>
           </div>
@@ -210,7 +215,15 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLogIn: (username, userID, likedPosts, myPosts, avatar, likedPostsDetail, myPostsDetail) =>
+    handleLogIn: (
+      username,
+      userID,
+      likedPosts,
+      myPosts,
+      avatar,
+      likedPostsDetail,
+      myPostsDetail
+    ) =>
       dispatch({
         type: "LOGIN",
         username: username,
@@ -225,7 +238,10 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default withHandler(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Login),
+  axios
+);

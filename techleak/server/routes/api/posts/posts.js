@@ -61,14 +61,18 @@ router.post("/", auth.required, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", (req, res) => {
-  const promiseAlgolia = index.deleteObject(req.params.id);
+router.delete("/:id", async (req, res) => {
+  try {
+    const result = await index.deleteObject(req.params.id);
 
-  const promiseMongo = Post.findOneAndDelete({ _id: req.params.id });
+    if (!result) return res.status(400);
 
-  Promise.all([promiseAlgolia, promiseMongo])
-    .then(content => res.json(content))
-    .catch(err => res.status(500).json(err.message));
+    await Post.findOneAndDelete({ _id: req.params.id });
+
+    res.json({ message: "deleted" });
+  } catch (error) {
+    res.status(500);
+  }
 });
 
 router.patch("/likes/:id", auth.required, async (req, res) => {
