@@ -45,10 +45,9 @@ class HeadingSection extends React.Component {
           headers
         )
         .then(res => {
-          console.log(res);
-          this.props.updateAvatar(res.data.avatar);
           this.setState({ loading: false });
           this.setState({ selectedFile: null });
+          this.props.updateAvatar(res.data.avatar);
           axios.patch(
             `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/avatar/${
               this.props.userId
@@ -58,7 +57,6 @@ class HeadingSection extends React.Component {
           );
         })
         .catch(err => {
-          console.log(err);
           this.setState({ loading: false });
           this.setState({ selectedFile: null });
         });
