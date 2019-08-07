@@ -53,7 +53,6 @@ router.patch("/avatar/:userId", auth.required, async (req, res) => {
       commentsModified: result[1].nModified
     });
   } catch (error) {
-    console.log(error);
     return res.status(500);
   }
 });

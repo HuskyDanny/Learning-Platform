@@ -36,7 +36,7 @@ const Reply = props => {
     <div className="content">
       <div className="level" style={{ marginBottom: "0px" }}>
         <strong>{props.reply.username}</strong>
-        {props.reply.userID === props.userID ? deleteButton : null}
+        {props.reply.userId === props.userId ? deleteButton : null}
       </div>
       <span>
         {props.reply.body}
@@ -52,7 +52,7 @@ const Reply = props => {
 
 const mapStateToProps = state => {
   return {
-    userID: state.persistedReducer.userID
+    userId: state.persistedReducer.userID
   };
 };
 

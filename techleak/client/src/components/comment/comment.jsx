@@ -111,7 +111,7 @@ class Comment extends Component {
             <p>
               <div className="level" style={{ marginBottom: "0px" }}>
                 <strong>{this.props.comment.username}</strong>
-                {this.props.comment.userID === this.props.userID
+                {this.props.comment.userId === this.props.userId
                   ? deleteButton
                   : null}
               </div>
@@ -146,8 +146,7 @@ const mapStateToProps = state => {
   return {
     replies: state.persistedReducer.replies,
     userId: state.persistedReducer.userID,
-    username: state.persistedReducer.username,
-    avatar: state.persistedReducer.avatar
+    username: state.persistedReducer.username
   };
 };
 
