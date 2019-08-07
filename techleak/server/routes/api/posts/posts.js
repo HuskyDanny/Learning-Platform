@@ -31,6 +31,33 @@ router.get("/:id", auth.optional, async (req, res) => {
   }
 });
 
+router.patch("/avatar/:userId", auth.required, async (req, res) => {
+  try {
+    const posts = Post.updateMany(
+      { userId: req.params.userId },
+      { avatar: req.body.avatar }
+    );
+
+    const comments = Post.updateMany(
+      {},
+      {
+        $set: { "comments.$[elem].avatar": req.body.avatar }
+      },
+      { arrayFilters: [{ "elem.userId": req.params.userId }] }
+    );
+
+    const result = await Promise.all([posts, comments]);
+
+    return res.json({
+      postModified: result[0].nModified,
+      commentsModified: result[1].nModified
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500);
+  }
+});
+
 router.post("/", auth.required, async (req, res, next) => {
   try {
     const result = await postValidator(req.body);
@@ -43,7 +70,9 @@ router.post("/", auth.required, async (req, res, next) => {
       content: result.content,
       tags: result.tags ? result.tags : [],
       likes: result.likes ? result.likes : 0,
-      post_date_timestamp: new Date().getTime()
+      post_date_timestamp: new Date().getTime(),
+      userId: result.userId,
+      avatar: result.avatar
     };
 
     let post = new Post(dbSchema);
@@ -119,6 +148,7 @@ router.patch("/comments/:id", auth.required, async (req, res) => {
 
     return res.json(comment);
   } catch (error) {
+    console.log(error);
     return res.status(403).send(error.message);
   }
 });

@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import axios from "../../../axios-blogs";
 import profile from "../../../assets/img/Portrait_Placeholder.png";
 
-var faker = require("faker");
-
 class HeadingSection extends React.Component {
   state = {
     selectedFile: null,
@@ -16,7 +14,7 @@ class HeadingSection extends React.Component {
       selectedFile: e.target.files[0]
     });
     var reader = new FileReader();
-    reader.onload = function () {
+    reader.onload = function() {
       var dataURL = reader.result;
       var output = document.getElementById("profile");
       output.src = dataURL;
@@ -39,21 +37,28 @@ class HeadingSection extends React.Component {
         }
       };
       axios
-        .post(
+        .patch(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/profile/${
-          this.props.userID
+            this.props.userId
           }`,
           data,
           headers
         )
         .then(res => {
-          // then print response status
-          // new Promise(resolve => setTimeout(resolve, 3000));
-          this.setState({ loading: false });
+          console.log(res);
           this.props.updateAvatar(res.data.avatar);
+          this.setState({ loading: false });
           this.setState({ selectedFile: null });
+          axios.patch(
+            `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/avatar/${
+              this.props.userId
+            }`,
+            { avatar: this.props.avatar },
+            headers
+          );
         })
         .catch(err => {
+          console.log(err);
           this.setState({ loading: false });
           this.setState({ selectedFile: null });
         });
@@ -96,7 +101,7 @@ class HeadingSection extends React.Component {
               <a
                 class={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
-                  }`}
+                }`}
                 onClick={this.handleUpload}
               >
                 Upload
@@ -140,7 +145,7 @@ class HeadingSection extends React.Component {
 const mapStateToProps = state => {
   return {
     username: state.persistedReducer.username,
-    userID: state.persistedReducer.userID,
+    userId: state.persistedReducer.userID,
     avatar: state.persistedReducer.avatar
   };
 };

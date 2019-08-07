@@ -51,7 +51,7 @@ class Comment extends Component {
           reply: {
             body: this.state.body,
             username: this.props.username,
-            userID: this.props.userID,
+            userId: this.props.userId,
             post_date_timestamp: new Date().getTime()
           }
         },
@@ -99,7 +99,7 @@ class Comment extends Component {
           <p className="image is-64x64">
             <img
               src={
-                this.props.avatar ||
+                this.props.comment.avatar ||
                 "https://bulma.io/images/placeholders/128x128.png"
               }
               alt="placeholder"
@@ -145,7 +145,7 @@ class Comment extends Component {
 const mapStateToProps = state => {
   return {
     replies: state.persistedReducer.replies,
-    userID: state.persistedReducer.userID,
+    userId: state.persistedReducer.userID,
     username: state.persistedReducer.username,
     avatar: state.persistedReducer.avatar
   };
