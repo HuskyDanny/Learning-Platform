@@ -43,8 +43,7 @@ router.post("/", auth.required, async (req, res, next) => {
       content: result.content,
       tags: result.tags ? result.tags : [],
       likes: result.likes ? result.likes : 0,
-      post_date_timestamp: new Date().getTime(),
-      avatar: result.avatar
+      post_date_timestamp: new Date().getTime()
     };
 
     let post = new Post(dbSchema);

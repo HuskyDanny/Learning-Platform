@@ -1,3 +1,4 @@
+const { Router } = require("express");
 const mongoose = require("mongoose");
 const { commentSchema } = require("../models/Comments");
 const Joi = require("joi");
@@ -14,8 +15,7 @@ const postSchema = new mongoose.Schema({
   },
   author: { type: String, require: true },
   content: { type: String, required: true },
-  comments: [commentSchema],
-  avatar: { type: String }
+  comments: [commentSchema]
 });
 
 const Post = mongoose.model("Post", postSchema);
@@ -29,8 +29,7 @@ const validatePost = post => {
     author: Joi.string().required(),
     content: Joi.string().required(),
     tags: Joi.array().required(),
-    likes: Joi.number(),
-    avatar: Joi.string()
+    likes: Joi.number()
   };
   return Joi.validate(post, joiPostSchema);
 };
