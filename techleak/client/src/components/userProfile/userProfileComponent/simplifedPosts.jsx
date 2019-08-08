@@ -18,7 +18,7 @@ class SimplifiedPosts extends React.Component {
     };
     this.handleCancelClick = this.handleCancelClick.bind(this);
     // let redux know which post tab the user is looking at
-    this.props.handlePostType(this.props.postType)
+    this.props.handlePostType(this.props.postType);
   }
 
   handleAdjustLikedPost(id, status) {
@@ -48,7 +48,7 @@ class SimplifiedPosts extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(this.props.filterPosts)
+    console.log(this.props.filterPosts);
     if (this.props.filterPosts.length !== prevProps.filterPosts.length) {
       if (this.props.postType === "MyLikes") {
         this.setState({
@@ -59,7 +59,6 @@ class SimplifiedPosts extends React.Component {
           myPostsDetail: this.props.filterPosts
         });
       }
-
     }
   }
 
@@ -70,16 +69,20 @@ class SimplifiedPosts extends React.Component {
 
     if (postType === "MyLikes") {
       // "deleting" a post should always act upon the "unchangeable props" instead of state
-      const updatedLikedPostsDetail = this.props.likedPostsDetail.filter(function (lPostDetail) {
-        return lPostDetail._id != objectID;
-      })
+      const updatedLikedPostsDetail = this.props.likedPostsDetail.filter(
+        function(lPostDetail) {
+          return lPostDetail._id != objectID;
+        }
+      );
       const updatedLikedPosts = this.props.likedPosts.filter(likedPost => {
         return likedPost !== objectID;
       });
       // the state and the props may have different value because of the filter
-      const updatedLikedPostsDetailState = this.state.likedPostsDetail.filter(function (lPostDetail) {
-        return lPostDetail._id != objectID;
-      })
+      const updatedLikedPostsDetailState = this.state.likedPostsDetail.filter(
+        function(lPostDetail) {
+          return lPostDetail._id != objectID;
+        }
+      );
       const updatedLikedPostsState = this.state.likedPosts.filter(likedPost => {
         return likedPost !== objectID;
       });
@@ -87,7 +90,7 @@ class SimplifiedPosts extends React.Component {
       this.setState({
         likedPostsDetail: updatedLikedPostsDetailState,
         likedPosts: updatedLikedPostsState
-      })
+      });
       // this portion update the redux to finalize the delete
       this.props.handleUpdatedLikedPosts(
         updatedLikedPostsDetail,
@@ -97,16 +100,20 @@ class SimplifiedPosts extends React.Component {
 
     if (postType === "MyPosts") {
       // "deleting" a post should always act upon the "unchangeable props" instead of state
-      const updatedMyPostsDetail = this.props.myPostsDetail.filter(function (mPostDetail) {
+      const updatedMyPostsDetail = this.props.myPostsDetail.filter(function(
+        mPostDetail
+      ) {
         return mPostDetail._id != objectID;
-      })
+      });
       const updatedMyPosts = this.props.myPosts.filter(myPost => {
         return myPost !== objectID;
       });
       // the state and the props may have different value because of the filter
-      const updatedMyPostsDetailState = this.state.myPostsDetail.filter(function (mPostDetail) {
-        return mPostDetail._id != objectID;
-      })
+      const updatedMyPostsDetailState = this.state.myPostsDetail.filter(
+        function(mPostDetail) {
+          return mPostDetail._id != objectID;
+        }
+      );
       const updatedMyPostsState = this.state.myPosts.filter(myPost => {
         return myPost !== objectID;
       });
@@ -114,7 +121,7 @@ class SimplifiedPosts extends React.Component {
       this.setState({
         myPostsDetail: updatedMyPostsDetailState,
         myPosts: updatedMyPostsState
-      })
+      });
       // this portion update the redux to finalize the delete
       this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
     }
@@ -131,23 +138,25 @@ class SimplifiedPosts extends React.Component {
     }
     return (
       <React.Fragment>
-        {simpPosts.map(simPost => {
-          return (
-            <SimplifiedPost
-              title={simPost.title}
-              views={faker.random.number()}
-              comments={simPost.comments}
-              tags={simPost.tags}
-              img={
-                this.props.avatar ||
-                "https://bulma.io/images/placeholders/128x128.png"
-              }
-              objectID={simPost._id}
-              handleCancelClick={this.handleCancelClick}
-              postType={postType}
-            />
-          );
-        }).reverse()}
+        {simpPosts
+          .map(simPost => {
+            return (
+              <SimplifiedPost
+                title={simPost.title}
+                views={faker.random.number()}
+                comments={simPost.comments}
+                tags={simPost.tags}
+                img={
+                  simPost.avatar ||
+                  "https://bulma.io/images/placeholders/128x128.png"
+                }
+                objectID={simPost._id}
+                handleCancelClick={this.handleCancelClick}
+                postType={postType}
+              />
+            );
+          })
+          .reverse()}
       </React.Fragment>
     );
   }
@@ -180,7 +189,7 @@ const mapDispatchToProps = dispatch => {
         myPostsDetail: updatedMyPostsDetail,
         myPosts: updatedMyPosts
       }),
-    handlePostType: (postType) =>
+    handlePostType: postType =>
       dispatch({
         type: "UPDATEPOSTTYPE",
         postType: postType
