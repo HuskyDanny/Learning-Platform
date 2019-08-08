@@ -68,27 +68,35 @@ class Login extends Component {
   // responsible for fetching data about my posts and liked posts from 
   // the database. the output is later used for setting states in redux
   fetchAllPostDetails = async (data) => {
-    const likedPosts = data.likedPosts;
-    const myPosts = data.myPosts;
+    const likedPosts = data.likedPosts.reverse();
+    const myPosts = data.myPosts.reverse();
     let singleLikedPostDetailPromise = [];
     let singleMyPostDetailPromise = [];
-    for (var i = 0; i < likedPosts.length; i++) {
-      let l_promise = this.fetchSinglePostDetail(likedPosts[i]);
-      singleLikedPostDetailPromise.unshift(l_promise);
+    try {
+      for (var i = 0; i < likedPosts.length; i++) {
+        let l_promise = this.fetchSinglePostDetail(likedPosts[i]);
+        singleLikedPostDetailPromise.unshift(l_promise);
+      }
+      for (var j = 0; j < myPosts.length; j++) {
+        let m_promise = this.fetchSinglePostDetail(myPosts[j]);
+        singleMyPostDetailPromise.unshift(m_promise);
+      }
+      let allLikedPostDetails = Promise.all(singleLikedPostDetailPromise);
+      let allmyPostDetails = Promise.all(singleMyPostDetailPromise);
+      let allPostDetails = await Promise.all([allLikedPostDetails, allmyPostDetails]);
+      return allPostDetails;
+    } catch (error) {
+      console.log(error)
     }
-    for (var j = 0; j < myPosts.length; j++) {
-      let m_promise = this.fetchSinglePostDetail(myPosts[j]);
-      singleMyPostDetailPromise.unshift(m_promise);
-    }
-    let allLikedPostDetails = Promise.all(singleLikedPostDetailPromise);
-    let allmyPostDetails = Promise.all(singleMyPostDetailPromise);
-    let allPostDetails = await Promise.all([allLikedPostDetails, allmyPostDetails]);
-    return allPostDetails;
   }
 
   fetchSinglePostDetail = async (postID) => {
-    let userDetail = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${postID}`);
-    return userDetail.data;
+    try {
+      let userDetail = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${postID}`);
+      return userDetail.data;
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   render() {

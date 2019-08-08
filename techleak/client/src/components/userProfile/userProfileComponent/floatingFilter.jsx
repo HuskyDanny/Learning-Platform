@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from "react-redux";
 import "./profilePanel.css";
 
 const boxStyle = {
@@ -18,6 +19,39 @@ const containerStyle = {
 }
 
 class FloatingFilter extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            postType: this.props.postType,
+            searchKeyWords: ""
+        }
+        this.handleFilterInputChange = this.handleFilterInputChange.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.postType !== this.props.postType) {
+            this.setState({ postType: this.props.postType });
+            this.setState({ searchKeyWords: "" })
+        }
+    }
+
+    handleFilterInputChange = async (keywords) => {
+        await this.setState({ searchKeyWords: keywords })
+        let unfilteredPostsDetail = [];
+        if (this.state.postType === "MyLikes") {
+            unfilteredPostsDetail = this.props.likedPostsDetail;
+        } else if (this.state.postType === "MyPosts") {
+            unfilteredPostsDetail = this.props.myPostsDetail;
+        }
+        let filteredPostsDetail = unfilteredPostsDetail.filter((post) => {
+            let title = post.title.toLowerCase();
+            return title.indexOf(this.state.searchKeyWords.toLowerCase()) != -1;
+        })
+        console.log(this.state.searchKeyWords)
+        this.props.handleFilter(filteredPostsDetail)
+    }
+
     render() {
         return (
             <div className="column" style={{ flex: "30%" }}>
@@ -28,7 +62,12 @@ class FloatingFilter extends React.Component {
                                 <h4>Posts Filter:</h4>
                                 <div className="field is-grouped">
                                     <p className="control is-expanded">
-                                        <input className="input is-primary" type="text" placeholder="Find a post" />
+                                        <input
+                                            className="input is-primary"
+                                            type="text"
+                                            placeholder="Find a post"
+                                            value={this.state.searchKeyWords}
+                                            onChange={e => this.handleFilterInputChange(e.target.value)} />
                                     </p>
                                     <p className="control">
                                         <a className="button is-success">
@@ -98,4 +137,25 @@ class FloatingFilter extends React.Component {
     }
 }
 
-export default FloatingFilter;
+const mapStateToProps = state => {
+    return {
+        likedPostsDetail: state.persistedReducer.likedPostsDetail,
+        myPostsDetail: state.persistedReducer.myPostsDetail,
+        postType: state.persistedReducer.postType
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        handleFilter: (filteredPostsDetail) =>
+            dispatch({
+                type: "FILTERCHANGE",
+                filteredPostsDetail: filteredPostsDetail,
+            })
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FloatingFilter);

@@ -80,8 +80,8 @@ class SimplifiedPost extends React.Component {
   }
 
   deleteControl = () => {
-    const { title, objectID, PostType, userID, myPosts } = this.props;
-    if (PostType === "MyPosts") {
+    const { objectID, postType, userID, myPosts } = this.props;
+    if (postType === "MyPosts") {
       return (
         <a className="level-item"
           aria-label="cancel"
@@ -116,7 +116,7 @@ class SimplifiedPost extends React.Component {
                       // waiting for the above two promise to finish
                       await Promise.all([deletedPostData, deletedmyPostID]);
                       // handle the front end rendering after one "myPost" was deleted
-                      this.props.handleCancelClick(e, objectID, PostType);
+                      this.props.handleCancelClick(e, objectID, postType);
                     } catch (e) {
                       console.log(e);
                     }
@@ -139,14 +139,14 @@ class SimplifiedPost extends React.Component {
           </span>
         </a>
       );
-    } else if (PostType === "MyLikes") {
+    } else if (postType === "MyLikes") {
       return (
         <a
           className="level-item"
           aria-label="cancel"
           onClick={e => {
             // handle the front end rendering
-            this.props.handleCancelClick(e, objectID, PostType);
+            this.props.handleCancelClick(e, objectID, postType);
             // handle the backend data stroge in data base
             this.handleDelete(e, objectID);
           }}
