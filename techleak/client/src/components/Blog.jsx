@@ -4,7 +4,7 @@ import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
 import axios from "../axios-blogs";
-import withHandler from "./UI/ErrorHandler/ErrorHandler";
+
 import Share from "./share/share";
 
 class Blog extends Component {
@@ -31,7 +31,7 @@ class Blog extends Component {
     axios
       .get(
         `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-        this.props.match.params.id
+          this.props.match.params.id
         }`
       )
       .then(res => {
@@ -84,16 +84,24 @@ class Blog extends Component {
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
       `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-      this.props.match.params.id
+        this.props.match.params.id
       }`,
       { liked: LIKED },
       headers
     );
 
     Promise.all([likePostPromise, likeNumberPromise]).catch(err => {
-      this.props.handleLike(this.props.match.params.id, this.state.rawPostData, !LIKED);
+      this.props.handleLike(
+        this.props.match.params.id,
+        this.state.rawPostData,
+        !LIKED
+      );
     });
-    this.props.handleLike(this.props.match.params.id, this.state.rawPostData, LIKED);
+    this.props.handleLike(
+      this.props.match.params.id,
+      this.state.rawPostData,
+      LIKED
+    );
     new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
       this.setState({ enableLike: true });
     });
@@ -161,7 +169,7 @@ class Blog extends Component {
                       id="likeBtn"
                       className={`level-item has-text-centered button ${
                         LIKED ? " is-success" : ""
-                        }`}
+                      }`}
                       aria-label="like"
                       onClick={this.state.enableLike ? this.handleLike : null}
                     >
@@ -206,10 +214,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withHandler(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Blog),
-  axios
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Blog);

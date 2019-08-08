@@ -14,14 +14,17 @@ const postSchema = new mongoose.Schema({
     type: Number
   },
   author: { type: String, require: true },
+  userId: { type: String, required: true },
   content: { type: String, required: true },
-  comments: [commentSchema]
+  comments: [commentSchema],
+  avatar: { type: String }
 });
 
 const Post = mongoose.model("Post", postSchema);
 
 const validatePost = post => {
   const joiPostSchema = {
+    userId: Joi.string().required(),
     title: Joi.string()
       .required()
       .min(5)
@@ -29,7 +32,8 @@ const validatePost = post => {
     author: Joi.string().required(),
     content: Joi.string().required(),
     tags: Joi.array().required(),
-    likes: Joi.number()
+    likes: Joi.number(),
+    avatar: Joi.string()
   };
   return Joi.validate(post, joiPostSchema);
 };

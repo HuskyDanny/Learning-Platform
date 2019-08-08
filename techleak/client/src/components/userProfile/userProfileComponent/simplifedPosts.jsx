@@ -36,7 +36,7 @@ class SimplifiedPosts extends React.Component {
       axios
         .delete(
           `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-          this.props.userID
+            this.props.userID
           }?postID=${id}`,
           headers
         )
@@ -89,7 +89,10 @@ class SimplifiedPosts extends React.Component {
         likedPosts: updatedLikedPostsState
       })
       // this portion update the redux to finalize the delete
-      this.props.handleUpdatedLikedPosts(updatedLikedPostsDetail, updatedLikedPosts);
+      this.props.handleUpdatedLikedPosts(
+        updatedLikedPostsDetail,
+        updatedLikedPosts
+      );
     }
 
     if (postType === "MyPosts") {
