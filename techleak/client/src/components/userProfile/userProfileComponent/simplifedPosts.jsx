@@ -13,10 +13,12 @@ class SimplifiedPosts extends React.Component {
       likedPostsDetail: this.props.likedPostsDetail,
       myPostsDetail: this.props.myPostsDetail,
       likedPosts: this.props.likedPosts,
-      myPosts: this.props.myPosts
+      myPosts: this.props.myPosts,
+      filterPosts: this.props.filterPosts
     };
-    // this.retrievePosts(this.props.PostType);
     this.handleCancelClick = this.handleCancelClick.bind(this);
+    // let redux know which post tab the user is looking at
+    this.props.handlePostType(this.props.postType)
   }
 
   handleAdjustLikedPost(id, status) {
@@ -45,25 +47,47 @@ class SimplifiedPosts extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    console.log(this.props.filterPosts)
+    if (this.props.filterPosts.length !== prevProps.filterPosts.length) {
+      if (this.props.postType === "MyLikes") {
+        this.setState({
+          likedPostsDetail: this.props.filterPosts
+        });
+      } else if (this.props.postType === "MyPosts") {
+        this.setState({
+          myPostsDetail: this.props.filterPosts
+        });
+      }
+
+    }
+  }
+
   // this method updates the local state and the redux of my posts and liked posts
   // when a deleted button was clicked.
-  handleCancelClick(e, objectID, PostType) {
+  handleCancelClick(e, objectID, postType) {
     e.preventDefault();
 
-    if (PostType === "MyLikes") {
-      const updatedLikedPostsDetail = this.state.likedPostsDetail.filter(
-        function(lPostDetail) {
-          return lPostDetail._id != objectID;
-        }
-      );
-      const updatedLikedPosts = this.state.likedPosts.filter(likedPost => {
+    if (postType === "MyLikes") {
+      // "deleting" a post should always act upon the "unchangeable props" instead of state
+      const updatedLikedPostsDetail = this.props.likedPostsDetail.filter(function (lPostDetail) {
+        return lPostDetail._id != objectID;
+      })
+      const updatedLikedPosts = this.props.likedPosts.filter(likedPost => {
+        return likedPost !== objectID;
+      });
+      // the state and the props may have different value because of the filter
+      const updatedLikedPostsDetailState = this.state.likedPostsDetail.filter(function (lPostDetail) {
+        return lPostDetail._id != objectID;
+      })
+      const updatedLikedPostsState = this.state.likedPosts.filter(likedPost => {
         return likedPost !== objectID;
       });
       // this portion update the local state (by using setState) to achieve new rendering
       this.setState({
-        likedPostsDetail: updatedLikedPostsDetail,
-        likedPosts: updatedLikedPosts
-      });
+        likedPostsDetail: updatedLikedPostsDetailState,
+        likedPosts: updatedLikedPostsState
+      })
       // this portion update the redux to finalize the delete
       this.props.handleUpdatedLikedPosts(
         updatedLikedPostsDetail,
@@ -71,55 +95,59 @@ class SimplifiedPosts extends React.Component {
       );
     }
 
-    if (PostType === "MyPosts") {
-      const updatedMyPostsDetail = this.state.myPostsDetail.filter(function(
-        mPostDetail
-      ) {
+    if (postType === "MyPosts") {
+      // "deleting" a post should always act upon the "unchangeable props" instead of state
+      const updatedMyPostsDetail = this.props.myPostsDetail.filter(function (mPostDetail) {
         return mPostDetail._id != objectID;
+      })
+      const updatedMyPosts = this.props.myPosts.filter(myPost => {
+        return myPost !== objectID;
       });
-      const updatedMyPosts = this.state.myPosts.filter(myPost => {
+      // the state and the props may have different value because of the filter
+      const updatedMyPostsDetailState = this.state.myPostsDetail.filter(function (mPostDetail) {
+        return mPostDetail._id != objectID;
+      })
+      const updatedMyPostsState = this.state.myPosts.filter(myPost => {
         return myPost !== objectID;
       });
       // this portion update the local state (by using setState) to achieve new rendering
       this.setState({
-        myPostsDetail: updatedMyPostsDetail,
-        myPosts: updatedMyPosts
-      });
+        myPostsDetail: updatedMyPostsDetailState,
+        myPosts: updatedMyPostsState
+      })
       // this portion update the redux to finalize the delete
       this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
     }
   }
 
   render() {
-    let { PostType } = this.props;
+    let { postType } = this.props;
     let { likedPostsDetail, myPostsDetail } = this.state;
     var simpPosts = [];
-    if (PostType === "MyLikes") {
+    if (postType === "MyLikes") {
       simpPosts = likedPostsDetail;
-    } else if (PostType === "MyPosts") {
+    } else if (postType === "MyPosts") {
       simpPosts = myPostsDetail;
     }
     return (
       <React.Fragment>
-        {simpPosts
-          .map(simPost => {
-            return (
-              <SimplifiedPost
-                title={simPost.title}
-                views={faker.random.number()}
-                comments={simPost.comments}
-                tags={simPost.tags}
-                img={
-                  simPost.avatar ||
-                  "https://bulma.io/images/placeholders/128x128.png"
-                }
-                objectID={simPost._id}
-                handleCancelClick={this.handleCancelClick}
-                PostType={PostType}
-              />
-            );
-          })
-          .reverse()}
+        {simpPosts.map(simPost => {
+          return (
+            <SimplifiedPost
+              title={simPost.title}
+              views={faker.random.number()}
+              comments={simPost.comments}
+              tags={simPost.tags}
+              img={
+                this.props.avatar ||
+                "https://bulma.io/images/placeholders/128x128.png"
+              }
+              objectID={simPost._id}
+              handleCancelClick={this.handleCancelClick}
+              postType={postType}
+            />
+          );
+        }).reverse()}
       </React.Fragment>
     );
   }
@@ -133,7 +161,8 @@ const mapStateToProps = state => {
     myPosts: state.persistedReducer.myPosts,
     avatar: state.persistedReducer.avatar,
     likedPostsDetail: state.persistedReducer.likedPostsDetail,
-    myPostsDetail: state.persistedReducer.myPostsDetail
+    myPostsDetail: state.persistedReducer.myPostsDetail,
+    filterPosts: state.persistedReducer.filterPosts
   };
 };
 
@@ -150,6 +179,11 @@ const mapDispatchToProps = dispatch => {
         type: "USERMYPOSTSUPDATED",
         myPostsDetail: updatedMyPostsDetail,
         myPosts: updatedMyPosts
+      }),
+    handlePostType: (postType) =>
+      dispatch({
+        type: "UPDATEPOSTTYPE",
+        postType: postType
       })
   };
 };

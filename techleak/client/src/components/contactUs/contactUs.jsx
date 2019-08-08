@@ -3,6 +3,7 @@ import Modal from "react-responsive-modal";
 import "./contactUs.css";
 import { connect } from "react-redux";
 import axios from "axios";
+import Spinner from "../UI/Spinner/Spinner";
 import { confirmAlert } from "react-custom-confirm-alert";
 
 class ContactUs extends React.Component {
@@ -14,7 +15,8 @@ class ContactUs extends React.Component {
       email: "",
       phone: "",
       title: "",
-      message: ""
+      message: "",
+      loading: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,6 +41,7 @@ class ContactUs extends React.Component {
   handleSubmit(e) {
     const { firstname, familyname, email, phone, title, message } = this.state;
     e.preventDefault();
+    this.setState({ loading: true });
     axios({
       method: "POST",
       url: `${process.env.REACT_APP_BACKEND_SERVER}/api/contact/contact`,
@@ -52,7 +55,7 @@ class ContactUs extends React.Component {
       }
     })
       .then((response) => {
-        console.log(response);
+        this.setState({ loading: false });
         if (response.data.msg === 'success') {
           confirmAlert({
             message: "Your message has been sent successfully. We will reply you soon",
@@ -67,6 +70,9 @@ class ContactUs extends React.Component {
           });
         }
       })
+      .catch((e) => {
+        this.setState({ loading: false });
+      })
   }
 
   render() {
@@ -80,19 +86,13 @@ class ContactUs extends React.Component {
         padding: "0px"
       }
     };
-
-    return (
-      <Modal
-        open={this.props.contactUsOpen}
-        onClose={this.props.onSwitchContactModal}
-        styles={modalBg}
-        center
-      >
+    let contactUsForm = (
+      <div>
         <section className="contact-title-wrap">
           <span className="contact-title-1">Contact Us</span>
           <span className="contact-title-2">
             We look forward to your message!
-          </span>
+      </span>
         </section>
 
         <form className="contact-form" onSubmit={this.handleSubmit}>
@@ -175,9 +175,35 @@ class ContactUs extends React.Component {
               className="button is-primary is-rounded is-medium"
             >
               Submit
-            </button>
+        </button>
           </div>
         </form>
+      </div>
+    )
+
+    if (this.state.loading) {
+      contactUsForm = (
+        <div
+          style={{
+            textAlign: "center",
+            paddingTop: "25%",
+            paddingBottom: "25%"
+          }}
+        >
+          <Spinner />
+        </div>
+      );
+    }
+
+
+    return (
+      <Modal
+        open={this.props.contactUsOpen}
+        onClose={this.props.onSwitchContactModal}
+        styles={modalBg}
+        center
+      >
+        {contactUsForm}
       </Modal>
     );
   }

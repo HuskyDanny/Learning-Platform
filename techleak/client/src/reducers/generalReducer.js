@@ -12,6 +12,8 @@ let initialState = {
   replies: [],
   myPosts: [],
   myPostsDetail: [],
+  filterPosts: [],
+  postType: "",
   menu_class: "",
   avatar: "",
   likes: {}
@@ -202,7 +204,18 @@ const reducer = (state = initialState, action) => {
       comments: temp
     };
   }
-
+  if (action.type === "UPDATEPOSTTYPE") {
+    return {
+      ...state,
+      postType: action.postType
+    };
+  }
+  if (action.type === "FILTERCHANGE") {
+    return {
+      ...state,
+      filterPosts: action.filteredPostsDetail
+    };
+  }
   return state;
 };
 
