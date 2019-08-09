@@ -3,7 +3,9 @@ import Navbar from "./navbar";
 import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
-import axios from "../axios-blogs";
+import axios from "axios";
+import { withRouter } from "react-router";
+import errorBoundary from "./UI/ErrorHandler/ErrorHandler";
 
 import Share from "./share/share";
 
@@ -214,7 +216,12 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Blog);
+export default errorBoundary(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(Blog)
+  ),
+  axios
+);

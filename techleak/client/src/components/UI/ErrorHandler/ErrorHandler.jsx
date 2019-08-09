@@ -21,7 +21,6 @@ const WithHandler = (WrappedComponent, axios) => {
         res => res,
         error => {
           // Do something with response error
-          console.log(error);
           this.setState({
             error: true,
             errorMessage: error.response.status
@@ -64,6 +63,12 @@ const WithHandler = (WrappedComponent, axios) => {
       const onClose = () => {
         this.setState({ error: false, errorMessage: "" });
       };
+
+      const onExited = () => {
+        if (this.props.history) {
+          this.props.history.push("/");
+        }
+      };
       return (
         <div>
           <Modal
@@ -72,6 +77,7 @@ const WithHandler = (WrappedComponent, axios) => {
             onClose={onClose}
             center
             styles={modalBg}
+            onExited={onExited}
           >
             {message}{" "}
             <i className="fas fa-exclamation" style={{ color: "red" }} />
