@@ -28,7 +28,14 @@ class HeadingSection extends React.Component {
       const data = new FormData();
       data.append("avatar", this.state.selectedFile);
       this.setState({ loading: true });
-
+      const token = localStorage.getItem("token");
+      const headers = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${token}`,
+          withCredentials: true
+        }
+      };
       axios
         .patch(`/api/users/profile/${this.props.userId}`, data)
         .then(res => {
@@ -39,7 +46,8 @@ class HeadingSection extends React.Component {
             `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/avatar/${
               this.props.userId
             }`,
-            { avatar: this.props.avatar }
+            { avatar: this.props.avatar },
+            headers
           );
         })
         .catch(err => {

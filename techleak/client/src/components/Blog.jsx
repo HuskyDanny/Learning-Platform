@@ -54,7 +54,14 @@ class Blog extends Component {
   handleLike = () => {
     //disable the like for a moment
     this.setState({ enableLike: false });
-
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
     const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
 
     //handling likeposts in User route
@@ -62,16 +69,19 @@ class Blog extends Component {
       ? axios.delete(
           `/api/users/likes/${
             this.props.userID ? this.props.userID : "dummy"
-          }?postID=${this.props.match.params.id}`
+          }?postID=${this.props.match.params.id}`,
+          headers
         )
       : axios.post(
           `/api/users/likes/${this.props.userID ? this.props.userID : "dummy"}`,
-          { postID: this.props.match.params.id }
+          { postID: this.props.match.params.id },
+          headers
         );
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
       `/api/posts/likes/${this.props.match.params.id}`,
-      { liked: LIKED }
+      { liked: LIKED },
+      headers
     );
 
     Promise.all([likePostPromise, likeNumberPromise]).catch(err => {

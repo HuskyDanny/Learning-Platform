@@ -45,14 +45,25 @@ class Publish extends Component {
       avatar: this.props.avatar
     };
     this.setState({ loading: true });
-
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
     axios
       .post("/api/posts", post)
       .then(res => {
         axios
-          .post(`/api/users/myPosts/${this.props.userID}`, {
-            postID: res.data._id
-          })
+          .post(
+            `/api/users/myPosts/${this.props.userID}`,
+            {
+              postID: res.data._id
+            },
+            headers
+          )
           .then(res => {
             //cannot divide the call into two setState calls
             this.setState({ loading: false, posted: true });
