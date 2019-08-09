@@ -1,4 +1,4 @@
-import axios from "../../axios-blogs";
+import axios from "../../axios/axios-blogs";
 import React, { Component } from "react";
 import Editor from "../editor/Editor";
 import { Link } from "react-router-dom";
@@ -36,8 +36,6 @@ class Publish extends Component {
   }
 
   handlePost = async () => {
-    const token = localStorage.getItem("token");
-
     const post = {
       author: this.props.username,
       title: this.state.title,
@@ -48,22 +46,13 @@ class Publish extends Component {
     };
     this.setState({ loading: true });
 
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`
-      }
-    };
-
     axios
-      .post("/api/posts", post, headers)
+      .post("/api/posts", post)
       .then(res => {
         axios
-          .post(
-            `/api/users/myPosts/${this.props.userID}`,
-            { postID: res.data._id },
-            headers
-          )
+          .post(`/api/users/myPosts/${this.props.userID}`, {
+            postID: res.data._id
+          })
           .then(res => {
             //cannot divide the call into two setState calls
             this.setState({ loading: false, posted: true });

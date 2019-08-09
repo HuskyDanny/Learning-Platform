@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+import axios from "../axios/axios-blogs";
 import Modal from "react-responsive-modal";
 import Spinner from "./UI/Spinner/Spinner";
 import { connect } from "react-redux";
@@ -37,7 +37,7 @@ class Singup extends Component {
         }
       };
       axios
-        .post(`${process.env.REACT_APP_BACKEND_SERVER}/api/users/signup`, user)
+        .post("/api/users/signup", user, { headers: "" })
         .then(res => {
           this.setState({
             loading: false,

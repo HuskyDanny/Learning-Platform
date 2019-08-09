@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-responsive-modal";
 import "./contactUs.css";
 import { connect } from "react-redux";
-import axios from "axios";
+import axios from "../../axios/axios-blogs";
 import Spinner from "../UI/Spinner/Spinner";
 import { confirmAlert } from "react-custom-confirm-alert";
 
@@ -35,7 +35,7 @@ class ContactUs extends React.Component {
       phone: "",
       title: "",
       message: ""
-    })
+    });
   }
 
   handleSubmit(e) {
@@ -44,7 +44,7 @@ class ContactUs extends React.Component {
     this.setState({ loading: true });
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_BACKEND_SERVER}/api/contact/contact`,
+      url: "/api/contact/contact",
       data: {
         firstname: firstname,
         familyname: familyname,
@@ -52,27 +52,30 @@ class ContactUs extends React.Component {
         phone: phone,
         title: title,
         message: message
-      }
+      },
+      headers: ""
     })
-      .then((response) => {
+      .then(response => {
         this.setState({ loading: false });
-        if (response.data.msg === 'success') {
+        if (response.data.msg === "success") {
           confirmAlert({
-            message: "Your message has been sent successfully. We will reply you soon",
+            message:
+              "Your message has been sent successfully. We will reply you soon",
             buttons: [{ label: "OK" }]
           });
           this.resetForm();
           this.props.onSwitchContactModal();
-        } else if (response.data.msg === 'fail') {
+        } else if (response.data.msg === "fail") {
           confirmAlert({
-            message: "Sorry, your message was failed to delivered. Please try again",
+            message:
+              "Sorry, your message was failed to delivered. Please try again",
             buttons: [{ label: "OK" }]
           });
         }
       })
-      .catch((e) => {
+      .catch(e => {
         this.setState({ loading: false });
-      })
+      });
   }
 
   render() {
@@ -92,7 +95,7 @@ class ContactUs extends React.Component {
           <span className="contact-title-1">Contact Us</span>
           <span className="contact-title-2">
             We look forward to your message!
-      </span>
+          </span>
         </section>
 
         <form className="contact-form" onSubmit={this.handleSubmit}>
@@ -175,11 +178,11 @@ class ContactUs extends React.Component {
               className="button is-primary is-rounded is-medium"
             >
               Submit
-        </button>
+            </button>
           </div>
         </form>
       </div>
-    )
+    );
 
     if (this.state.loading) {
       contactUsForm = (
@@ -194,7 +197,6 @@ class ContactUs extends React.Component {
         </div>
       );
     }
-
 
     return (
       <Modal

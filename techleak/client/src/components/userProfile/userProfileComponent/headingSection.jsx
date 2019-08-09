@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import axios from "../../../axios-blogs";
+import axios from "../../../axios/axios-blogs";
 import profile from "../../../assets/img/Portrait_Placeholder.png";
 
 class HeadingSection extends React.Component {
@@ -29,21 +29,8 @@ class HeadingSection extends React.Component {
       data.append("avatar", this.state.selectedFile);
       this.setState({ loading: true });
 
-      const token = localStorage.getItem("token");
-      const headers = {
-        headers: {
-          Authorization: `Token ${token}`,
-          withCredentials: true
-        }
-      };
       axios
-        .patch(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/profile/${
-            this.props.userId
-          }`,
-          data,
-          headers
-        )
+        .patch(`/api/users/profile/${this.props.userId}`, data)
         .then(res => {
           this.setState({ loading: false });
           this.setState({ selectedFile: null });
@@ -52,8 +39,7 @@ class HeadingSection extends React.Component {
             `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/avatar/${
               this.props.userId
             }`,
-            { avatar: this.props.avatar },
-            headers
+            { avatar: this.props.avatar }
           );
         })
         .catch(err => {

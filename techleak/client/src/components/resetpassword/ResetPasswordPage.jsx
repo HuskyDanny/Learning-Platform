@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../../axios/axios-blogs";
 
 export default class ResetPasswordPage extends Component {
-  
   constructor(props) {
     super(props);
 
@@ -18,78 +17,64 @@ export default class ResetPasswordPage extends Component {
       passwordAgain: "",
       confirmation: "",
       sent: 0
-    }
+    };
   }
 
   handleChange = (e, type) => {
     this.setState({ [type]: e.target.value });
-  }
+  };
 
-  handleKeyPress(e, target) {
-    // const {submit, email, password, passwordAgain, confirmation} = this.state;
-    // if (target.charCode == 13 && !submit && email !== "") {
-    //   this.handleEmailSubmit(e);
-    // } else if (target.charCode == 13 && submit && 
-    //           password !== "" && passwordAgain !== "" &&
-    //           confirmation !== "") {
-    //   this.handlePasswordSubmit(e);
-    // }
-  }
-
-  handleEmailSubmit = (e) => {
+  handleEmailSubmit = e => {
     e.preventDefault();
     axios({
       method: "POST",
-      url: `${process.env.REACT_APP_BACKEND_SERVER}/api/users/reset-send-email`,
+      url: "/api/users/reset-send-email",
       data: {
         email: this.state.email
-      }
+      },
+      headers: ""
     })
       .then(res => {
         this.setState({
-          sent: (this.state.sent + 1)
-        })
+          sent: this.state.sent + 1
+        });
         localStorage.setItem("token", res.data.token);
       })
       .catch(err => {
         console.log(err);
-      })
-  }
+      });
+  };
 
-  handlePasswordSubmit = (e) => {
+  handlePasswordSubmit = e => {
     e.preventDefault();
-    const { 
-      email,
-      password,
-      passwordAgain,
-      confirmation
-    } = this.state
+    const { email, password, passwordAgain, confirmation } = this.state;
 
     if (password === passwordAgain) {
       axios({
-        method: 'POST',
-        url: `${process.env.REACT_APP_BACKEND_SERVER}/api/users/reset-password`,
+        method: "POST",
+        url: "/api/users/reset-password",
         data: {
           email: email,
           password: password,
           confirmation: confirmation
-        }
+        },
+        headers: ""
       })
         .then(res => {
           this.setState({
-            sent: (this.state.sent + 1),
+            sent: this.state.sent + 1,
             email: "",
             password: "",
             passwordAgain: "",
-            confirmation: "",
-          })
+            confirmation: ""
+          });
           localStorage.setItem("token", res.data.token);
         })
         .catch(err => {
           console.log(err);
-        })
+        });
     }
-  }
+  };
 
   MatchedPassword = () => {
     if (!this.state.password || !this.state.passwordAgain) return;
@@ -122,19 +107,22 @@ export default class ResetPasswordPage extends Component {
                 type="text"
                 value={this.state.email}
               />
-              <button type="submit" className="button is-primary">Reset Password</button>
+              <button type="submit" className="button is-primary">
+                Reset Password
+              </button>
             </form>
           </div>
         </div>
-      )
+      );
     } else if (this.state.sent % 3 === 1) {
       display = (
         <div className="row justify-content-center">
           <div className="col-10 col-sm-7 col-md-5 col-lg-4">
             <form onSubmit={this.handlePasswordSubmit}>
               <p>
-                Please enter the new password you want to set as well as the six-digit
-                confirmation code that we have sent to you email address
+                Please enter the new password you want to set as well as the
+                six-digit confirmation code that we have sent to you email
+                address
               </p>
               <label className="label">Password</label>
               <input
@@ -168,11 +156,13 @@ export default class ResetPasswordPage extends Component {
                 type="text"
                 value={this.state.confirmation}
               />
-              <button type="submit" className="button is-primary">Reset Password</button>
+              <button type="submit" className="button is-primary">
+                Reset Password
+              </button>
             </form>
           </div>
         </div>
-      )
+      );
     } else if (this.state.sent % 3 === 2) {
       display = (
         <div
@@ -210,13 +200,9 @@ export default class ResetPasswordPage extends Component {
             Main Page
           </Link>
         </div>
-      )
+      );
     }
-    
-    return (
-      <React.Fragment>
-        {display}
-      </React.Fragment>
-    );
+
+    return <React.Fragment>{display}</React.Fragment>;
   }
 }

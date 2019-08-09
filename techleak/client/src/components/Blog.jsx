@@ -3,7 +3,8 @@ import Navbar from "./navbar";
 import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
-import axios from "axios";
+import axios from "../axios/axios-blogs";
+
 import { withRouter } from "react-router";
 import errorBoundary from "./UI/ErrorHandler/ErrorHandler";
 
@@ -22,7 +23,7 @@ class Blog extends Component {
       userID: "",
       content: "",
       title: "",
-      enableLike: this.props.loggedIn,
+      enableLike: true,
       rawPostData: ""
     };
 
@@ -31,11 +32,7 @@ class Blog extends Component {
 
   componentDidMount = () => {
     axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-          this.props.match.params.id
-        }`
-      )
+      .get(`/api/posts/${this.props.match.params.id}`, { headers: "" })
       .then(res => {
         const date = new Date(res.data.post_date_timestamp);
         this.setState({
@@ -59,37 +56,22 @@ class Blog extends Component {
     this.setState({ enableLike: false });
 
     const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-        withCredentials: true
-      }
-    };
 
     //handling likeposts in User route
     const likePostPromise = LIKED
       ? axios.delete(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+          `/api/users/likes/${
             this.props.userID ? this.props.userID : "dummy"
-          }?postID=${this.props.match.params.id}`,
-          headers
+          }?postID=${this.props.match.params.id}`
         )
       : axios.post(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID ? this.props.userID : "dummy"
-          }`,
-          { postID: this.props.match.params.id },
-          headers
+          `/api/users/likes/${this.props.userID ? this.props.userID : "dummy"}`,
+          { postID: this.props.match.params.id }
         );
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
-      `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-        this.props.match.params.id
-      }`,
-      { liked: LIKED },
-      headers
+      `/api/posts/likes/${this.props.match.params.id}`,
+      { liked: LIKED }
     );
 
     Promise.all([likePostPromise, likeNumberPromise]).catch(err => {

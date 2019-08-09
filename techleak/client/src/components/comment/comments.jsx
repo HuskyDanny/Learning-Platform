@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Comment from "./comment";
-import axios from "../../axios-blogs";
+import axios from "../../axios/axios-blogs";
 import { connect } from "react-redux";
 
 class Comments extends Component {

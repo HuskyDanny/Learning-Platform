@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import axios from "../axios-blogs";
+import axios from "../axios/axios-blogs";
 import Modal from "react-responsive-modal";
 import Spinner from "./UI/Spinner/Spinner";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import withHandler from "./UI/ErrorHandler/ErrorHandler";
+
 class Login extends Component {
   state = {
     password: "",
@@ -34,7 +34,7 @@ class Login extends Component {
     };
 
     try {
-      let res = await axios.post("/api/users/login", user);
+      let res = await axios.post("/api/users/login", user, { headers: "" });
       let data = res.data;
       // asyn function that retrieve all details about likedPosts and myPosts
       let allPostDetail = await this.fetchAllPostDetails(data);
@@ -67,7 +67,7 @@ class Login extends Component {
 
   // responsible for fetching data about my posts and liked posts from
   // the database. the output is later used for setting states in redux
-  fetchAllPostDetails = async (data) => {
+  fetchAllPostDetails = async data => {
     const likedPosts = data.likedPosts.reverse();
     const myPosts = data.myPosts.reverse();
     let singleLikedPostDetailPromise = [];
@@ -83,21 +83,24 @@ class Login extends Component {
       }
       let allLikedPostDetails = Promise.all(singleLikedPostDetailPromise);
       let allmyPostDetails = Promise.all(singleMyPostDetailPromise);
-      let allPostDetails = await Promise.all([allLikedPostDetails, allmyPostDetails]);
+      let allPostDetails = await Promise.all([
+        allLikedPostDetails,
+        allmyPostDetails
+      ]);
       return allPostDetails;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  fetchSinglePostDetail = async (postID) => {
+  fetchSinglePostDetail = async postID => {
     try {
-      let userDetail = await axios.get(`${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${postID}`);
+      let userDetail = await axios.get(`/api/posts/${postID}`, { headers: "" });
       return userDetail.data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   render() {
     const modalBg = {
@@ -241,10 +244,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withHandler(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Login),
-  axios
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

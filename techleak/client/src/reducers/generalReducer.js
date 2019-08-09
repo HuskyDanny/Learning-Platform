@@ -47,7 +47,10 @@ const reducer = (state = initialState, action) => {
       myPosts: [],
       menu_class: "",
       likedPostsDetail: [],
-      myPostsDetail: []
+      myPostsDetail: [],
+      avatar: "",
+      comments: [],
+      replies: []
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -142,11 +145,11 @@ const reducer = (state = initialState, action) => {
     action.liked ? newLikePosts.delete(action.id) : newLikePosts.add(action.id);
     let newLikePostsDetail = new Set([...state.likedPostsDetail]);
     action.liked
-      ? newLikePostsDetail.forEach(function (lPostDetail) {
-        if (lPostDetail._id === action.id) {
-          newLikePostsDetail.delete(lPostDetail)
-        }
-      })
+      ? newLikePostsDetail.forEach(function(lPostDetail) {
+          if (lPostDetail._id === action.id) {
+            newLikePostsDetail.delete(lPostDetail);
+          }
+        })
       : newLikePostsDetail.add(action.rawPostData);
     return {
       ...state,

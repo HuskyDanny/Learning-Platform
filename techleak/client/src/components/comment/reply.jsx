@@ -1,4 +1,4 @@
-import axios from "../../axios-blogs";
+import axios from "../../axios/axios-blogs";
 import React from "react";
 import elapsed from "../../utils/getElapsed";
 import { connect } from "react-redux";

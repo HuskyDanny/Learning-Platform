@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Replies from "./replies";
 import { connect } from "react-redux";
-import axios from "../../axios-blogs";
+import axios from "../../axios/axios-blogs";
 import elapsed from "../../utils/getElapsed";
 
 class Comment extends Component {
@@ -14,34 +14,17 @@ class Comment extends Component {
     this.setState({ body: e.target.value });
   };
   handleDelete = () => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-        withCredentials: true
-      }
-    };
     axios
       .delete(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/comments/${
-          this.props.blogID
-        }?commentId=${this.props.comment._id}`,
-        headers
+        `api/posts/comments/${this.props.blogID}?commentId=${
+          this.props.comment._id
+        }`
       )
       .then(res => {
         this.props.deleteComment(this.props.comment._id);
       });
   };
   handleReply = () => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-        withCredentials: true
-      }
-    };
     axios
       .patch(
         `/api/posts/comments/reply/${this.props.blogID}?commentId=${
@@ -54,8 +37,7 @@ class Comment extends Component {
             userId: this.props.userId,
             post_date_timestamp: new Date().getTime()
           }
-        },
-        headers
+        }
       )
       .then(res => {
         this.props.addReply({
