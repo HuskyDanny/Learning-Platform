@@ -25,7 +25,7 @@ class Blog extends Component {
       content: "",
       title: "",
       rawPostData: "",
-      tags: []
+      tags: [],
       enableLike: true,
     };
 
