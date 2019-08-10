@@ -19,7 +19,8 @@ const commentSchema = new mongoose.Schema({
   like: { type: Number, default: 0 },
   replies: [replySchema],
   username: { type: String, required: true },
-  userID: { type: String, required: true }
+  userId: { type: String, required: true },
+  avatar: { type: String }
 });
 
 const Comment = mongoose.model("Comment", commentSchema);
@@ -30,8 +31,9 @@ const commentValidator = comment => {
     body: Joi.string().required(),
     replies: Joi.array(),
     username: Joi.string().required(),
-    userID: Joi.string().required(),
-    post_date_timestamp: Joi.number().required()
+    userId: Joi.string().required(),
+    post_date_timestamp: Joi.number().required(),
+    avatar: Joi.string()
   };
 
   return Joi.validate(comment, joiCommentSchema);

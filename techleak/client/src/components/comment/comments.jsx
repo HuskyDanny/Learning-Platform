@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Comment from "./comment";
-import axios from "../../axios-blogs";
+import axios from "../../axios/axios-blogs";
 import { connect } from "react-redux";
 
 class Comments extends Component {
@@ -27,8 +27,9 @@ class Comments extends Component {
           comment: {
             body: this.state.body,
             username: this.props.username,
-            userID: this.props.userID,
-            post_date_timestamp: new Date().getTime()
+            userId: this.props.userId,
+            post_date_timestamp: new Date().getTime(),
+            avatar: this.props.avatar
           }
         },
         headers
@@ -91,7 +92,7 @@ const mapStateToProps = state => {
   return {
     comments: state.persistedReducer.comments,
     username: state.persistedReducer.username,
-    userID: state.persistedReducer.userID,
+    userId: state.persistedReducer.userID,
     avatar: state.persistedReducer.avatar
   };
 };

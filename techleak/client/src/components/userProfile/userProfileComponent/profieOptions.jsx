@@ -6,6 +6,13 @@ import SimplifiedPosts from './simplifedPosts';
 import FloatingFilter from './floatingFilter';
 
 class ProfileOptions extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      likedPostsDetail: this.props.likedPostsDetail,
+      myPostsDetail: this.props.myPostsDetail,
+    }
+  }
   render() {
     return (
       <div className="columns is-mobile" style={{ align: "center", margin: "0px auto", display: "flex" }}>
@@ -19,12 +26,12 @@ class ProfileOptions extends React.Component {
             </TabList>
             <TabPanel>
               <SimplifiedPosts
-                PostType={"MyPosts"}
+                postType={"MyPosts"}
               />
             </TabPanel>
             <TabPanel>
               <SimplifiedPosts
-                PostType={"MyLikes"}
+                postType={"MyLikes"}
               />
             </TabPanel>
             <TabPanel>

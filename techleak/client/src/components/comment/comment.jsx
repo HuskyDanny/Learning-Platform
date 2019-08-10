@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Replies from "./replies";
 import { connect } from "react-redux";
-import axios from "../../axios-blogs";
+import axios from "../../axios/axios-blogs";
 import elapsed from "../../utils/getElapsed";
 
 class Comment extends Component {
@@ -14,34 +14,17 @@ class Comment extends Component {
     this.setState({ body: e.target.value });
   };
   handleDelete = () => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-        withCredentials: true
-      }
-    };
     axios
       .delete(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/comments/${
-          this.props.blogID
-        }?commentId=${this.props.comment._id}`,
-        headers
+        `api/posts/comments/${this.props.blogID}?commentId=${
+          this.props.comment._id
+        }`
       )
       .then(res => {
         this.props.deleteComment(this.props.comment._id);
       });
   };
   handleReply = () => {
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-        withCredentials: true
-      }
-    };
     axios
       .patch(
         `/api/posts/comments/reply/${this.props.blogID}?commentId=${
@@ -51,11 +34,10 @@ class Comment extends Component {
           reply: {
             body: this.state.body,
             username: this.props.username,
-            userID: this.props.userID,
+            userId: this.props.userId,
             post_date_timestamp: new Date().getTime()
           }
-        },
-        headers
+        }
       )
       .then(res => {
         this.props.addReply({
@@ -99,7 +81,7 @@ class Comment extends Component {
           <p className="image is-64x64">
             <img
               src={
-                this.props.avatar ||
+                this.props.comment.avatar ||
                 "https://bulma.io/images/placeholders/128x128.png"
               }
               alt="placeholder"
@@ -111,7 +93,7 @@ class Comment extends Component {
             <p>
               <div className="level" style={{ marginBottom: "0px" }}>
                 <strong>{this.props.comment.username}</strong>
-                {this.props.comment.userID === this.props.userID
+                {this.props.comment.userId === this.props.userId
                   ? deleteButton
                   : null}
               </div>
@@ -145,9 +127,8 @@ class Comment extends Component {
 const mapStateToProps = state => {
   return {
     replies: state.persistedReducer.replies,
-    userID: state.persistedReducer.userID,
-    username: state.persistedReducer.username,
-    avatar: state.persistedReducer.avatar
+    userId: state.persistedReducer.userID,
+    username: state.persistedReducer.username
   };
 };
 

@@ -3,8 +3,11 @@ import Navbar from "./navbar";
 import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
-import axios from "../axios-blogs";
-import withHandler from "./UI/ErrorHandler/ErrorHandler";
+import axios from "../axios/axios-blogs";
+
+import { withRouter } from "react-router";
+import errorBoundary from "./UI/ErrorHandler/ErrorHandler";
+
 import Share from "./share/share";
 import Flexbox from 'flexbox-react';
 
@@ -21,9 +24,9 @@ class Blog extends Component {
       userID: "",
       content: "",
       title: "",
-      enableLike: this.props.loggedIn,
       rawPostData: "",
       tags: []
+      enableLike: true,
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -31,11 +34,7 @@ class Blog extends Component {
 
   componentDidMount = () => {
     axios
-      .get(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${
-        this.props.match.params.id
-        }`
-      )
+      .get(`/api/posts/${this.props.match.params.id}`, { headers: "" })
       .then(res => {
         const date = new Date(res.data.post_date_timestamp);
         this.setState({
@@ -58,8 +57,6 @@ class Blog extends Component {
   handleLike = () => {
     //disable the like for a moment
     this.setState({ enableLike: false });
-
-    const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
     const token = localStorage.getItem("token");
     const headers = {
       headers: {
@@ -68,35 +65,40 @@ class Blog extends Component {
         withCredentials: true
       }
     };
+    const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
 
     //handling likeposts in User route
     const likePostPromise = LIKED
       ? axios.delete(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
+          `/api/users/likes/${
             this.props.userID ? this.props.userID : "dummy"
           }?postID=${this.props.match.params.id}`,
           headers
         )
       : axios.post(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID ? this.props.userID : "dummy"
-          }`,
+          `/api/users/likes/${this.props.userID ? this.props.userID : "dummy"}`,
           { postID: this.props.match.params.id },
           headers
         );
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
-      `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${
-      this.props.match.params.id
-      }`,
+      `/api/posts/likes/${this.props.match.params.id}`,
       { liked: LIKED },
       headers
     );
 
     Promise.all([likePostPromise, likeNumberPromise]).catch(err => {
-      this.props.handleLike(this.props.match.params.id, this.state.rawPostData, !LIKED);
+      this.props.handleLike(
+        this.props.match.params.id,
+        this.state.rawPostData,
+        !LIKED
+      );
     });
-    this.props.handleLike(this.props.match.params.id, this.state.rawPostData, LIKED);
+    this.props.handleLike(
+      this.props.match.params.id,
+      this.state.rawPostData,
+      LIKED
+    );
     new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
       this.setState({ enableLike: true });
     });
@@ -176,7 +178,7 @@ class Blog extends Component {
                       id="likeBtn"
                       className={`level-item has-text-centered button ${
                         LIKED ? " is-success" : ""
-                        }`}
+                      }`}
                       aria-label="like"
                       onClick={this.state.enableLike ? this.handleLike : null}
                     >
@@ -221,11 +223,13 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withHandler(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Blog),
+export default errorBoundary(
+  withRouter(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(Blog)
+  ),
   axios
 );
 

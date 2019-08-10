@@ -1,8 +1,8 @@
-import axios from "../../axios-blogs";
+import axios from "../../axios/axios-blogs";
 import React, { Component } from "react";
 import Editor from "../editor/Editor";
 import { Link } from "react-router-dom";
-import image from "../../assets/img/logo1.jpg";
+import image from "../../assets/img/logo.jpg";
 import DropDown from "../dropdown/dropdown";
 import Spinner from "../UI/Spinner/Spinner";
 import Modal from "react-responsive-modal";
@@ -27,76 +27,63 @@ class Publish extends Component {
       posted: false,
       content: "",
       title: "",
-      loading: false,
-      tagError: false
+      loading: false
     };
 
-    this.handlePostCheck = this.handlePostCheck.bind(this);
-    this.handleFinalPost = this.handleFinalPost.bind(this);
+    this.handlePost = this.handlePost.bind(this);
     this.successPosted = this.successPosted.bind(this);
     this.updateContent = this.updateContent.bind(this);
   }
 
-  handleFinalPost = async () => {
+  handlePost = async () => {
+    const post = {
+      author: this.props.username,
+      title: this.state.title,
+      content: this.state.content,
+      tags: this.props.tagReducer.tags || [],
+      userId: this.props.userID,
+      avatar: this.props.avatar
+    };
+    this.setState({ loading: true });
     const token = localStorage.getItem("token");
-
-      const post = {
-        author: this.props.username,
-        title: this.state.title,
-        content: this.state.content,
-        tags: this.props.tagReducer.tags || []
-      };
-
-      this.setState({ loading: true });
-
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${token}`
-        }
-      };
-
-      axios
-        .post("/api/posts", post, headers)
-        .then(res => {
-          axios
-            .post(
-              `/api/users/myPosts/${this.props.userID}`,
-              { postID: res.data._id },
-              headers
-            )
-            .then(res => {
-              //cannot divide the call into two setState calls
-              this.setState({ loading: false, posted: true });
-            })
-            .catch(err => {
-              console.log(err);
-              this.setState({ loading: false });
-            });
-          var updatedMyPosts = [...this.props.myPosts];
-          updatedMyPosts.push(res.data._id);
-          var updatedMyPostsDetail = [...this.props.myPostsDetail]
-          updatedMyPostsDetail.push(res.data)
-          this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
-        })
-        .catch(err => {
-          this.setState({ loading: false });
-        });
-
-      this.props.handlePosted();
-  }
-
-  handlePostCheck = (e) => {
-    e.preventDefault();
-    if (this.props.tagReducer.tags.length === 0 || this.props.tagReducer.tags.length >= 4) {
-      this.setState({ 
-        ...this.state,
-        tagError: true 
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
+    axios
+      .post("/api/posts", post)
+      .then(res => {
+        axios
+          .post(
+            `/api/users/myPosts/${this.props.userID}`,
+            {
+              postID: res.data._id
+            },
+            headers
+          )
+          .then(res => {
+            //cannot divide the call into two setState calls
+            this.setState({ loading: false, posted: true });
+          })
+          .catch(err => {
+            console.log(err);
+            this.setState({ loading: false });
+          });
+        var updatedMyPosts = [...this.props.myPosts];
+        updatedMyPosts.push(res.data._id);
+        var updatedMyPostsDetail = [...this.props.myPostsDetail];
+        updatedMyPostsDetail.push(res.data);
+        this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
+      })
+      .catch(err => {
+        this.setState({ loading: false });
       });
-    } else {
-      this.handleFinalPost();
-    }
-  }
+
+    this.props.handlePosted();
+  };
 
   updateContent = value => {
     this.setState({ content: value });
@@ -111,11 +98,7 @@ class Publish extends Component {
   };
 
   onCloseModal = () => {
-    this.setState({ 
-      ...this.state,
-      warning: false,
-      tagError: false
-    });
+    this.setState({ warning: false });
   };
 
   handleTitle = e => {
@@ -224,54 +207,54 @@ class Publish extends Component {
           ) : this.state.posted ? (
             this.successPosted()
           ) : (
-                <React.Fragment>
-                  <form onSubmit={this.handlePostCheck}>
-                    <label>Title</label>
-                    <input
-                      className="input is-rounded"
-                      type="text"
-                      required
-                      minLength="5"
-                      value={this.state.title}
-                      onChange={this.handleTitle}
-                    />
-                    <div>
-                      <br />
-                      <Editor
-                        updateContent={this.updateContent}
-                        value={this.state.content}
-                      />
-                    </div>
-                    {selection}
-                    <label>Tags</label>
-                    <TagSearch
-                      hitsDisplay={this.props.tagReducer.hitsDisplay}
-                      tags={this.props.tagReducer.tags}
-                      handleSelect={tag => this.props.addTag(tag)}
-                      handleRemoveItem={tag => this.props.removeTag(tag)}
-                      openDisplay={() => this.props.openDisplay()}
-                      closeDisplay={() => this.props.closeDisplay()}
-                      styles={styles}
-                    />
-                    <br />
-                    <div className="level-left">
-                      <button
-                        className="button is-primary level-item"
-                        type="submit"
-                      >
-                        Post
-                    </button>
-                      <button
-                        className="button is-primary level-item"
-                        type="button"
-                        onClick={this.handleCancel}
-                      >
-                        Cancel
-                    </button>
-                    </div>
-                  </form>
-                </React.Fragment>
-              )}
+            <React.Fragment>
+              <form onSubmit={this.handlePost}>
+                <label>Title</label>
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  required
+                  minLength="5"
+                  value={this.state.title}
+                  onChange={this.handleTitle}
+                />
+                <div>
+                  <br />
+                  <Editor
+                    updateContent={this.updateContent}
+                    value={this.state.content}
+                  />
+                </div>
+                {selection}
+                <label>Tags</label>
+                <TagSearch
+                  hitsDisplay={this.props.tagReducer.hitsDisplay}
+                  tags={this.props.tagReducer.tags}
+                  handleSelect={tag => this.props.addTag(tag)}
+                  handleRemoveItem={tag => this.props.removeTag(tag)}
+                  openDisplay={() => this.props.openDisplay()}
+                  closeDisplay={() => this.props.closeDisplay()}
+                  styles={styles}
+                />
+                <br />
+                <div className="level-left">
+                  <button
+                    className="button is-primary level-item"
+                    type="submit"
+                  >
+                    Post
+                  </button>
+                  <button
+                    className="button is-primary level-item"
+                    type="button"
+                    onClick={this.handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </React.Fragment>
+          )}
         </div>
         <Modal
           className="modal-lg"
@@ -293,25 +276,6 @@ class Publish extends Component {
             </Link>
           </div>
         </Modal>
-        <Modal
-          className="modal-lg"
-          open={this.state.tagError}
-          onClose={this.onCloseModal}
-          center
-        >
-          <div>
-            <h1>
-              <strong>Warning</strong>
-            </h1>
-            <p style={{ color: "red" }}>Please limit the number of the input tags from 1 to 3</p>
-            <button
-              className="button is-link"
-              onClick={this.onCloseModal}
-            >
-              Okay, I Got It
-            </button>
-          </div>
-        </Modal>
       </React.Fragment>
     );
   }
@@ -323,7 +287,8 @@ const mapStateToProps = state => {
     tagReducer: state.tagReducer,
     userID: state.persistedReducer.userID,
     myPosts: state.persistedReducer.myPosts,
-    myPostsDetail: state.persistedReducer.myPostsDetail
+    myPostsDetail: state.persistedReducer.myPostsDetail,
+    avatar: state.persistedReducer.avatar
   };
 };
 

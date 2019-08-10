@@ -1,6 +1,6 @@
 const { userValidator, User } = require("../../../models/Users");
 const { OTC, OTCValidator } = require("../../../models/OTC");
-const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require("mongodb").MongoClient;
 const { Router } = require("express");
 const passport = require("passport");
 const auth = require("../../auth");
@@ -10,7 +10,7 @@ const router = Router();
 const s3 = require("../../../config/aws");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
-const randomize = require('randomatic');
+const randomize = require("randomatic");
 var url = "mongodb://127.0.0.1:27017/";
 
 var upload = multer({
@@ -26,7 +26,7 @@ var upload = multer({
   })
 });
 
-router.post(
+router.patch(
   "/profile/:id",
   auth.required,
   upload.single("avatar"),
@@ -37,6 +37,7 @@ router.post(
         { avatar: req.file.location },
         { new: true }
       );
+
       res.json(user.toAuthJSON());
     } catch (error) {
       res.status(500).json({ message: "failed upload" });
@@ -156,13 +157,13 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
   let result;
   const email = req.body.email;
 
-  const confirmation = randomize('0A', 6);
+  const confirmation = randomize("0A", 6);
   const otc = {
     email: email,
     confirmation: confirmation
-  }
+  };
   //Create new OTC for each new user
-  let query = OTC.findOne({email: email});
+  let query = OTC.findOne({ email: email });
   let foundUser = await query.exec();
   if (!foundUser) {
     let newOTC = new OTC(otc);
@@ -175,7 +176,7 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
       if (err) throw err;
       var dbo = db.db("project");
       var myquery = { email: email };
-      var newvalues = { $set: {confirmation: confirmation} };
+      var newvalues = { $set: { confirmation: confirmation } };
       dbo.collection("otcs").updateOne(myquery, newvalues, function(err, res) {
         if (err) throw err;
         console.log("1 document updated");
@@ -185,7 +186,6 @@ router.post("/reset-send-email", auth.optional, async (req, res) => {
   }
 
   try {
-
     const msg = {
       to: email,
       from: "welcome@techleak.com",
@@ -209,7 +209,7 @@ router.post("/reset-password", auth.optional, async (req, res) => {
   const confirmation = req.body.confirmation;
 
   try {
-    const user = await User.findOne({ email: email })
+    const user = await User.findOne({ email: email });
     if (!user) return res.status(400);
     const otc = await OTC.findOne({ email: email });
     if (!otc.validateCmf(confirmation)) {
@@ -224,12 +224,12 @@ router.post("/reset-password", auth.optional, async (req, res) => {
       newUser.save();
       console.log("Reset Successfully");
     }
-    confirmation = randomize('0A', 6);
+    confirmation = randomize("0A", 6);
     MongoClient.connect(url, function(err, db) {
       if (err) throw err;
       var dbo = db.db("project");
       var myquery = { email: email };
-      var newvalues = { $set: {confirmation: confirmation} };
+      var newvalues = { $set: { confirmation: confirmation } };
       dbo.collection("otcs").updateOne(myquery, newvalues, function(err, res) {
         if (err) throw err;
         console.log("1 document updated");
@@ -240,7 +240,7 @@ router.post("/reset-password", auth.optional, async (req, res) => {
   } catch (error) {
     return res.json(error);
   }
-})
+});
 
 //Append id of post to User likedposts database
 router.post("/likes/:id", auth.required, async (req, res) => {

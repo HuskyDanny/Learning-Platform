@@ -12,6 +12,8 @@ let initialState = {
   replies: [],
   myPosts: [],
   myPostsDetail: [],
+  filterPosts: [],
+  postType: "",
   menu_class: "",
   avatar: "",
   likes: {}
@@ -45,7 +47,10 @@ const reducer = (state = initialState, action) => {
       myPosts: [],
       menu_class: "",
       likedPostsDetail: [],
-      myPostsDetail: []
+      myPostsDetail: [],
+      avatar: "",
+      comments: [],
+      replies: []
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -140,11 +145,11 @@ const reducer = (state = initialState, action) => {
     action.liked ? newLikePosts.delete(action.id) : newLikePosts.add(action.id);
     let newLikePostsDetail = new Set([...state.likedPostsDetail]);
     action.liked
-      ? newLikePostsDetail.forEach(function (lPostDetail) {
-        if (lPostDetail._id === action.id) {
-          newLikePostsDetail.delete(lPostDetail)
-        }
-      })
+      ? newLikePostsDetail.forEach(function(lPostDetail) {
+          if (lPostDetail._id === action.id) {
+            newLikePostsDetail.delete(lPostDetail);
+          }
+        })
       : newLikePostsDetail.add(action.rawPostData);
     return {
       ...state,
@@ -202,7 +207,18 @@ const reducer = (state = initialState, action) => {
       comments: temp
     };
   }
-
+  if (action.type === "UPDATEPOSTTYPE") {
+    return {
+      ...state,
+      postType: action.postType
+    };
+  }
+  if (action.type === "FILTERCHANGE") {
+    return {
+      ...state,
+      filterPosts: action.filteredPostsDetail
+    };
+  }
   return state;
 };
 

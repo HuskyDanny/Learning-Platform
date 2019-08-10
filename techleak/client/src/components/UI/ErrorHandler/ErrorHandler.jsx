@@ -21,7 +21,6 @@ const WithHandler = (WrappedComponent, axios) => {
         res => res,
         error => {
           // Do something with response error
-          console.log(error);
           this.setState({
             error: true,
             errorMessage: error.response.status
@@ -55,14 +54,25 @@ const WithHandler = (WrappedComponent, axios) => {
           message = "Please login, login status is expired";
           break;
         case 400:
-          message = "Something went wrong, contact us!";
+          message = "Data not found, please contact us!";
           break;
+        case 500:
+          message = "Server breaks, please contact us";
         case 412:
           message = "Post not successful, please write some content or repost";
       }
 
       const onClose = () => {
-        this.setState({ error: false, errorMessage: "" });
+        this.setState({ error: false });
+      };
+
+      const onExited = () => {
+        if (
+          this.props.history &&
+          (this.state.errorMessage === 400 || this.state.errorMessage === 500)
+        ) {
+          this.props.history.push("/");
+        }
       };
       return (
         <div>
@@ -72,6 +82,7 @@ const WithHandler = (WrappedComponent, axios) => {
             onClose={onClose}
             center
             styles={modalBg}
+            onExited={onExited}
           >
             {message}{" "}
             <i className="fas fa-exclamation" style={{ color: "red" }} />
