@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import axios from "../axios-blogs";
 import withHandler from "./UI/ErrorHandler/ErrorHandler";
 import Share from "./share/share";
+import Flexbox from 'flexbox-react';
 
 class Blog extends Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class Blog extends Component {
       content: "",
       title: "",
       enableLike: this.props.loggedIn,
-      rawPostData: ""
+      rawPostData: "",
+      tags: []
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -45,7 +47,8 @@ class Blog extends Component {
           content: res.data.content,
           title: res.data.title,
           pageID: this.props.match.params.id,
-          rawPostData: res.data
+          rawPostData: res.data,
+          tags: res.data.tags
         });
         this.props.getBlog(res.data);
       })
@@ -110,6 +113,15 @@ class Blog extends Component {
       }
     }
     const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
+    console.log(this.state.tags)
+    
+    let tagsDisplay = this.state.tags.map(tag => (
+      <li key={tag} style={styles.items}>
+        <Flexbox>
+          {tag}
+        </Flexbox>
+      </li>
+    ));
     return (
       <React.Fragment>
         <Navbar />
@@ -144,6 +156,9 @@ class Blog extends Component {
                     style={{ marginBottom: "10%" }}
                   >
                     {ReactHtmlParser(this.state.content)}
+                  </div>
+                  <div>
+                    {tagsDisplay}
                   </div>
                   <hr />
 
@@ -213,3 +228,16 @@ export default withHandler(
   )(Blog),
   axios
 );
+
+const styles = {
+  items: {
+    display: "inline-block",
+    padding: "5px",
+    border: "none",
+    backgroundColor: "#cfcece",
+    fontFamily: "Helvetica, sans-serif",
+    borderRadius: "5px",
+    marginRight: "5px",
+    cursor: "default"
+  }
+}
