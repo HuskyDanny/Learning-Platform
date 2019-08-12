@@ -21,32 +21,6 @@ class SimplifiedPosts extends React.Component {
     this.props.handlePostType(this.props.postType);
   }
 
-  handleAdjustLikedPost(id, status) {
-    // retrieve the post id that has been deleted by the original aurthor
-    // to update a user's likedposts in database and redux
-    const token = localStorage.getItem("token");
-    const headers = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-        withCredentials: true
-      }
-    };
-    if (status == 400) {
-      axios
-        .delete(
-          `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-            this.props.userID
-          }?postID=${id}`,
-          headers
-        )
-        .then(res => {
-          this.props.handleUpdatedLikedPosts(res.data.likedPosts);
-        })
-        .catch(err => console.log(err));
-    }
-  }
-
   componentDidUpdate(prevProps) {
     console.log(this.props.filterPosts);
     if (this.props.filterPosts.length !== prevProps.filterPosts.length) {
@@ -70,7 +44,7 @@ class SimplifiedPosts extends React.Component {
     if (postType === "MyLikes") {
       // "deleting" a post should always act upon the "unchangeable props" instead of state
       const updatedLikedPostsDetail = this.props.likedPostsDetail.filter(
-        function(lPostDetail) {
+        function (lPostDetail) {
           return lPostDetail._id != objectID;
         }
       );
@@ -79,7 +53,7 @@ class SimplifiedPosts extends React.Component {
       });
       // the state and the props may have different value because of the filter
       const updatedLikedPostsDetailState = this.state.likedPostsDetail.filter(
-        function(lPostDetail) {
+        function (lPostDetail) {
           return lPostDetail._id != objectID;
         }
       );
@@ -100,7 +74,7 @@ class SimplifiedPosts extends React.Component {
 
     if (postType === "MyPosts") {
       // "deleting" a post should always act upon the "unchangeable props" instead of state
-      const updatedMyPostsDetail = this.props.myPostsDetail.filter(function(
+      const updatedMyPostsDetail = this.props.myPostsDetail.filter(function (
         mPostDetail
       ) {
         return mPostDetail._id != objectID;
@@ -110,7 +84,7 @@ class SimplifiedPosts extends React.Component {
       });
       // the state and the props may have different value because of the filter
       const updatedMyPostsDetailState = this.state.myPostsDetail.filter(
-        function(mPostDetail) {
+        function (mPostDetail) {
           return mPostDetail._id != objectID;
         }
       );
