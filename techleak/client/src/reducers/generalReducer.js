@@ -50,7 +50,8 @@ const reducer = (state = initialState, action) => {
       myPostsDetail: [],
       avatar: "",
       comments: [],
-      replies: []
+      replies: [],
+      likes: {}
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -145,13 +146,13 @@ const reducer = (state = initialState, action) => {
     action.liked ? newLikePosts.delete(action.id) : newLikePosts.add(action.id);
     let newLikePostsDetail = new Set([...state.likedPostsDetail]);
     action.liked
-      ? newLikePostsDetail.forEach(function (lPostDetail) {
-        if (lPostDetail === null) {
-          newLikePostsDetail.delete(lPostDetail);
-        } else if (lPostDetail._id === action.id) {
-          newLikePostsDetail.delete(lPostDetail);
-        }
-      })
+      ? newLikePostsDetail.forEach(function(lPostDetail) {
+          if (lPostDetail === null) {
+            newLikePostsDetail.delete(lPostDetail);
+          } else if (lPostDetail._id === action.id) {
+            newLikePostsDetail.delete(lPostDetail);
+          }
+        })
       : newLikePostsDetail.add(action.rawPostData);
     return {
       ...state,
