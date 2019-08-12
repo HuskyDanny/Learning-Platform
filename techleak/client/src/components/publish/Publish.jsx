@@ -42,7 +42,8 @@ class Publish extends Component {
       content: this.state.content,
       tags: this.props.tagReducer.tags || [],
       userId: this.props.userID,
-      avatar: this.props.avatar
+      avatar:
+        this.props.avatar || "https://bulma.io/images/placeholders/128x128.png"
     };
     this.setState({ loading: true });
     const token = localStorage.getItem("token");
