@@ -25,6 +25,14 @@ class Comment extends Component {
       });
   };
   handleReply = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
     axios
       .patch(
         `/api/posts/comments/reply/${this.props.blogID}?commentId=${
@@ -34,12 +42,14 @@ class Comment extends Component {
           reply: {
             body: this.state.body,
             username: this.props.username,
-            userId: this.props.userId,
+            userID: this.props.userId,
             post_date_timestamp: new Date().getTime()
           }
-        }
+        },
+        headers
       )
       .then(res => {
+        console.log(res);
         this.props.addReply({
           ...res.data,
           commentRef: this.props.comment._id

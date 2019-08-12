@@ -29,7 +29,9 @@ class Comments extends Component {
             username: this.props.username,
             userId: this.props.userId,
             post_date_timestamp: new Date().getTime(),
-            avatar: this.props.avatar
+            avatar:
+              this.props.avatar ||
+              "https://bulma.io/images/placeholders/128x128.png"
           }
         },
         headers
