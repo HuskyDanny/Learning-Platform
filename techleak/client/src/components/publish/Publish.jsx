@@ -54,7 +54,7 @@ class Publish extends Component {
       }
     };
     axios
-      .post("/api/posts", post)
+      .post("/api/posts", post, headers)
       .then(res => {
         axios
           .post(
