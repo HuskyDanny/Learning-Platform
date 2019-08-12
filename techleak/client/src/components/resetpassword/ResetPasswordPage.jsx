@@ -7,7 +7,6 @@ export default class ResetPasswordPage extends Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleEmailSubmit = this.handleEmailSubmit.bind(this);
     this.handlePasswordSubmit = this.handlePasswordSubmit.bind(this);
 
