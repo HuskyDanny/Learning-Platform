@@ -90,7 +90,7 @@ class Comment extends Component {
         </figure>
         <div className="media-content">
           <div className="content">
-            <p>
+            <div>
               <div className="level" style={{ marginBottom: "0px" }}>
                 <strong>{this.props.comment.username}</strong>
                 {this.props.comment.userId === this.props.userId
@@ -107,7 +107,7 @@ class Comment extends Component {
                 )}{" "}
                 Ago
               </small>
-            </p>
+            </div>
             {this.showReplyBox()}
           </div>
           {this.props.replies.length > 0 ? (
