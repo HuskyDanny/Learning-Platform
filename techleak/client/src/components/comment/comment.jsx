@@ -51,18 +51,18 @@ class Comment extends Component {
     if (this.state.replyBox) {
       return (
         <div className="field has-addons">
-          <div class="control" style={{ width: "100%" }}>
+          <div className="control" style={{ width: "100%" }}>
             <input
-              class="input is-rounded"
+              className="input is-rounded"
               type="text"
               placeholder="reply something..."
               onChange={this.onChange}
               value={this.state.body}
             />
           </div>
-          <div class="control">
-            <a class="button is-info" onClick={this.handleReply}>
-              <i class="fas fa-reply" />
+          <div className="control">
+            <a className="button is-info" onClick={this.handleReply}>
+              <i className="fas fa-reply" />
             </a>
           </div>
         </div>
@@ -72,7 +72,7 @@ class Comment extends Component {
   render() {
     const deleteButton = (
       <a onClick={this.handleDelete}>
-        <i class="fas fa-backspace" />
+        <i className="fas fa-backspace" />
       </a>
     );
     return (
