@@ -226,7 +226,9 @@ class Publish extends Component {
                     value={this.state.content}
                   />
                 </div>
+                <br />
                 {selection}
+                <hr />
                 <label>Tags</label>
                 <TagSearch
                   hitsDisplay={this.props.tagReducer.hitsDisplay}
