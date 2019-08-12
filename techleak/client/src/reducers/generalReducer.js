@@ -50,7 +50,8 @@ const reducer = (state = initialState, action) => {
       myPostsDetail: [],
       avatar: "",
       comments: [],
-      replies: []
+      replies: [],
+      likes: {}
     };
   }
   if (action.type === "SIGNUPMODAL") {

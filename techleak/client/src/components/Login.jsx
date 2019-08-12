@@ -75,11 +75,19 @@ class Login extends Component {
     try {
       for (var i = 0; i < likedPosts.length; i++) {
         let l_promise = this.fetchSinglePostDetail(likedPosts[i]);
-        singleLikedPostDetailPromise.unshift(l_promise);
+        if (l_promise === undefined || l_promise === null) {
+
+        } else {
+          singleLikedPostDetailPromise.unshift(l_promise);
+        }
       }
       for (var j = 0; j < myPosts.length; j++) {
         let m_promise = this.fetchSinglePostDetail(myPosts[j]);
-        singleMyPostDetailPromise.unshift(m_promise);
+        if (m_promise === undefined || m_promise === null) {
+
+        } else {
+          singleMyPostDetailPromise.unshift(m_promise);
+        }
       }
       let allLikedPostDetails = Promise.all(singleLikedPostDetailPromise);
       let allmyPostDetails = Promise.all(singleMyPostDetailPromise);
