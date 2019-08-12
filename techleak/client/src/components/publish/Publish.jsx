@@ -2,7 +2,7 @@ import axios from "../../axios/axios-blogs";
 import React, { Component } from "react";
 import Editor from "../editor/Editor";
 import { Link } from "react-router-dom";
-import image from "../../assets/img/logo.jpg";
+import image from "../../assets/img/logo1.jpg";
 import DropDown from "../dropdown/dropdown";
 import Spinner from "../UI/Spinner/Spinner";
 import Modal from "react-responsive-modal";
@@ -208,54 +208,54 @@ class Publish extends Component {
           ) : this.state.posted ? (
             this.successPosted()
           ) : (
-            <React.Fragment>
-              <form onSubmit={this.handlePost}>
-                <label>Title</label>
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  required
-                  minLength="5"
-                  value={this.state.title}
-                  onChange={this.handleTitle}
-                />
-                <div>
-                  <br />
-                  <Editor
-                    updateContent={this.updateContent}
-                    value={this.state.content}
-                  />
-                </div>
-                {selection}
-                <label>Tags</label>
-                <TagSearch
-                  hitsDisplay={this.props.tagReducer.hitsDisplay}
-                  tags={this.props.tagReducer.tags}
-                  handleSelect={tag => this.props.addTag(tag)}
-                  handleRemoveItem={tag => this.props.removeTag(tag)}
-                  openDisplay={() => this.props.openDisplay()}
-                  closeDisplay={() => this.props.closeDisplay()}
-                  styles={styles}
-                />
-                <br />
-                <div className="level-left">
-                  <button
-                    className="button is-primary level-item"
-                    type="submit"
-                  >
-                    Post
+                <React.Fragment>
+                  <form onSubmit={this.handlePost}>
+                    <label>Title</label>
+                    <input
+                      className="input is-rounded"
+                      type="text"
+                      required
+                      minLength="5"
+                      value={this.state.title}
+                      onChange={this.handleTitle}
+                    />
+                    <div>
+                      <br />
+                      <Editor
+                        updateContent={this.updateContent}
+                        value={this.state.content}
+                      />
+                    </div>
+                    {selection}
+                    <label>Tags</label>
+                    <TagSearch
+                      hitsDisplay={this.props.tagReducer.hitsDisplay}
+                      tags={this.props.tagReducer.tags}
+                      handleSelect={tag => this.props.addTag(tag)}
+                      handleRemoveItem={tag => this.props.removeTag(tag)}
+                      openDisplay={() => this.props.openDisplay()}
+                      closeDisplay={() => this.props.closeDisplay()}
+                      styles={styles}
+                    />
+                    <br />
+                    <div className="level-left">
+                      <button
+                        className="button is-primary level-item"
+                        type="submit"
+                      >
+                        Post
                   </button>
-                  <button
-                    className="button is-primary level-item"
-                    type="button"
-                    onClick={this.handleCancel}
-                  >
-                    Cancel
+                      <button
+                        className="button is-primary level-item"
+                        type="button"
+                        onClick={this.handleCancel}
+                      >
+                        Cancel
                   </button>
-                </div>
-              </form>
-            </React.Fragment>
-          )}
+                    </div>
+                  </form>
+                </React.Fragment>
+              )}
         </div>
         <Modal
           className="modal-lg"
