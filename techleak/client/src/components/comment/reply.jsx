@@ -36,7 +36,7 @@ const Reply = props => {
     <div className="content">
       <div className="level" style={{ marginBottom: "0px" }}>
         <strong>{props.reply.username}</strong>
-        {props.reply.userId === props.userId ? deleteButton : null}
+        {props.reply.userID === props.userId ? deleteButton : null}
       </div>
       <span>
         {props.reply.body}

@@ -41,6 +41,7 @@ class Login extends Component {
       let likedPostsDetail = allPostDetail[0];
       let myPostsDetail = allPostDetail[1];
       this.setState({ loading: false, email: "", password: "" });
+      //remove memeory likes first then add back in
       this.props.handleLogIn(
         data.username,
         data.id,
@@ -76,7 +77,6 @@ class Login extends Component {
       for (var i = 0; i < likedPosts.length; i++) {
         let l_promise = this.fetchSinglePostDetail(likedPosts[i]);
         if (l_promise === undefined || l_promise === null) {
-
         } else {
           singleLikedPostDetailPromise.unshift(l_promise);
         }
@@ -84,7 +84,6 @@ class Login extends Component {
       for (var j = 0; j < myPosts.length; j++) {
         let m_promise = this.fetchSinglePostDetail(myPosts[j]);
         if (m_promise === undefined || m_promise === null) {
-
         } else {
           singleMyPostDetailPromise.unshift(m_promise);
         }
@@ -248,7 +247,8 @@ const mapDispatchToProps = dispatch => {
         likedPostsDetail: likedPostsDetail,
         myPostsDetail: myPostsDetail
       }),
-    onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" })
+    onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" }),
+    removeLikes: () => dispatch({ type: "REMOVELIKES" })
   };
 };
 

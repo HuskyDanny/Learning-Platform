@@ -174,26 +174,6 @@ class Publish extends Component {
 
     return (
       <React.Fragment>
-        <div>
-          <nav
-            className="navbar"
-            role="navigation"
-            aria-label="main navigation"
-          >
-            <div className="navbar-brand">
-              <div className="navbar-item">
-                <Link to="/">
-                  <img src={image} width="112" height="48" alt="logo" />
-                </Link>
-              </div>
-            </div>
-
-            <div id="navbarBasicExample" className="navbar-menu">
-              <div className="navbar-start" />
-              <DropDown lists={["Save", "Draft"]} />
-            </div>
-          </nav>
-        </div>
         <div style={{ width: "80%", margin: "auto auto" }}>
           {this.state.loading ? (
             <div
@@ -208,54 +188,56 @@ class Publish extends Component {
           ) : this.state.posted ? (
             this.successPosted()
           ) : (
-                <React.Fragment>
-                  <form onSubmit={this.handlePost}>
-                    <label>Title</label>
-                    <input
-                      className="input is-rounded"
-                      type="text"
-                      required
-                      minLength="5"
-                      value={this.state.title}
-                      onChange={this.handleTitle}
-                    />
-                    <div>
-                      <br />
-                      <Editor
-                        updateContent={this.updateContent}
-                        value={this.state.content}
-                      />
-                    </div>
-                    {selection}
-                    <label>Tags</label>
-                    <TagSearch
-                      hitsDisplay={this.props.tagReducer.hitsDisplay}
-                      tags={this.props.tagReducer.tags}
-                      handleSelect={tag => this.props.addTag(tag)}
-                      handleRemoveItem={tag => this.props.removeTag(tag)}
-                      openDisplay={() => this.props.openDisplay()}
-                      closeDisplay={() => this.props.closeDisplay()}
-                      styles={styles}
-                    />
-                    <br />
-                    <div className="level-left">
-                      <button
-                        className="button is-primary level-item"
-                        type="submit"
-                      >
-                        Post
+            <React.Fragment>
+              <form onSubmit={this.handlePost}>
+                <label>Title</label>
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  required
+                  placeholder="Title..."
+                  minLength="8"
+                  maxLength="50"
+                  value={this.state.title}
+                  onChange={this.handleTitle}
+                />
+                <div>
+                  <br />
+                  <Editor
+                    updateContent={this.updateContent}
+                    value={this.state.content}
+                  />
+                </div>
+                {selection}
+                <label>Tags</label>
+                <TagSearch
+                  hitsDisplay={this.props.tagReducer.hitsDisplay}
+                  tags={this.props.tagReducer.tags}
+                  handleSelect={tag => this.props.addTag(tag)}
+                  handleRemoveItem={tag => this.props.removeTag(tag)}
+                  openDisplay={() => this.props.openDisplay()}
+                  closeDisplay={() => this.props.closeDisplay()}
+                  styles={styles}
+                />
+                <br />
+                <div className="level-left">
+                  <button
+                    className="button is-primary level-item"
+                    type="submit"
+                  >
+                    Post
                   </button>
-                      <button
-                        className="button is-primary level-item"
-                        type="button"
-                        onClick={this.handleCancel}
-                      >
-                        Cancel
+                  <button
+                    className="button is-primary level-item"
+                    type="button"
+                    onClick={this.handleCancel}
+                  >
+                    Cancel
                   </button>
-                    </div>
-                  </form>
-                </React.Fragment>
-              )}
+                </div>
+              </form>
+            </React.Fragment>
+          )}
         </div>
         <Modal
           className="modal-lg"

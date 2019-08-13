@@ -9,7 +9,7 @@ import { withRouter } from "react-router";
 import errorBoundary from "./UI/ErrorHandler/ErrorHandler";
 
 import Share from "./share/share";
-import Flexbox from 'flexbox-react';
+import Flexbox from "flexbox-react";
 
 class Blog extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class Blog extends Component {
       title: "",
       rawPostData: "",
       tags: [],
-      enableLike: true,
+      enableLike: true
     };
 
     this.handleLike = this.handleLike.bind(this);
@@ -66,16 +66,12 @@ class Blog extends Component {
           axios
             .delete(
               `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-              this.props.userID
+                this.props.userID
               }?postID=${this.props.match.params.id}`,
               headers
             )
             .then(res => {
-              this.props.handleLike(
-                this.props.match.params.id,
-                null,
-                true
-              );
+              this.props.handleLike(this.props.match.params.id, null, true);
             })
             .catch(err => console.log(err));
         }
@@ -98,16 +94,16 @@ class Blog extends Component {
     //handling likeposts in User route
     const likePostPromise = LIKED
       ? axios.delete(
-        `/api/users/likes/${
-        this.props.userID ? this.props.userID : "dummy"
-        }?postID=${this.props.match.params.id}`,
-        headers
-      )
+          `/api/users/likes/${this.props.userID}?postID=${
+            this.props.match.params.id
+          }`,
+          headers
+        )
       : axios.post(
-        `/api/users/likes/${this.props.userID ? this.props.userID : "dummy"}`,
-        { postID: this.props.match.params.id },
-        headers
-      );
+          `/api/users/likes/${this.props.userID}`,
+          { postID: this.props.match.params.id },
+          headers
+        );
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
       `/api/posts/likes/${this.props.match.params.id}`,
@@ -115,7 +111,7 @@ class Blog extends Component {
       headers
     );
 
-    Promise.all([likePostPromise, likeNumberPromise]).catch(err => {
+    Promise.all([likeNumberPromise, likePostPromise]).catch(err => {
       this.props.handleLike(
         this.props.match.params.id,
         this.state.rawPostData,
@@ -143,19 +139,15 @@ class Blog extends Component {
       }
     }
     const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
-    console.log(this.state.tags)
+    console.log(this.state.tags);
 
     let tagsDisplay = this.state.tags.map(tag => (
       <li key={tag} style={styles.items}>
-        <Flexbox>
-          {tag}
-        </Flexbox>
+        <Flexbox>{tag}</Flexbox>
       </li>
     ));
     return (
       <React.Fragment>
-        <Navbar />
-
         <section className="hero is-info is-medium is-bold">
           <div className="hero-body">
             <div className="container has-text-centered">
@@ -187,9 +179,7 @@ class Blog extends Component {
                   >
                     {ReactHtmlParser(this.state.content)}
                   </div>
-                  <div>
-                    {tagsDisplay}
-                  </div>
+                  <div>{tagsDisplay}</div>
                   <hr />
 
                   <div className="level is-mobile">
@@ -206,7 +196,7 @@ class Blog extends Component {
                       id="likeBtn"
                       className={`level-item has-text-centered button ${
                         LIKED ? " is-success" : ""
-                        }`}
+                      }`}
                       aria-label="like"
                       onClick={this.state.enableLike ? this.handleLike : null}
                     >
@@ -272,4 +262,4 @@ const styles = {
     marginRight: "5px",
     cursor: "default"
   }
-}
+};
