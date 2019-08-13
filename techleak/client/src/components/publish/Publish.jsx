@@ -37,70 +37,23 @@ class Publish extends Component {
     this.updateContent = this.updateContent.bind(this);
   }
 
-  // handlePost = async () => {
-  //   const post = {
-  //     author: this.props.username,
-  //     title: this.state.title,
-  //     content: this.state.content,
-  //     tags: this.props.tagReducer.tags || [],
-  //     userId: this.props.userID,
-  //     avatar:
-  //       this.props.avatar || "https://bulma.io/images/placeholders/128x128.png"
-  //   };
-  //   this.setState({ loading: true });
-  //   const token = localStorage.getItem("token");
-  //   const headers = {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Token ${token}`,
-  //       withCredentials: true
-  //     }
-  //   };
-  //   axios
-  //     .post("/api/posts", post, headers)
-  //     .then(res => {
-  //       axios
-  //         .post(
-  //           `/api/users/myPosts/${this.props.userID}`,
-  //           {
-  //             postID: res.data._id
-  //           },
-  //           headers
-  //         )
-  //         .then(res => {
-  //           //cannot divide the call into two setState calls
-  //           this.setState({ loading: false, posted: true });
-  //         })
-  //         .catch(err => {
-  //           console.log(err);
-  //           this.setState({ loading: false });
-  //         });
-  //       var updatedMyPosts = [...this.props.myPosts];
-  //       updatedMyPosts.push(res.data._id);
-  //       var updatedMyPostsDetail = [...this.props.myPostsDetail];
-  //       updatedMyPostsDetail.push(res.data);
-  //       this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
-  //     })
-  //     .catch(err => {
-  //       this.setState({ loading: false });
-  //     });
-
-  //   this.props.handlePosted();
-  // };
-
   handleFinalPost = async () => {
-    const token = localStorage.getItem("token");
     const post = {
       author: this.props.username,
       title: this.state.title,
       content: this.state.content,
-      tags: this.props.tagReducer.tags || []
+      tags: this.props.tagReducer.tags || [],
+      userId: this.props.userID,
+      avatar:
+        this.props.avatar || "https://bulma.io/images/placeholders/128x128.png"
     };
     this.setState({ loading: true });
+    const token = localStorage.getItem("token");
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`
+        Authorization: `Token ${token}`,
+        withCredentials: true
       }
     };
     axios
