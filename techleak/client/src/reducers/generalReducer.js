@@ -50,8 +50,7 @@ const reducer = (state = initialState, action) => {
       myPostsDetail: [],
       avatar: "",
       comments: [],
-      replies: [],
-      likes: {}
+      replies: []
     };
   }
   if (action.type === "SIGNUPMODAL") {
@@ -220,6 +219,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       filterPosts: action.filteredPostsDetail
+    };
+  }
+  if (action.type === "REMOVELIKES") {
+    return {
+      ...state,
+      likes: {}
     };
   }
   return state;

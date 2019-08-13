@@ -62,9 +62,7 @@ class Publish extends Component {
         axios
           .post(
             `/api/users/myPosts/${this.props.userID}`,
-            {
-              postID: res.data._id
-            },
+            { postID: res.data._id },
             headers
           )
           .then(res => {
@@ -86,19 +84,22 @@ class Publish extends Component {
       });
 
     this.props.handlePosted();
-  }
+  };
 
-  handlePostCheck = (e) => {
+  handlePostCheck = e => {
     e.preventDefault();
-    if (this.props.tagReducer.tags.length === 0 || this.props.tagReducer.tags.length >= 4) {
-      this.setState({ 
+    if (
+      this.props.tagReducer.tags.length === 0 ||
+      this.props.tagReducer.tags.length >= 4
+    ) {
+      this.setState({
         ...this.state,
-        tagError: true 
+        tagError: true
       });
     } else {
       this.handleFinalPost();
     }
-  }
+  };
 
   updateContent = value => {
     this.setState({ content: value });
@@ -113,7 +114,7 @@ class Publish extends Component {
   };
 
   onCloseModal = () => {
-    this.setState({ 
+    this.setState({
       ...this.state,
       warning: false,
       tagError: false
@@ -192,26 +193,6 @@ class Publish extends Component {
 
     return (
       <React.Fragment>
-        <div>
-          <nav
-            className="navbar"
-            role="navigation"
-            aria-label="main navigation"
-          >
-            <div className="navbar-brand">
-              <div className="navbar-item">
-                <Link to="/">
-                  <img src={image} width="112" height="48" alt="logo" />
-                </Link>
-              </div>
-            </div>
-
-            <div id="navbarBasicExample" className="navbar-menu">
-              <div className="navbar-start" />
-              <DropDown lists={["Save", "Draft"]} />
-            </div>
-          </nav>
-        </div>
         <div style={{ width: "80%", margin: "auto auto" }}>
           {this.state.loading ? (
             <div
@@ -233,7 +214,9 @@ class Publish extends Component {
                   className="input is-rounded"
                   type="text"
                   required
-                  minLength="5"
+                  placeholder="Title..."
+                  minLength="8"
+                  maxLength="50"
                   value={this.state.title}
                   onChange={this.handleTitle}
                 />
@@ -265,17 +248,17 @@ class Publish extends Component {
                   >
                     Post
                   </button>
-                      <button
-                        className="button is-primary level-item"
-                        type="button"
-                        onClick={this.handleCancel}
-                      >
-                        Cancel
+                  <button
+                    className="button is-primary level-item"
+                    type="button"
+                    onClick={this.handleCancel}
+                  >
+                    Cancel
                   </button>
-                    </div>
-                  </form>
-                </React.Fragment>
-              )}
+                </div>
+              </form>
+            </React.Fragment>
+          )}
         </div>
         <Modal
           className="modal-lg"
@@ -307,11 +290,10 @@ class Publish extends Component {
             <h1>
               <strong>Warning</strong>
             </h1>
-            <p style={{ color: "red" }}>Please limit the number of the input tags from 1 to 3</p>
-            <button
-              className="button is-link"
-              onClick={this.onCloseModal}
-            >
+            <p style={{ color: "red" }}>
+              Please limit the number of the input tags from 1 to 3
+            </p>
+            <button className="button is-link" onClick={this.onCloseModal}>
               Okay, I Got It
             </button>
           </div>
