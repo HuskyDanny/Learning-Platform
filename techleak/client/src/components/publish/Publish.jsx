@@ -27,31 +27,80 @@ class Publish extends Component {
       posted: false,
       content: "",
       title: "",
-      loading: false
+      loading: false,
+      tagError: false
     };
 
-    this.handlePost = this.handlePost.bind(this);
+    this.handlePostCheck = this.handlePostCheck.bind(this);
+    this.handleFinalPost = this.handleFinalPost.bind(this);
     this.successPosted = this.successPosted.bind(this);
     this.updateContent = this.updateContent.bind(this);
   }
 
-  handlePost = async () => {
+  // handlePost = async () => {
+  //   const post = {
+  //     author: this.props.username,
+  //     title: this.state.title,
+  //     content: this.state.content,
+  //     tags: this.props.tagReducer.tags || [],
+  //     userId: this.props.userID,
+  //     avatar:
+  //       this.props.avatar || "https://bulma.io/images/placeholders/128x128.png"
+  //   };
+  //   this.setState({ loading: true });
+  //   const token = localStorage.getItem("token");
+  //   const headers = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Token ${token}`,
+  //       withCredentials: true
+  //     }
+  //   };
+  //   axios
+  //     .post("/api/posts", post, headers)
+  //     .then(res => {
+  //       axios
+  //         .post(
+  //           `/api/users/myPosts/${this.props.userID}`,
+  //           {
+  //             postID: res.data._id
+  //           },
+  //           headers
+  //         )
+  //         .then(res => {
+  //           //cannot divide the call into two setState calls
+  //           this.setState({ loading: false, posted: true });
+  //         })
+  //         .catch(err => {
+  //           console.log(err);
+  //           this.setState({ loading: false });
+  //         });
+  //       var updatedMyPosts = [...this.props.myPosts];
+  //       updatedMyPosts.push(res.data._id);
+  //       var updatedMyPostsDetail = [...this.props.myPostsDetail];
+  //       updatedMyPostsDetail.push(res.data);
+  //       this.props.handleUpdatedMyPosts(updatedMyPostsDetail, updatedMyPosts);
+  //     })
+  //     .catch(err => {
+  //       this.setState({ loading: false });
+  //     });
+
+  //   this.props.handlePosted();
+  // };
+
+  handleFinalPost = async () => {
+    const token = localStorage.getItem("token");
     const post = {
       author: this.props.username,
       title: this.state.title,
       content: this.state.content,
-      tags: this.props.tagReducer.tags || [],
-      userId: this.props.userID,
-      avatar:
-        this.props.avatar || "https://bulma.io/images/placeholders/128x128.png"
+      tags: this.props.tagReducer.tags || []
     };
     this.setState({ loading: true });
-    const token = localStorage.getItem("token");
     const headers = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Token ${token}`,
-        withCredentials: true
+        Authorization: `Token ${token}`
       }
     };
     axios
@@ -60,9 +109,7 @@ class Publish extends Component {
         axios
           .post(
             `/api/users/myPosts/${this.props.userID}`,
-            {
-              postID: res.data._id
-            },
+            { postID: res.data._id },
             headers
           )
           .then(res => {
@@ -86,6 +133,21 @@ class Publish extends Component {
     this.props.handlePosted();
   };
 
+  handlePostCheck = e => {
+    e.preventDefault();
+    if (
+      this.props.tagReducer.tags.length === 0 ||
+      this.props.tagReducer.tags.length >= 4
+    ) {
+      this.setState({
+        ...this.state,
+        tagError: true
+      });
+    } else {
+      this.handleFinalPost();
+    }
+  };
+
   updateContent = value => {
     this.setState({ content: value });
   };
@@ -99,7 +161,11 @@ class Publish extends Component {
   };
 
   onCloseModal = () => {
-    this.setState({ warning: false });
+    this.setState({
+      ...this.state,
+      warning: false,
+      tagError: false
+    });
   };
 
   handleTitle = e => {
@@ -189,7 +255,7 @@ class Publish extends Component {
             this.successPosted()
           ) : (
             <React.Fragment>
-              <form onSubmit={this.handlePost}>
+              <form onSubmit={this.handlePostCheck}>
                 <label>Title</label>
                 <input
                   className="input is-rounded"
@@ -208,7 +274,9 @@ class Publish extends Component {
                     value={this.state.content}
                   />
                 </div>
+                <br />
                 {selection}
+                <hr />
                 <label>Tags</label>
                 <TagSearch
                   hitsDisplay={this.props.tagReducer.hitsDisplay}
@@ -257,6 +325,24 @@ class Publish extends Component {
             >
               Okay, I Got It
             </Link>
+          </div>
+        </Modal>
+        <Modal
+          className="modal-lg"
+          open={this.state.tagError}
+          onClose={this.onCloseModal}
+          center
+        >
+          <div>
+            <h1>
+              <strong>Warning</strong>
+            </h1>
+            <p style={{ color: "red" }}>
+              Please limit the number of the input tags from 1 to 3
+            </p>
+            <button className="button is-link" onClick={this.onCloseModal}>
+              Okay, I Got It
+            </button>
           </div>
         </Modal>
       </React.Fragment>
