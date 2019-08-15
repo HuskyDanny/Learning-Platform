@@ -20,7 +20,11 @@ const DropDown = props => {
           <div className="dropdown-content">
             <div className="dropdown-item">
               {props.lists.map((list, index) => (
-                <a key={index} href="#" className="dropdown-item">
+                <a
+                  key={index}
+                  onClick={props.funcs[index]}
+                  className="dropdown-item"
+                >
                   {list}
                 </a>
               ))}

@@ -56,7 +56,8 @@ const UsersSchema = new mongoose.Schema({
     required: true
   },
   confirmation: String,
-  passwordReset: { type: String, select: false }
+  passwordReset: { type: String, select: false },
+  draft: String
 });
 
 UsersSchema.methods.setPassword = function(password) {

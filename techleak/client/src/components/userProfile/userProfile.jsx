@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import ErrorBoundary from "../UI/ErrorHandler/ErrorHandler";
 import "./userProfile.css";
 import HeadingSection from "./userProfileComponent/headingSection";
 import ProfileOptions from "./userProfileComponent/profieOptions";

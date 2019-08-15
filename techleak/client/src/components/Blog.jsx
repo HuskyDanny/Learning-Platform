@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Navbar from "./navbar";
+import getTimeFormat from "../utils/getTimeFormat";
 import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
@@ -36,11 +36,9 @@ class Blog extends Component {
     axios
       .get(`/api/posts/${this.props.match.params.id}`, { headers: "" })
       .then(res => {
-        const date = new Date(res.data.post_date_timestamp);
         this.setState({
           comments: res.data.comments,
-          post_date: `${date.getMonth() +
-            1}-${date.getDate()}-${date.getFullYear()}`,
+          post_date: getTimeFormat(res.data.post_date_timestamp),
           username: res.data.username,
           userID: res.data.userID,
           content: res.data.content,

@@ -26,6 +26,23 @@ var upload = multer({
   })
 });
 
+router.patch("/draft/:id", auth.required, (req, res) => {
+  if (req.body.content) {
+    User.findOneAndUpdate({ _id: req.params.id }, { draft: req.body.content })
+      .then(() => res.send({ message: "saved" }))
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ message: "failed" });
+      });
+  }
+});
+
+router.get("/draft/:id", auth.required, (req, res) => {
+  User.findOne({ _id: req.params.id })
+    .then(user => res.json({ content: user.draft }))
+    .catch(err => res.status(500).json({ message: "failed" }));
+});
+
 router.patch(
   "/profile/:id",
   auth.required,

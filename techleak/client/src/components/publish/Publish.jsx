@@ -35,7 +35,23 @@ class Publish extends Component {
     this.handleFinalPost = this.handleFinalPost.bind(this);
     this.successPosted = this.successPosted.bind(this);
     this.updateContent = this.updateContent.bind(this);
+    this.getContent = this.getContent.bind(this);
   }
+
+  getContent = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
+    axios.get(`/api/users/draft/${this.props.userID}`, headers).then(res => {
+      console.log(res.data);
+      this.setState({ content: res.data.content });
+    });
+  };
 
   handleFinalPost = async () => {
     const post = {
@@ -210,21 +226,28 @@ class Publish extends Component {
             <React.Fragment>
               <form onSubmit={this.handlePostCheck}>
                 <label>Title</label>
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  required
-                  placeholder="Title..."
-                  minLength="8"
-                  maxLength="50"
-                  value={this.state.title}
-                  onChange={this.handleTitle}
-                />
+                <div className="level">
+                  <input
+                    className="input is-rounded"
+                    type="text"
+                    required
+                    placeholder="Title..."
+                    minLength="8"
+                    maxLength="50"
+                    value={this.state.title}
+                    onChange={this.handleTitle}
+                  />
+
+                  <DropDown
+                    lists={["Get Last Draft"]}
+                    funcs={[this.getContent]}
+                  />
+                </div>
                 <div>
-                  <br />
                   <Editor
                     updateContent={this.updateContent}
                     value={this.state.content}
+                    userID={this.props.userID}
                   />
                 </div>
                 <br />

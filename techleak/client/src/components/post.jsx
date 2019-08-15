@@ -3,6 +3,7 @@ import Tag from "./commons/tag";
 import Likes from "./commons/likes";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import getTimeFormat from "../utils/getTimeFormat";
 const Post = props => {
   const { author, title, tags, post_date_timestamp, objectID } = props.post;
 
@@ -13,8 +14,6 @@ const Post = props => {
   const postStyle = {
     margin: "3% 1% 0 1%"
   };
-
-  const date = new Date(post_date_timestamp);
 
   return (
     <div className="column box is-4" style={postStyle}>
@@ -45,8 +44,7 @@ const Post = props => {
             >
               <div>
                 <span style={{ color: "black", fontSize: "12px" }}>
-                  {`${date.getMonth() +
-                    1}-${date.getDate()}-${date.getFullYear()}`}
+                  {getTimeFormat(post_date_timestamp)}
                 </span>
               </div>
 
