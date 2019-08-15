@@ -2,6 +2,7 @@ import axios from "../../axios/axios-blogs";
 import React, { Component } from "react";
 import Editor from "../editor/Editor";
 import { Link } from "react-router-dom";
+import getTimeFormat from "../../utils/getTimeFormat";
 import image from "../../assets/img/logo1.jpg";
 import DropDown from "../dropdown/dropdown";
 import Spinner from "../UI/Spinner/Spinner";
@@ -28,7 +29,8 @@ class Publish extends Component {
       content: "",
       title: "",
       loading: false,
-      tagError: false
+      tagError: false,
+      updateTime: ""
     };
 
     this.handlePostCheck = this.handlePostCheck.bind(this);
@@ -36,7 +38,13 @@ class Publish extends Component {
     this.successPosted = this.successPosted.bind(this);
     this.updateContent = this.updateContent.bind(this);
     this.getContent = this.getContent.bind(this);
+    this.showUpdateTime = this.showUpdateTime.bind(this);
   }
+
+  showUpdateTime = () => {
+    const currTime = new Date().toTimeString();
+    this.setState({ updateTime: currTime });
+  };
 
   getContent = () => {
     const token = localStorage.getItem("token");
@@ -248,7 +256,13 @@ class Publish extends Component {
                     updateContent={this.updateContent}
                     value={this.state.content}
                     userID={this.props.userID}
+                    showUpdateTime={this.showUpdateTime}
                   />
+                  <span style={{ fontSize: "13px" }}>
+                    {this.state.updateTime
+                      ? `Saved at ${this.state.updateTime}`
+                      : ""}
+                  </span>
                 </div>
                 <br />
                 {selection}
