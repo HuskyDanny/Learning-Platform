@@ -46,7 +46,7 @@ class App extends Component {
           onIdle={this.onIdle}
           onAction={this.onAction}
           debounce={250}
-          timeout={1000 * 3600}
+          timeout={1000 * 1800}
         />
 
         <React.Fragment>
