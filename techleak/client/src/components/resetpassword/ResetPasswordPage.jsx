@@ -109,6 +109,17 @@ export default class ResetPasswordPage extends Component {
               <button type="submit" className="button is-primary">
                 Reset Password
               </button>
+              <Link 
+                to="/"
+                className="button is-success"
+                style={{
+                  marginTop: "10%",
+                  width: "10%",
+                  margin: "auto auto"
+                }}
+              >
+                Cancel
+              </Link>
             </form>
           </div>
         </div>
@@ -117,7 +128,7 @@ export default class ResetPasswordPage extends Component {
       display = (
         <div className="row justify-content-center">
           <div className="col-10 col-sm-7 col-md-5 col-lg-4">
-            <form onSubmit={this.handlePasswordSubmit}>
+            <form onSubmit={this.handlePasswordSubmit} >
               <p>
                 Please enter the new password you want to set as well as the
                 six-digit confirmation code that we have sent to you email
@@ -158,6 +169,18 @@ export default class ResetPasswordPage extends Component {
               <button type="submit" className="button is-primary">
                 Reset Password
               </button>
+              <Link 
+                to="/"
+                className="button is-success"
+                style={{
+                  marginTop: "10%",
+                  width: "10%",
+                  margin: "auto auto",
+
+                }}
+              >
+                Cancel
+              </Link>
             </form>
           </div>
         </div>
