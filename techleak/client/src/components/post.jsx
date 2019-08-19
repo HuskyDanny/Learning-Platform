@@ -7,10 +7,6 @@ import getTimeFormat from "../utils/getTimeFormat";
 const Post = props => {
   const { author, title, tags, post_date_timestamp, objectID } = props.post;
 
-  const headerStyles = {
-    padding: "3% 1% 2% 1%",
-    height: "20px",
-  }
   const contentStyles = {
     padding: "3% 1% 2% 1%",
     height: "100%",
