@@ -9,7 +9,7 @@ const Post = props => {
 
   const contentStyles = {
     padding: "3% 1% 2% 1%",
-    height: "100%"
+    height: "100%",
   };
   const postStyle = {
     margin: "3% 1% 0 1%"
@@ -20,7 +20,10 @@ const Post = props => {
       <div>
         <Link to={`/blog/${objectID}`}>
           <header style={{ contentStyles }}>
-            <div className="tags">
+            <div className="tags" style={{ 
+              height: "20px",
+              marginBottom: "5px"
+            }}>
               {tags.map((tag, index) => (
                 <Tag key={index} name={tag} />
               ))}
