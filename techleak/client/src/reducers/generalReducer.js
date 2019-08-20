@@ -16,7 +16,8 @@ let initialState = {
   postType: "",
   menu_class: "",
   avatar: "",
-  likes: {}
+  likes: {},
+  piginationNumber: 1
 };
 
 const reducer = (state = initialState, action) => {
@@ -225,6 +226,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       likes: {}
+    };
+  }
+  if (action.type === "PIGINATIONNUMBER") {
+    return {
+      ...state,
+      piginationNumber: action.currRefinement
     };
   }
   return state;

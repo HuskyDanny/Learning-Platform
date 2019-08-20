@@ -4,10 +4,8 @@ import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
 import axios from "../axios/axios-blogs";
-
 import { withRouter } from "react-router";
 import errorBoundary from "./UI/ErrorHandler/ErrorHandler";
-
 import Share from "./share/share";
 import Flexbox from "flexbox-react";
 

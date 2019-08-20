@@ -4,12 +4,12 @@ import "instantsearch.css/themes/algolia.css";
 import {
   InstantSearch,
   SearchBox,
-  Pagination,
   SortBy,
   Configure
 } from "react-instantsearch-dom";
-
+import { connect } from "react-redux";
 import CustomHits from "./customHits";
+import Pagination from "./customPigination";
 
 const searchClient = algoliasearch(
   process.env.REACT_APP_APPLICATION_ID,
@@ -48,7 +48,7 @@ class SearchBuilder extends Component {
           searchClient={searchClient}
           refresh={this.state.refresh}
         >
-          <Configure hitsPerPage={6} analytics={true} distinct />
+          <Configure hitsPerPage={6} analytics={true} distinct page={1} />
           <div style={{ justifyContent: "center", display: "flex" }}>
             <SortBy
               defaultRefinement="posts"
@@ -80,7 +80,7 @@ class SearchBuilder extends Component {
           </div>
           <CustomHits />
           <Pagination
-            defaultRefinement={1}
+            defaultRefinement={this.props.piginationNumber}
             showFirst
             showPrevious
             showNext
@@ -94,4 +94,10 @@ class SearchBuilder extends Component {
   }
 }
 
-export default SearchBuilder;
+const mapStateToProps = state => {
+  return {
+    piginationNumber: state.persistedReducer.piginationNumber
+  };
+};
+
+export default connect(mapStateToProps)(SearchBuilder);
