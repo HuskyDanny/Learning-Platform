@@ -25,6 +25,7 @@ const WithHandler = (WrappedComponent, axios) => {
             error: true,
             errorMessage: error.response.status
           });
+
           return Promise.reject(error);
         }
       );
@@ -67,6 +68,8 @@ const WithHandler = (WrappedComponent, axios) => {
       };
 
       const onExited = () => {
+        console.log("sdsds");
+        console.log(this.state.errorMessage);
         if (
           this.props.history &&
           (this.state.errorMessage === 400 || this.state.errorMessage === 500)

@@ -4,10 +4,8 @@ import ReactHtmlParser from "react-html-parser";
 import Comments from "./comment/comments";
 import { connect } from "react-redux";
 import axios from "../axios/axios-blogs";
-
 import { withRouter } from "react-router";
 import errorBoundary from "./UI/ErrorHandler/ErrorHandler";
-
 import Share from "./share/share";
 import Flexbox from "flexbox-react";
 
@@ -48,31 +46,6 @@ class Blog extends Component {
           tags: res.data.tags
         });
         this.props.getBlog(res.data);
-      })
-      .catch(err => {
-        if (err.response.status === 400) {
-          // retrieve the post id that has been deleted by the original aurthor
-          // to update a user's likedposts in database and redux
-          const token = localStorage.getItem("token");
-          const headers = {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${token}`,
-              withCredentials: true
-            }
-          };
-          axios
-            .delete(
-              `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-                this.props.userID
-              }?postID=${this.props.match.params.id}`,
-              headers
-            )
-            .then(res => {
-              this.props.handleLike(this.props.match.params.id, null, true);
-            })
-            .catch(err => console.log(err));
-        }
       });
   };
 

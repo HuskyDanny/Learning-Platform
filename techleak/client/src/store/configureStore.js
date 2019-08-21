@@ -3,8 +3,8 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web and AsyncStorage for react-native
 import rootReducer from "../reducers/generalReducer";
 import tagReducer from "../reducers/tagReducer";
-import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
+import thunkMiddleware from "redux-thunk";
+import { createLogger } from "redux-logger";
 
 const persistConfig = {
   key: "root",
@@ -27,12 +27,7 @@ const persistConfig = {
 
 const loggerMiddleware = createLogger();
 
-const enhancer = compose(
-  applyMiddleware(
-    thunkMiddleware,
-    loggerMiddleware,
-  ),
-);
+const enhancer = compose(applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
