@@ -73,8 +73,8 @@ class HeadingSection extends React.Component {
                   width="128px"
                 />
               </figure>
-              <div className="file is-small">
-                <label class="file-label" style={{ margin: "auto" }}>
+              <div className="file is-small" style={{ display:"flex", float:"left", width: "70%" }}>
+                <label class="file-label" style={{ width: "100%" }}>
                   <input
                     class="file-input"
                     ode
@@ -82,11 +82,11 @@ class HeadingSection extends React.Component {
                     name="resume"
                     onChange={this.fileHandler}
                   />
-                  <span class="file-cta">
+                  <span class="file-cta" style={{ width: "100%" }}>
                     <span class="file-icon">
                       <i class="fas fa-upload" />
                     </span>
-                    <span class="file-label">Select Images</span>
+                    <span class="file-label" style={{ display: "inline-block", textOverflow: "ellipsis", marginLeft: "10%" }}>Select Images</span>
                   </span>
                 </label>
               </div>
@@ -94,6 +94,18 @@ class HeadingSection extends React.Component {
                 class={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
                 }`}
+                style={{
+                  display: "inline-block",
+                  width: "30%",
+                  backgroundColor: "whitesmoke",
+                  color: "#4a4a4a",
+                  borderColor: "#dbdbdb",
+                  borderRadius: "4px",
+                  fontSize: "0.75em",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis"
+                }}
                 onClick={this.handleUpload}
               >
                 Upload
