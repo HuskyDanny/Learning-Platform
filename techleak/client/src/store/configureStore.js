@@ -21,7 +21,8 @@ const persistConfig = {
     "likes",
     "avatar",
     "likedPostsDetail",
-    "myPostsDetail"
+    "myPostsDetail",
+    "bio"
   ]
 };
 

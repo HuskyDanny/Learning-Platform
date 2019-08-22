@@ -43,6 +43,18 @@ router.get("/draft/:id", auth.required, (req, res) => {
     .catch(err => res.status(500).json({ message: "failed" }));
 });
 
+router.patch("/bio/:id", auth.required, async (req, res) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      { bio: req.body.bio }
+    );
+    res.json(user.toAuthJSON());
+  } catch (error) {
+    res.status(500).json({ message: "bio not updated" });
+  }
+});
+
 router.patch(
   "/profile/:id",
   auth.required,

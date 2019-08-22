@@ -17,7 +17,8 @@ let initialState = {
   menu_class: "",
   avatar: "",
   likes: {},
-  piginationNumber: 1
+  piginationNumber: 1,
+  bio: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,7 +32,8 @@ const reducer = (state = initialState, action) => {
       myPosts: action.myPosts,
       avatar: action.avatar,
       likedPostsDetail: action.likedPostsDetail,
-      myPostsDetail: action.myPostsDetail
+      myPostsDetail: action.myPostsDetail,
+      bio: action.bio
     };
   }
   if (action.type === "LOGOUT") {
@@ -232,6 +234,12 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       piginationNumber: action.currRefinement
+    };
+  }
+  if (action.type === "UPDATEBIO") {
+    return {
+      ...state,
+      bio: action.bio
     };
   }
   return state;

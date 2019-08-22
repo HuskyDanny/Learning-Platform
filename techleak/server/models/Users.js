@@ -57,7 +57,8 @@ const UsersSchema = new mongoose.Schema({
   },
   confirmation: String,
   passwordReset: { type: String, select: false },
-  draft: String
+  draft: String,
+  bio: { type: String, default: "Your Biography" }
 });
 
 UsersSchema.methods.setPassword = function(password) {
@@ -103,7 +104,8 @@ UsersSchema.methods.toAuthJSON = function() {
     id: this._id,
     likedPosts: this.likedPosts,
     myPosts: this.myPosts,
-    avatar: this.avatar
+    avatar: this.avatar,
+    bio: this.bio
   };
 };
 
