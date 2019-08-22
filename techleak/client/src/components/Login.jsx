@@ -41,6 +41,7 @@ class Login extends Component {
       let likedPostsDetail = allPostDetail[0];
       let myPostsDetail = allPostDetail[1];
       this.setState({ loading: false, email: "", password: "" });
+      console.log(data);
       //remove memeory likes first then add back in
       this.props.handleLogIn(
         data.username,
@@ -48,6 +49,7 @@ class Login extends Component {
         data.likedPosts,
         data.myPosts,
         data.avatar,
+        data.bio,
         likedPostsDetail,
         myPostsDetail
       );
@@ -234,6 +236,7 @@ const mapDispatchToProps = dispatch => {
       likedPosts,
       myPosts,
       avatar,
+      bio,
       likedPostsDetail,
       myPostsDetail
     ) =>
@@ -244,6 +247,7 @@ const mapDispatchToProps = dispatch => {
         likedPosts: likedPosts,
         myPosts: myPosts,
         avatar: avatar,
+        bio: bio,
         likedPostsDetail: likedPostsDetail,
         myPostsDetail: myPostsDetail
       }),

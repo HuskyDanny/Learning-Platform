@@ -6,7 +6,9 @@ import profile from "../../../assets/img/Portrait_Placeholder.png";
 class HeadingSection extends React.Component {
   state = {
     selectedFile: null,
-    loading: false
+    loading: false,
+    editing: false,
+    bio: this.props.bio
   };
 
   fileHandler = e => {
@@ -21,6 +23,36 @@ class HeadingSection extends React.Component {
       output.width = "128px";
     };
     reader.readAsDataURL(e.target.files[0]);
+  };
+
+  handleEditPop = () => {
+    this.setState({ editing: true });
+  };
+
+  onChange = e => {
+    e.preventDefault();
+    this.setState({ bio: e.target.value });
+  };
+
+  handleEdit = () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
+    axios
+      .patch(
+        `/api/users/bio/${this.props.userId}`,
+        { bio: this.state.bio },
+        headers
+      )
+      .then(res => {
+        this.setState({ editing: false });
+      });
+    this.props.updateBio(this.state.bio);
   };
 
   handleUpload = () => {
@@ -57,6 +89,27 @@ class HeadingSection extends React.Component {
     }
   };
   render() {
+    const editInput = (
+      <div className="media-content">
+        <div className="field">
+          <p className="control">
+            <textarea
+              className="textarea"
+              value={this.state.bio}
+              onChange={this.onChange}
+              placeholder="Add a comment..."
+            />
+          </p>
+        </div>
+        <div className="field">
+          <p className="control">
+            <button className="button" onClick={this.handleEdit}>
+              Save
+            </button>
+          </p>
+        </div>
+      </div>
+    );
     return (
       <div className="section profile-heading">
         <div className="columns is-mobile is-multiline">
@@ -106,18 +159,14 @@ class HeadingSection extends React.Component {
               <br />
               <a
                 className="button is-primary is-outlined"
-                href="#"
                 id="edit-preferences"
                 style={{ margin: "5px 0" }}
+                onClick={this.handleEditPop}
               >
-                Edit Preferences
+                Edit Biography
               </a>
             </p>
-            <p className="tagline">
-              The users profile bio would go here, of course. It could be two
-              lines or more or whatever. We should probably limit the amount of
-              characters to ~500 at most though.
-            </p>
+            {this.state.editing ? editInput : <p>{this.props.bio}</p>}
           </div>
           <div className="column is-1-tablet is-2-mobile has-text-centered" />
           <div className="column is-1-tablet is-4-mobile has-text-centered">
@@ -138,12 +187,14 @@ const mapStateToProps = state => {
   return {
     username: state.persistedReducer.username,
     userId: state.persistedReducer.userID,
-    avatar: state.persistedReducer.avatar
+    avatar: state.persistedReducer.avatar,
+    bio: state.persistedReducer.bio
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
-    updateAvatar: avatar => dispatch({ type: "UPDATEAVATAR", avatar: avatar })
+    updateAvatar: avatar => dispatch({ type: "UPDATEAVATAR", avatar: avatar }),
+    updateBio: bio => dispatch({ type: "UPDATEBIO", bio: bio })
   };
 };
 
