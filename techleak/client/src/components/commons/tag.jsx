@@ -2,7 +2,8 @@ import React from "react";
 
 const Tag = props => {
   const { name } = props;
-  return <li style={styles.items}>{name}</li>;
+  return <span className="tag is-primary is-rounded is-small">{name}</span>;
+  // return <li style={styles.items}>{name}</li>;
 };
 
 const styles = {
@@ -12,13 +13,9 @@ const styles = {
     padding: "5px",
     marginBottom: "2%",
     border: "none",
-    whiteSpace: "nowrap",
     color: "#ffffff",
     backgroundColor: "#10d3a9",
     fontFamily: "Helvetica, sans-serif",
-    maxWidth: "30%",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
     borderRadius: "5px",
     marginRight: "1%",
     cursor: "pointer"
