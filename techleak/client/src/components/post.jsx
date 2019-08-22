@@ -9,55 +9,63 @@ const Post = props => {
 
   const contentStyles = {
     padding: "3% 1% 2% 1%",
-    height: "100%",
   };
   const postStyle = {
-    margin: "3% 1% 0 1%"
+    margin: "3% 1% 0 1%",
+    display: "flex",
+    minHeight: "100%",
+    position: "relative"
   };
 
   return (
     <div className="column box is-4" style={postStyle}>
-      <div>
-        <Link to={`/blog/${objectID}`}>
-          <header style={{ contentStyles }}>
-            <div className="tags" style={{ 
-              height: "20px",
-              marginBottom: "5px"
-            }}>
-              {tags.map((tag, index) => (
-                <Tag key={index} name={tag} />
-              ))}
-            </div>
-          </header>
-          <section style={contentStyles}>
-            <p className="is-family-sans-serif" style={{ color: "black" }}>
-              {title}
-            </p>
-            <p
-              className="is-family-monospace"
-              style={{ color: "black", marginTop: "1%" }}
-            >
-              <i className="fas fa-user-astronaut" /> {author}
-            </p>
-          </section>
-          <footer style={contentStyles}>
-            <div
-              className="is-flex"
-              style={{ justifyContent: "space-between" }}
-            >
-              <div>
-                <span style={{ color: "black", fontSize: "12px" }}>
-                  {getTimeFormat(post_date_timestamp)}
-                </span>
-              </div>
+      <Link to={`/blog/${objectID}`} style={{ width: "100%" }}>
+        
+        <header style={{ contentStyles }}>
+          <div className="tags">
+            {tags.map((tag, index) => (
+              <Tag key={index} name={tag} />
+            ))}
+          </div>
+        </header>
 
-              <div>
-                <Likes likes={props.persistedReducer.likes[objectID]} />
-              </div>
+        <section style={contentStyles}>
+          <p className="is-family-sans-serif" style={{ color: "black" }}>
+            {title}
+          </p>
+          <p
+            className="is-family-monospace"
+            style={{ color: "black", marginTop: "1%" }}
+          >
+            <i className="fas fa-user-astronaut" /> {author}
+          </p>
+        </section>
+
+        <br/>
+        
+        <footer style={{ 
+          position: "absolute",
+          bottom: "2px",
+          left: "3.5%",
+          right: "3.5%",
+          paddingTop: "3%"
+        }}>
+          <div
+            className="is-flex"
+            style={{ justifyContent: "space-between" }}
+          >
+            <div>
+              <span style={{ color: "black", fontSize: "12px", paddingTop: "2%", float:"left" }}>
+                {getTimeFormat(post_date_timestamp)}
+              </span>
             </div>
-          </footer>
-        </Link>
-      </div>
+
+            <div style={{ float:"right" }}>
+              <Likes likes={props.persistedReducer.likes[objectID]} />
+            </div>
+          </div>
+        </footer>
+      </Link>
     </div>
   );
 };
