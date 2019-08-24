@@ -69,7 +69,7 @@ class HeadingSection extends React.Component {
         }
       };
       axios
-        .patch(`/api/users/profile/${this.props.userId}`, data)
+        .patch(`/api/users/profile/${this.props.userId}`, data, headers)
         .then(res => {
           this.setState({ loading: false });
           this.setState({ selectedFile: null });
