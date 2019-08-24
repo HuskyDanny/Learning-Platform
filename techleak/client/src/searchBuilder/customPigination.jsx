@@ -10,8 +10,8 @@ const Pagination = ({
   savePigination
 }) => (
   <ul className="ais-Pagination-list" style={{ marginTop: "2%" }}>
-    <li class="ais-Pagination-item ais-Pagination-item--firstPage ais-Pagination-item--disabled">
-      <span class="ais-Pagination-link" aria-label="First">
+    <li className="ais-Pagination-item ais-Pagination-item--firstPage ais-Pagination-item--disabled">
+      <span className="ais-Pagination-link" aria-label="First">
         ‹‹
       </span>
     </li>
@@ -38,8 +38,8 @@ const Pagination = ({
         </li>
       );
     })}
-    <li class="ais-Pagination-item ais-Pagination-item--lastPage">
-      <a class="ais-Pagination-link" aria-label="Last" href="#">
+    <li className="ais-Pagination-item ais-Pagination-item--lastPage">
+      <a className="ais-Pagination-link" aria-label="Last" href="#">
         ››
       </a>
     </li>
