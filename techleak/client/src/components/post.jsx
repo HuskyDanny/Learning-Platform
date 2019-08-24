@@ -45,7 +45,7 @@ const Post = props => {
         
         <footer style={{ 
           position: "absolute",
-          bottom: "2px",
+          bottom: "8px",
           left: "3.5%",
           right: "3.5%",
           paddingTop: "3%"
@@ -55,7 +55,7 @@ const Post = props => {
             style={{ justifyContent: "space-between" }}
           >
             <div>
-              <span style={{ color: "black", fontSize: "12px", paddingTop: "2%", float:"left" }}>
+              <span style={{ color: "black", fontSize: "12px", paddingTop: "3px", float:"left" }}>
                 {getTimeFormat(post_date_timestamp)}
               </span>
             </div>

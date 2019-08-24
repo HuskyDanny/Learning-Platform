@@ -21,6 +21,11 @@ class Login extends Component {
     this.setState({ [type]: e.target.value });
   };
 
+  handleResetPassword = (e) => {
+    e.preventDefault();
+    this.props.onSwitchLoginModal();
+  }
+
   handleSubmit = async e => {
     e.preventDefault();
 
@@ -177,9 +182,11 @@ class Login extends Component {
           </div>
           {userError()}
           <div className="forgetPwd">
-            <Link to="/reset-password">
-              <p>Forget Password?</p>
-            </Link>
+            <button  onClick={e => this.handleResetPassword(e)}>
+              <Link to="/reset-password">
+                <p>Forget Password?</p>
+              </Link>
+            </button>
           </div>
           <div
             className="field is-grouped"
