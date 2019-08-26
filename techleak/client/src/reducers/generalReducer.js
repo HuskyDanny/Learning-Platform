@@ -1,4 +1,4 @@
-let initialState = {
+const initialState = {
   loggedIn: false,
   signupOpen: false,
   loginOpen: false,

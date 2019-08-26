@@ -55,7 +55,7 @@ const WithHandler = (WrappedComponent, axios) => {
           message = "Please login, login status is expired";
           break;
         case 400:
-          message = "Data not found, please contact us!";
+          message = "Data not found, please contact us";
           break;
         case 500:
           message = "Server breaks, please contact us";
@@ -68,8 +68,6 @@ const WithHandler = (WrappedComponent, axios) => {
       };
 
       const onExited = () => {
-        console.log("sdsds");
-        console.log(this.state.errorMessage);
         if (
           this.props.history &&
           (this.state.errorMessage === 400 || this.state.errorMessage === 500)

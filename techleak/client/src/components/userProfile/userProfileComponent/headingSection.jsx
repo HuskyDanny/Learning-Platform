@@ -126,7 +126,10 @@ class HeadingSection extends React.Component {
                   width="128px"
                 />
               </figure>
-              <div className="file is-small" style={{ display:"flex", float:"left", width: "70%" }}>
+              <div
+                className="file is-small"
+                style={{ display: "flex", float: "left", width: "70%" }}
+              >
                 <label class="file-label" style={{ width: "100%" }}>
                   <input
                     class="file-input"
@@ -135,11 +138,20 @@ class HeadingSection extends React.Component {
                     name="resume"
                     onChange={this.fileHandler}
                   />
-                  <span class="file-cta" style={{ width: "100%" }}>
+                  <span class="file-cta" style={{ width: "70%" }}>
                     <span class="file-icon">
                       <i class="fas fa-upload" />
                     </span>
-                    <span class="file-label" style={{ display: "inline-block", textOverflow: "ellipsis", marginLeft: "10%" }}>Select Images</span>
+                    <span
+                      class="file-label"
+                      style={{
+                        display: "inline-block",
+                        textOverflow: "ellipsis",
+                        marginLeft: "10%"
+                      }}
+                    >
+                      Select
+                    </span>
                   </span>
                 </label>
               </div>

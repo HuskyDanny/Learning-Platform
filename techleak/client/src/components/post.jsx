@@ -8,7 +8,7 @@ const Post = props => {
   const { author, title, tags, post_date_timestamp, objectID } = props.post;
 
   const contentStyles = {
-    padding: "3% 1% 2% 1%",
+    padding: "3% 1% 2% 1%"
   };
   const postStyle = {
     margin: "3% 1% 0 1%",
@@ -20,7 +20,6 @@ const Post = props => {
   return (
     <div className="column box is-4" style={postStyle}>
       <Link to={`/blog/${objectID}`} style={{ width: "100%" }}>
-        
         <header style={{ contentStyles }}>
           <div className="tags">
             {tags.map((tag, index) => (
@@ -41,26 +40,32 @@ const Post = props => {
           </p>
         </section>
 
-        <br/>
-        
-        <footer style={{ 
-          position: "absolute",
-          bottom: "2px",
-          left: "3.5%",
-          right: "3.5%",
-          paddingTop: "3%"
-        }}>
-          <div
-            className="is-flex"
-            style={{ justifyContent: "space-between" }}
-          >
+        <br />
+
+        <footer
+          style={{
+            position: "absolute",
+            bottom: "11px",
+            left: "3.5%",
+            right: "3.5%",
+            paddingTop: "3%"
+          }}
+        >
+          <div className="is-flex" style={{ justifyContent: "space-between" }}>
             <div>
-              <span style={{ color: "black", fontSize: "12px", paddingTop: "2%", float:"left" }}>
+              <span
+                style={{
+                  color: "black",
+                  fontSize: "12px",
+                  paddingTop: "2%",
+                  float: "left"
+                }}
+              >
                 {getTimeFormat(post_date_timestamp)}
               </span>
             </div>
 
-            <div style={{ float:"right" }}>
+            <div style={{ float: "right" }}>
               <Likes likes={props.persistedReducer.likes[objectID]} />
             </div>
           </div>

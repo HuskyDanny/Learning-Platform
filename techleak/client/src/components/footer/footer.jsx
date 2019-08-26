@@ -5,10 +5,10 @@ const Footer = props => {
     <footer className="footer">
       <div className="content has-text-centered">
         <p>
-          <strong>Built</strong> by <a href="https://jgthms.com">...</a>. The
-          source code is licensed
-          <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The
-          website content is licensed{" "}
+          <strong>Built</strong> by <a href="https://jgthms.com">Garret Yang</a>{" "}
+          * <a href="https://jgthms.com">Hantao Liu</a> *{" "}
+          <a href="https://​linkedin.com/in/jcp18">Junchen Pan</a>. The source
+          code is licensed. The website content is licensed{" "}
           <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
             CC BY NC SA 4.0
           </a>

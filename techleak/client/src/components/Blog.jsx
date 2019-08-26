@@ -178,11 +178,14 @@ class Blog extends Component {
                   </div>
                   <hr />
                 </div>
-                <div id="comment" style={{
-                  paddingRight: "3%",
-                  paddingLeft: "3%", 
-                  paddingBottom: "2%" 
-                }}>
+                <div
+                  id="comment"
+                  style={{
+                    paddingRight: "3%",
+                    paddingLeft: "3%",
+                    paddingBottom: "2%"
+                  }}
+                >
                   <Comments blogID={this.props.match.params.id} />
                 </div>
               </div>
