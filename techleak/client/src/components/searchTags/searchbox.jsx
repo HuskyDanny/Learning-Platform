@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connectSearchBox } from 'react-instantsearch-dom';
 
 const CustomSearchBox = ({ currentRefinement, refine, openDisplay, closeDisplay, styles, ...props }) => {

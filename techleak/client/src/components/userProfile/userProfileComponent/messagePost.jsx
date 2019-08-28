@@ -7,7 +7,7 @@ class MessagePost extends React.Component {
             <article className="media">
                 <figure className="media-left">
                     <p className="image is-64x64">
-                        <img src="https://bulma.io/images/placeholders/128x128.png"/>
+                        <img src="https://bulma.io/images/placeholders/128x128.png" alt=""/>
                     </p>
                 </figure>
                 <div className="media-content">
@@ -22,9 +22,9 @@ class MessagePost extends React.Component {
                 <div className="media-right">
                     <nav className="level is-mobile">
                         <div className="level-left">
-                            <a className="level-item">
+                            <button className="level-item button is-white">
                                 <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                            </a>
+                            </button>
                         </div>
                     </nav>
                 </div>

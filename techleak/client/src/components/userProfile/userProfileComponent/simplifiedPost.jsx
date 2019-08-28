@@ -26,9 +26,9 @@ class SimplifiedPost extends React.Component {
       <React.Fragment>
         {tags.map(tag => (
           <React.Fragment>
-            <a className="button is-primary is-small">
+            <button className="button is-primary is-small">
               <span>{tag}</span>
-            </a>
+            </button>
             {this.spaceDividor()}
           </React.Fragment>
         ))}
@@ -80,10 +80,10 @@ class SimplifiedPost extends React.Component {
   }
 
   deleteControl = () => {
-    const { objectID, postType, userID, myPosts } = this.props;
+    const { objectID, postType, userID } = this.props;
     if (postType === "MyPosts") {
       return (
-        <a className="level-item"
+        <button className="level-item button is-white"
           aria-label="cancel"
           onClick={(e) => {
             e.persist();
@@ -137,12 +137,12 @@ class SimplifiedPost extends React.Component {
           <span className="icon is-small">
             <i className="fas fa-times" />
           </span>
-        </a>
+        </button>
       );
     } else if (postType === "MyLikes") {
       return (
-        <a
-          className="level-item"
+        <button
+          className="level-item button is-white"
           aria-label="cancel"
           onClick={e => {
             // handle the front end rendering
@@ -154,7 +154,7 @@ class SimplifiedPost extends React.Component {
           <span className="icon is-small">
             <i className="fas fa-times" />
           </span>
-        </a>
+        </button>
       );
     }
   }
@@ -171,15 +171,15 @@ class SimplifiedPost extends React.Component {
               onClick={e => this.handleStopPropagation(e)}
             >
               <figure className="image is-64x64">
-                <img src={img} alt="Image" />
+                <img src={img} alt="profile" />
               </figure>
             </div>
             <div className="media-content">
               <div className="content">
                 <nav className="level is-mobile" style={{ float: "right" }}>
                   <div className="level-left">
-                    <a
-                      className="level-item"
+                    <button
+                      className="level-item button is-white"
                       aria-label="comment"
                       onClick={e => this.handleComment(e)}
                       style={{ marginRight: "0.25rem" }}
@@ -187,7 +187,7 @@ class SimplifiedPost extends React.Component {
                       <span className="icon is-small">
                         <i className="fas fa-comment" />
                       </span>
-                    </a>
+                    </button>
                     {this.deleteControl()}
                   </div>
                 </nav>
@@ -208,7 +208,7 @@ class SimplifiedPost extends React.Component {
           <article className="media">
             <figure className="media-left">
               <p className="image is-64x64">
-                <img src="https://versions.bulma.io/0.7.0/images/placeholders/128x128.png" />
+                <img src="https://versions.bulma.io/0.7.0/images/placeholders/128x128.png" alt=""/>
               </p>
             </figure>
             <div className="media-content">
@@ -220,7 +220,7 @@ class SimplifiedPost extends React.Component {
               <nav className="level">
                 <div className="level-left">
                   <div className="level-item">
-                    <a className="button is-info">Submit</a>
+                    <button className="button is-info button is-white">Submit</button>
                   </div>
                 </div>
                 <div className="level-right">

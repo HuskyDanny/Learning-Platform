@@ -37,6 +37,8 @@ const tagReducer = (state = initialState, action) => {
         hitsDisplay: false
       }
       break;
+    default:
+      break;
   }
   return state;
 };

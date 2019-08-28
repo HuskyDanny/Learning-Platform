@@ -11,9 +11,9 @@ const Pagination = ({
 }) => (
   <ul className="ais-Pagination-list" style={{ marginTop: "2%" }}>
     <li className="ais-Pagination-item ais-Pagination-item--firstPage ais-Pagination-item--disabled">
-      <span className="ais-Pagination-link" aria-label="First">
+      <button className="button ais-Pagination-link" aria-label="First">
         ‹‹
-      </span>
+      </button>
     </li>
     {new Array(nbPages).fill(null).map((_, index) => {
       const page = index + 1;
@@ -39,9 +39,9 @@ const Pagination = ({
       );
     })}
     <li className="ais-Pagination-item ais-Pagination-item--lastPage">
-      <a className="ais-Pagination-link" aria-label="Last" href="#">
+      <button className="button ais-Pagination-link" aria-label="Last" href="#">
         ››
-      </a>
+      </button>
     </li>
   </ul>
 );

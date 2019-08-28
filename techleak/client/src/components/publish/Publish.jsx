@@ -2,8 +2,6 @@ import axios from "../../axios/axios-blogs";
 import React, { Component } from "react";
 import Editor from "../editor/Editor";
 import { Link } from "react-router-dom";
-import getTimeFormat from "../../utils/getTimeFormat";
-import image from "../../assets/img/logo1.jpg";
 import DropDown from "../dropdown/dropdown";
 import Spinner from "../UI/Spinner/Spinner";
 import Modal from "react-responsive-modal";
@@ -28,7 +26,6 @@ class Publish extends Component {
       posted: false,
       content: "",
       title: "",
-      loading: false,
       tagError: false,
       updateTime: ""
     };
