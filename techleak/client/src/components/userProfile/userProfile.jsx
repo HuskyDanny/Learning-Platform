@@ -1,9 +1,6 @@
 import React from "react";
-<<<<<<< HEAD
 import ErrorBoundary from "../UI/ErrorHandler/ErrorHandler";
 import axios from "../../axios/axios-blogs";
-=======
->>>>>>> 3cf66d7d6bef4d083e578574db6c9e355ef922d5
 import "./userProfile.css";
 import HeadingSection from "./userProfileComponent/headingSection";
 import ProfileOptions from "./userProfileComponent/profieOptions";

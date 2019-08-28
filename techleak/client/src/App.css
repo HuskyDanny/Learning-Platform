@@ -55,7 +55,6 @@
   justify-content: center;
 }
 
-
 .height-percent {
   height: 100%;
 }
@@ -98,10 +97,10 @@
 
 #changableButton > i {
   margin-right: 5px;
-  display: inline-block
+  display: inline-block;
 }
 #changableButton > p {
-  display: inline-block
+  display: inline-block;
 }
 
 #changableButton:hover {
@@ -115,16 +114,17 @@
     overflow: hidden;
   }
 
-  .top-menu:hover{
+  .top-menu:hover {
     cursor: default;
   }
 
-  .top-menu > .left, .top-menu > .right {
-      display: none;
+  .top-menu > .left,
+  .top-menu > .right {
+    display: none;
   }
 
   .top-menu-icon {
-      display: block !important;
+    display: block !important;
   }
 
   .top-menu-icon:hover {
@@ -134,15 +134,15 @@
 
 @media screen and (max-width: 1090px) {
   .top-menu.toggled {
-      padding: 0;
-      max-height: 1500px;
-      transition: max-height 1s;
-      margin: 0;
+    padding: 0;
+    max-height: 1500px;
+    transition: max-height 1s;
+    margin: 0;
   }
 
   .top-menu.toggled > .left {
-      border-bottom: 1px solid black;
-      margin: 0 0 0 0;
+    border-bottom: 1px solid black;
+    margin: 0 0 0 0;
   }
 
   .top-menu.toggled:hover {
@@ -170,15 +170,15 @@
     margin-left: -5px;
     margin-right: -2px;
     float: left;
-    width: 3%
+    width: 3%;
   }
   #changableButton > p {
     float: left;
-    width: 8%
+    width: 8%;
   }
 
-  #changableButton:first-child{
-    margin-top:-10px;
+  #changableButton:first-child {
+    margin-top: -10px;
   }
 
   #changableButton:hover {
@@ -188,10 +188,9 @@
   }
 
   .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {
-      float: none;
-      display: block !important;
-      text-align: left;
-      margin: 0;
+    float: none;
+    display: block !important;
+    text-align: left;
+    margin: 0;
   }
-
 }
