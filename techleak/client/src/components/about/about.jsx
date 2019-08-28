@@ -38,15 +38,16 @@ const About = props => {
         </p>
         <ul>
           <li>
-            <a href="https://​linkedin.com/in/jcp18">Junchen Pan:</a> 2018th
-            graduate from University of Washington, currently works at SAP
-            Shanghai
+            <a href="https://​linkedin.com/in/jcp18">Junchen Pan:</a> Software
+            developer at SAP Shanghai
           </li>
           <li>
-            <a href="https://​linkedin.com/in/jcp18">...</a>
+            <a href="https://​linkedin.com/in/jcp18">Hantao Liu:</a>Master in
+            Computer Science at Northeastern University
           </li>
           <li>
-            <a href="https://​linkedin.com/in/jcp18">...</a>
+            <a href="https://​linkedin.com/in/jcp18">Qihua Yang:</a>
+            Master in Software Engineering at University of Texas at Austin
           </li>
         </ul>
         <p className="is-size-4 is-uppercase" style={{ marginTop: "10%" }}>
