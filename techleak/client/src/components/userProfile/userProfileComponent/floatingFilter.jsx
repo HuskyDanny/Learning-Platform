@@ -46,7 +46,7 @@ class FloatingFilter extends React.Component {
         }
         let filteredPostsDetail = unfilteredPostsDetail.filter((post) => {
             let title = post.title.toLowerCase();
-            return title.indexOf(this.state.searchKeyWords.toLowerCase()) != -1;
+            return title.indexOf(this.state.searchKeyWords.toLowerCase()) !== -1;
         })
         console.log(this.state.searchKeyWords)
         this.props.handleFilter(filteredPostsDetail)
@@ -70,9 +70,9 @@ class FloatingFilter extends React.Component {
                                             onChange={e => this.handleFilterInputChange(e.target.value)} />
                                     </p>
                                     <p className="control">
-                                        <a className="button is-success">
+                                        <button className="button is-success">
                                             Search
-                                  </a>
+                                        </button>
                                     </p>
                                 </div>
                             </section>
@@ -89,13 +89,13 @@ class FloatingFilter extends React.Component {
                                     </div>
                                     <p>suggested:
                                     <div style={{ margin: "5px", display: "inline-block" }}></div>
-                                        <a className="button is-primary is-small">
+                                        <button className="button is-primary is-small">
                                             <span>Java</span>
-                                        </a>
+                                        </button>
                                         <div style={{ margin: "5px", display: "inline-block" }}></div>
-                                        <a className="button is-primary is-small">
+                                        <button className="button is-primary is-small">
                                             <span>Python</span>
-                                        </a>
+                                        </button>
                                     </p>
                                 </div>
                             </section>

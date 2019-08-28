@@ -136,6 +136,9 @@ class Login extends Component {
           break;
         case 478:
           body = "Email has not been verified";
+          break;
+        default:
+          break;
       }
       return <p className="help is-danger"> {body}</p>;
     };

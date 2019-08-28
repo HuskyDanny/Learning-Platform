@@ -1,5 +1,4 @@
 import React from "react";
-import ErrorBoundary from "../UI/ErrorHandler/ErrorHandler";
 import "./userProfile.css";
 import HeadingSection from "./userProfileComponent/headingSection";
 import ProfileOptions from "./userProfileComponent/profieOptions";

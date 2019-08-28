@@ -124,6 +124,7 @@ class HeadingSection extends React.Component {
                   src={this.props.avatar || profile}
                   style={{ filter: `blur(${this.state.loading ? 2 : 0}px)` }}
                   width="128px"
+                  alt="profile"
                 />
               </figure>
               <div className="file is-small" style={{ display:"flex", float:"left", width: "70%" }}>
@@ -143,7 +144,7 @@ class HeadingSection extends React.Component {
                   </span>
                 </label>
               </div>
-              <a
+              <button
                 class={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
                 }`}
@@ -162,21 +163,21 @@ class HeadingSection extends React.Component {
                 onClick={this.handleUpload}
               >
                 Upload
-              </a>
+              </button>
             </span>
           </div>
           <div className="column is-6-tablet is-6-mobile name">
             <p>
               <span className="title is-bold">{this.props.username}</span>
               <br />
-              <a
+              <button
                 className="button is-primary is-outlined"
                 id="edit-preferences"
                 style={{ margin: "5px 0" }}
                 onClick={this.handleEditPop}
               >
                 Edit Biography
-              </a>
+              </button>
             </p>
             {this.state.editing ? editInput : <p>{this.props.bio}</p>}
           </div>

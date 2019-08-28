@@ -10,13 +10,11 @@ import {
   LinkedinShareButton,
   WhatsappShareButton,
   PinterestShareButton,
-  VKShareButton,
   FacebookIcon,
   TwitterIcon,
   LinkedinIcon,
   WhatsappIcon,
   PinterestIcon,
-  VKIcon
 } from "react-share";
 
 class Share extends Component {

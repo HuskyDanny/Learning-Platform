@@ -100,6 +100,7 @@ const reducer = (state = initialState, action) => {
       if (replies[0]) {
         tempReplies.push({ ...replies[0], commentRef: comment._id });
       }
+      return null;
     });
 
     return {
@@ -125,6 +126,7 @@ const reducer = (state = initialState, action) => {
       if (temp[hit.objectID] === undefined) {
         temp[hit.objectID] = hit.likes;
       }
+      return null;
     });
     return {
       ...state,
