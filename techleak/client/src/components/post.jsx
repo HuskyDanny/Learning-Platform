@@ -40,6 +40,7 @@ const Post = props => {
           </p>
         </section>
 
+<<<<<<< HEAD
         <br />
 
         <footer
@@ -61,6 +62,23 @@ const Post = props => {
                   float: "left"
                 }}
               >
+=======
+        <br/>
+        
+        <footer style={{ 
+          position: "absolute",
+          bottom: "8px",
+          left: "3.5%",
+          right: "3.5%",
+          paddingTop: "3%"
+        }}>
+          <div
+            className="is-flex"
+            style={{ justifyContent: "space-between" }}
+          >
+            <div>
+              <span style={{ color: "black", fontSize: "12px", paddingTop: "3px", float:"left" }}>
+>>>>>>> 3cf66d7d6bef4d083e578574db6c9e355ef922d5
                 {getTimeFormat(post_date_timestamp)}
               </span>
             </div>

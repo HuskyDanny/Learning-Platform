@@ -62,6 +62,7 @@ class Comments extends Component {
                   this.props.avatar ||
                   "https://bulma.io/images/placeholders/128x128.png"
                 }
+                alt=""
               />
             </p>
           </figure>

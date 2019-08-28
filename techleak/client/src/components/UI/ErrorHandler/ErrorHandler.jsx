@@ -59,8 +59,12 @@ const WithHandler = (WrappedComponent, axios) => {
           break;
         case 500:
           message = "Server breaks, please contact us";
+          break;
         case 412:
           message = "Post not successful, please write some content or repost";
+          break;
+        default:
+          break;
       }
 
       const onClose = () => {

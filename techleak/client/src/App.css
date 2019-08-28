@@ -169,10 +169,12 @@
     padding: 5px;
     margin-left: -5px;
     margin-right: -2px;
-    display: inline-block;
+    float: left;
+    width: 3%
   }
   #changableButton > p {
-    display: inline-block
+    float: left;
+    width: 8%
   }
 
   #changableButton:first-child{
@@ -184,7 +186,6 @@
     background-color: #f8f8f8;
     color: #0696f7;
   }
-
 
   .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {
       float: none;

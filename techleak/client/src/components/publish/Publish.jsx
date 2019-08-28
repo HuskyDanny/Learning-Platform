@@ -26,7 +26,6 @@ class Publish extends Component {
       posted: false,
       content: "",
       title: "",
-      loading: false,
       tagError: false,
       updateTime: ""
     };
