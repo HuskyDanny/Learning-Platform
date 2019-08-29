@@ -110,8 +110,8 @@ class Comment extends Component {
               {this.props.comment.body}
               <br />
               <small>
-                <button className="button is-white">{`Like ${this.props.comment.like}`}</button> ·{" "}
-                <button className="button is-white" onClick={this.openReply}>Reply</button> ·{" "}
+                <button class="button is-small is-light">{`Like ${this.props.comment.like}`}</button> ·{" "}
+                <button class="button is-small is-light" onClick={this.openReply}>Reply</button> ·{" "}
                 {elapsed(
                   new Date().getTime() - this.props.comment.post_date_timestamp
                 )}{" "}
