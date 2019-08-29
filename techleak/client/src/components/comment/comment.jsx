@@ -71,9 +71,9 @@ class Comment extends Component {
             />
           </div>
           <div className="control">
-            <a className="button is-info" onClick={this.handleReply}>
+            <button className="button is-info" onClick={this.handleReply}>
               <i className="fas fa-reply" />
-            </a>
+            </button>
           </div>
         </div>
       );
@@ -81,9 +81,9 @@ class Comment extends Component {
   };
   render() {
     const deleteButton = (
-      <a onClick={this.handleDelete}>
+      <button className="button is-white" onClick={this.handleDelete}>
         <i className="fas fa-backspace" />
-      </a>
+      </button>
     );
     return (
       <article className="media">
@@ -110,8 +110,8 @@ class Comment extends Component {
               {this.props.comment.body}
               <br />
               <small>
-                <a>{`Like ${this.props.comment.like}`}</a> ·{" "}
-                <a onClick={this.openReply}>Reply</a> ·{" "}
+                <button class="button is-small is-light">{`Like ${this.props.comment.like}`}</button> ·{" "}
+                <button class="button is-small is-light" onClick={this.openReply}>Reply</button> ·{" "}
                 {elapsed(
                   new Date().getTime() - this.props.comment.post_date_timestamp
                 )}{" "}

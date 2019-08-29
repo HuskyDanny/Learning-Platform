@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import SimplifiedPost from "./simplifiedPost";
-import { stat } from "fs";
 
 var faker = require("faker");
 
@@ -44,7 +43,7 @@ class SimplifiedPosts extends React.Component {
       // "deleting" a post should always act upon the "unchangeable props" instead of state
       const updatedLikedPostsDetail = this.props.likedPostsDetail.filter(
         function (lPostDetail) {
-          return lPostDetail._id != objectID;
+          return lPostDetail._id !== objectID;
         }
       );
       const updatedLikedPosts = this.props.likedPosts.filter(likedPost => {
@@ -53,7 +52,7 @@ class SimplifiedPosts extends React.Component {
       // the state and the props may have different value because of the filter
       const updatedLikedPostsDetailState = this.state.likedPostsDetail.filter(
         function (lPostDetail) {
-          return lPostDetail._id != objectID;
+          return lPostDetail._id !== objectID;
         }
       );
       const updatedLikedPostsState = this.state.likedPosts.filter(likedPost => {
@@ -76,7 +75,7 @@ class SimplifiedPosts extends React.Component {
       const updatedMyPostsDetail = this.props.myPostsDetail.filter(function (
         mPostDetail
       ) {
-        return mPostDetail._id != objectID;
+        return mPostDetail._id !== objectID;
       });
       const updatedMyPosts = this.props.myPosts.filter(myPost => {
         return myPost !== objectID;
@@ -84,7 +83,7 @@ class SimplifiedPosts extends React.Component {
       // the state and the props may have different value because of the filter
       const updatedMyPostsDetailState = this.state.myPostsDetail.filter(
         function (mPostDetail) {
-          return mPostDetail._id != objectID;
+          return mPostDetail._id !== objectID;
         }
       );
       const updatedMyPostsState = this.state.myPosts.filter(myPost => {

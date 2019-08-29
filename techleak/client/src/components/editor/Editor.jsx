@@ -97,7 +97,7 @@ const EditorComponent = props => {
         xhttp.setRequestHeader("Authorization", `Token ${TOKEN}`);
         xhttp.onreadystatechange = function() {
           //Call a function when the state changes.
-          if (xhttp.readyState == 4 && xhttp.status == 200) {
+          if (xhttp.readyState === 4 && xhttp.status === 200) {
             props.showUpdateTime();
           }
         };

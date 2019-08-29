@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Signup from "./Signup";
 import Login from "./Login";
 import image from "../assets/img/logo1.jpg";
@@ -77,9 +77,9 @@ const Navbar = props => {
               About
             </a>
 
-            <Link className="navbar-item" onClick={props.onSwitchContactModal}>
+            <a className="navbar-item" onClick={props.onSwitchContactModal}>
               Contact Us
-            </Link>
+            </a>
           </div>
           <div className="right">{status}</div>
         </div>

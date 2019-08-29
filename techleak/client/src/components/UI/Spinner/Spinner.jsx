@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import Loader from "react-loader-spinner";
 export default class Spinner extends React.Component {
   //other logic

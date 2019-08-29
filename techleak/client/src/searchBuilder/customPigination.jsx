@@ -10,10 +10,24 @@ const Pagination = ({
   savePigination
 }) => (
   <ul className="ais-Pagination-list" style={{ marginTop: "2%" }}>
-    <li className="ais-Pagination-item ais-Pagination-item--firstPage ais-Pagination-item--disabled">
-      <span className="ais-Pagination-link" aria-label="First">
+    <li
+      className={`ais-Pagination-item ais-Pagination-item--firstPage ${
+        currentRefinement < 2 ? "ais-Pagination-item--disabled" : ""
+      }`}
+    >
+      <button
+        className="button ais-Pagination-link"
+        aria-label="First"
+        onClick={event => {
+          event.preventDefault();
+          if (currentRefinement >= 2) {
+            refine(currentRefinement - 1);
+            savePigination(currentRefinement - 1);
+          }
+        }}
+      >
         ‹‹
-      </span>
+      </button>
     </li>
     {new Array(nbPages).fill(null).map((_, index) => {
       const page = index + 1;
@@ -38,10 +52,24 @@ const Pagination = ({
         </li>
       );
     })}
-    <li className="ais-Pagination-item ais-Pagination-item--lastPage">
-      <a className="ais-Pagination-link" aria-label="Last" href="#">
+    <li
+      className={`ais-Pagination-item ais-Pagination-item--lastPage ${
+        currentRefinement >= nbPages ? "ais-Pagination-item--disabled" : ""
+      }`}
+    >
+      <button
+        className="button ais-Pagination-link"
+        aria-label="Last"
+        onClick={event => {
+          event.preventDefault();
+          if (currentRefinement < nbPages) {
+            refine(currentRefinement + 1);
+            savePigination(currentRefinement + 1);
+          }
+        }}
+      >
         ››
-      </a>
+      </button>
     </li>
   </ul>
 );

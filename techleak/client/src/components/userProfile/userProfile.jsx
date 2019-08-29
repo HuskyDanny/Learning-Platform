@@ -1,5 +1,6 @@
 import React from "react";
 import ErrorBoundary from "../UI/ErrorHandler/ErrorHandler";
+import axios from "../../axios/axios-blogs";
 import "./userProfile.css";
 import HeadingSection from "./userProfileComponent/headingSection";
 import ProfileOptions from "./userProfileComponent/profieOptions";
@@ -30,4 +31,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(UserProfile);
+export default ErrorBoundary(connect(mapStateToProps)(UserProfile), axios);

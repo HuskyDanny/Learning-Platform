@@ -27,9 +27,9 @@ const Reply = props => {
   };
 
   const deleteButton = (
-    <a onClick={handleDelete}>
-      <i class="fas fa-backspace" />
-    </a>
+    <button className="button is-white" onClick={handleDelete}>
+      <i className="fas fa-backspace" />
+    </button>
   );
 
   return (
@@ -42,7 +42,7 @@ const Reply = props => {
         {props.reply.body}
         <br />
         <small>
-          <a>{`Like ${props.reply.like}`}</a> ·{" "}
+          <button className="button is-small is-light">{`Like ${props.reply.like}`}</button> ·{" "}
           {elapsed(new Date().getTime() - props.reply.post_date_timestamp)} Ago
         </small>
       </span>

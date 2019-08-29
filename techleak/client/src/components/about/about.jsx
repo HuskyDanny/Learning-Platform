@@ -11,19 +11,45 @@ const About = props => {
       style={{ margin: "3% auto 0 auto", width: "90%" }}
     >
       <div className="message-body">
-        <p className="is-size-4 is-uppercase">About us</p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
-        <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta
-        nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida
-        purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac{" "}
-        <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et
-        sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna
-        a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
+        <p className="is-size-4 is-uppercase">About The Platform</p>
+        This is an ALL-LEVEL learning and sharing platform intending to provide
+        all sorts of knowledge related to computer science (interview
+        preparation, tool tips, algorithm, industry practice ).{" "}
+        <strong>Our content </strong>is tag based, and with our instant search,
+        you can conveniently look for what is important for you.{" "}
+        <strong>You can </strong>post your thoughts or experience on what you
+        have learned recently. The feynman learning technique shows the best
+        learning is teaching others in your own words, sharing will not only
+        enhance your understanding but cultivating this lovely community.
+        <strong> Our editor </strong> is rich text editor, you can upload image,
+        insert a link or embed a video for better illustration
+        <br />
+        Last but not least, wish you guys all can grow your skillset and have a
+        dream offer
+        <br />
         <img src={image} width="262" height="300" alt="logo" />
         <img src={image3} width="382" height="200" alt="logo" />
         <img src={image4} width="132" height="200" alt="logo" />
         <img src={image2} width="160" height="200" alt="logo" />
         <br />
+        <br />
+        <p className="is-size-4 is-uppercase">
+          Main Contributor (click name to see more)
+        </p>
+        <ul>
+          <li>
+            <a href="https://​linkedin.com/in/jcp18">Junchen Pan:</a> Software
+            developer at SAP Shanghai
+          </li>
+          <li>
+            <a href="https://​linkedin.com/in/jcp18">Hantao Liu:</a>Master in
+            Computer Science at Northeastern University
+          </li>
+          <li>
+            <a href="https://​linkedin.com/in/jcp18">Qihua Yang:</a>
+            Master in Software Engineering at University of Texas at Austin
+          </li>
+        </ul>
         <p className="is-size-4 is-uppercase" style={{ marginTop: "10%" }}>
           Special Thanks
         </p>
