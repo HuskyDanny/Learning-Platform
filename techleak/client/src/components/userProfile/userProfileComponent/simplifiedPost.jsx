@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-responsive-modal";
-import axios from "axios";
+import axios from "../../../axios/axios-blogs";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-custom-confirm-alert";
@@ -60,23 +60,33 @@ class SimplifiedPost extends React.Component {
 
     const liked = this.props.likedPosts.includes(objectID);
 
-    axios.delete(
-      `${process.env.REACT_APP_BACKEND_SERVER}/api/users/likes/${
-      this.props.userID
-      }?postID=${objectID}`,
-      headers
-    );
+    // delete likedPost for users
+    const likePostPromise =
+      axios.delete(
+        `/api/users/likes/${
+        this.props.userID
+        }?postID=${objectID}`,
+        headers
+      );
 
-    axios
-      .patch(
-        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/likes/${objectID}`,
+    //handling like# in Post route
+    const likeNumberPromise =
+      axios.patch(
+        `/api/posts/likes/${objectID}`,
         { liked: liked },
         headers
       )
-      .then(res => {
-        this.props.handleLike(objectID, liked);
-      })
-      .catch(err => err);
+    Promise.all([likeNumberPromise, likePostPromise]).catch(err => {
+      this.props.handleLike(
+        objectID,
+        "",
+        !liked
+      );
+    });
+    this.props.handleLike(
+      objectID,
+      "",
+      liked);
   }
 
   deleteControl = () => {
@@ -162,48 +172,54 @@ class SimplifiedPost extends React.Component {
   render() {
     const { title, views, comments, img, objectID } = this.props;
     const { openComment } = this.state;
+    const simPostFormat =
+      <article className="media">
+        <div
+          className="media-left"
+          onClick={e => this.handleStopPropagation(e)}
+        >
+          <figure className="image is-64x64">
+            <img src={img} alt="Image" />
+          </figure>
+        </div>
+        <div className="media-content">
+          <div className="content">
+            <nav className="level is-mobile" style={{ float: "right" }}>
+              <div className="level-left">
+                <a
+                  className="level-item"
+                  aria-label="comment"
+                  onClick={e => this.handleComment(e)}
+                  style={{ marginRight: "0.25rem" }}
+                >
+                  <span className="icon is-small">
+                    <i className="fas fa-comment" />
+                  </span>
+                </a>
+                {this.deleteControl()}
+              </div>
+            </nav>
+            <div>
+              <h3>{title}</h3>
+              <div style={{ float: "left" }}>{this.createTagGroup()}</div>
+              <p style={{ float: "right" }}>
+                <small>{views} Views</small>
+                {this.spaceDividor()}
+                <small>{comments === "-" ? "-" : comments.length} Replies</small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    // determine whether the simpost should be clickable based on the objectID
+    const simpPostClick =
+      this.props.deleted === true ?
+        <span>{simPostFormat}</span> :
+        <Link to={`/blog/${objectID}`}>{simPostFormat}</Link>
     return (
       <div className="box" style={{ marginBottom: "0.5rem", padding: "0.8rem" }}>
-        <Link to={`/blog/${objectID}`}>
-          <article className="media">
-            <div
-              className="media-left"
-              onClick={e => this.handleStopPropagation(e)}
-            >
-              <figure className="image is-64x64">
-                <img src={img} alt="profile" />
-              </figure>
-            </div>
-            <div className="media-content">
-              <div className="content">
-                <nav className="level is-mobile" style={{ float: "right" }}>
-                  <div className="level-left">
-                    <button
-                      className="level-item button is-white"
-                      aria-label="comment"
-                      onClick={e => this.handleComment(e)}
-                      style={{ marginRight: "0.25rem" }}
-                    >
-                      <span className="icon is-small">
-                        <i className="fas fa-comment" />
-                      </span>
-                    </button>
-                    {this.deleteControl()}
-                  </div>
-                </nav>
-                <div>
-                  <h3>{title}</h3>
-                  <div style={{ float: "left" }}>{this.createTagGroup()}</div>
-                  <p style={{ float: "right" }}>
-                    <small>{views} Views</small>
-                    {this.spaceDividor()}
-                    <small>{comments.length} Replies</small>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </article>
-        </Link>
+        {simpPostClick}
         <Modal open={openComment} onClose={e => this.handleComment(e)} center>
           <article className="media">
             <figure className="media-left">
@@ -249,8 +265,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleLike: (id, liked) =>
-      dispatch({ type: "HANDLELIKE", id: id, liked: liked })
+    handleLike: (id, rawPostData, liked) =>
+      dispatch({
+        type: "HANDLELIKEPOSTS",
+        id: id,
+        rawPostData: rawPostData,
+        liked: liked
+      })
   };
 };
 
