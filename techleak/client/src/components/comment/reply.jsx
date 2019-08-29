@@ -42,7 +42,7 @@ const Reply = props => {
         {props.reply.body}
         <br />
         <small>
-          <button className="button is-white">{`Like ${props.reply.like}`}</button> ·{" "}
+          <button className="button is-small is-light">{`Like ${props.reply.like}`}</button> ·{" "}
           {elapsed(new Date().getTime() - props.reply.post_date_timestamp)} Ago
         </small>
       </span>

@@ -46,7 +46,6 @@ class Login extends Component {
       let likedPostsDetail = allPostDetail[0];
       let myPostsDetail = allPostDetail[1];
       this.setState({ loading: false, email: "", password: "" });
-      console.log(data);
       //remove memeory likes first then add back in
       this.props.handleLogIn(
         data.username,
@@ -83,17 +82,11 @@ class Login extends Component {
     try {
       for (var i = 0; i < likedPosts.length; i++) {
         let l_promise = this.fetchSinglePostDetail(likedPosts[i]);
-        if (l_promise === undefined || l_promise === null) {
-        } else {
-          singleLikedPostDetailPromise.unshift(l_promise);
-        }
+        singleLikedPostDetailPromise.unshift(l_promise);
       }
       for (var j = 0; j < myPosts.length; j++) {
         let m_promise = this.fetchSinglePostDetail(myPosts[j]);
-        if (m_promise === undefined || m_promise === null) {
-        } else {
-          singleMyPostDetailPromise.unshift(m_promise);
-        }
+        singleMyPostDetailPromise.unshift(m_promise);
       }
       let allLikedPostDetails = Promise.all(singleLikedPostDetailPromise);
       let allmyPostDetails = Promise.all(singleMyPostDetailPromise);
@@ -110,9 +103,15 @@ class Login extends Component {
   fetchSinglePostDetail = async postID => {
     try {
       let userDetail = await axios.get(`/api/posts/${postID}`, { headers: "" });
-      return userDetail.data;
+      let userData = userDetail.data;
+      console.log(userData)
+      userData.deleted = false;
+      return userData;
     } catch (error) {
-      console.log(error);
+      return {
+        _id: postID,
+        deleted: true
+      }
     }
   };
 
@@ -185,7 +184,7 @@ class Login extends Component {
           </div>
           {userError()}
           <div className="forgetPwd">
-            <button  onClick={e => this.handleResetPassword(e)}>
+            <button onClick={e => this.handleResetPassword(e)}>
               <Link to="/reset-password">
                 <p>Forget Password?</p>
               </Link>

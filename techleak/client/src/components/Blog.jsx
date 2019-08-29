@@ -65,21 +65,24 @@ class Blog extends Component {
     //handling likeposts in User route
     const likePostPromise = LIKED
       ? axios.delete(
-          `/api/users/likes/${this.props.userID}?postID=${
-            this.props.match.params.id
-          }`,
-          headers
-        )
+        `/api/users/likes/${this.props.userID}?postID=${
+        this.props.match.params.id
+        }`,
+        headers
+      )
       : axios.post(
-          `/api/users/likes/${this.props.userID}`,
-          { postID: this.props.match.params.id },
-          headers
-        );
+        `/api/users/likes/${this.props.userID}`,
+        { postID: this.props.match.params.id },
+        headers
+      );
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
       `/api/posts/likes/${this.props.match.params.id}`,
       { liked: LIKED },
       headers
+    ).then(res => {
+      console.log(res)
+    }
     );
 
     Promise.all([likeNumberPromise, likePostPromise]).catch(err => {
@@ -167,7 +170,7 @@ class Blog extends Component {
                       id="likeBtn"
                       className={`level-item has-text-centered button ${
                         LIKED ? " is-success" : ""
-                      }`}
+                        }`}
                       aria-label="like"
                       onClick={this.state.enableLike ? this.handleLike : null}
                     >
