@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { connect } from "react-redux";
 import SimplifiedPost from "./simplifiedPost";
 import { stat } from "fs";
@@ -114,21 +113,40 @@ class SimplifiedPosts extends React.Component {
       <React.Fragment>
         {simpPosts
           .map(simPost => {
-            return (
-              <SimplifiedPost
-                title={simPost.title}
-                views={faker.random.number()}
-                comments={simPost.comments}
-                tags={simPost.tags}
-                img={
-                  simPost.avatar ||
-                  "https://bulma.io/images/placeholders/128x128.png"
-                }
-                objectID={simPost._id}
-                handleCancelClick={this.handleCancelClick}
-                postType={postType}
-              />
-            );
+            if (simPost.deleted === true) {
+              return (
+                <SimplifiedPost
+                  title={"Deleted Post"}
+                  views={"-"}
+                  comments={"-"}
+                  tags={[]}
+                  img={
+                    "https://bulma.io/images/placeholders/128x128.png"
+                  }
+                  objectID={simPost._id}
+                  handleCancelClick={this.handleCancelClick}
+                  postType={postType}
+                  deleted={simPost.deleted}
+                />
+              )
+            } else {
+              return (
+                <SimplifiedPost
+                  title={simPost.title}
+                  views={faker.random.number()}
+                  comments={simPost.comments}
+                  tags={simPost.tags}
+                  img={
+                    simPost.avatar ||
+                    "https://bulma.io/images/placeholders/128x128.png"
+                  }
+                  objectID={simPost._id}
+                  handleCancelClick={this.handleCancelClick}
+                  postType={postType}
+                  deleted={simPost.deleted}
+                />
+              )
+            };
           })
           .reverse()}
       </React.Fragment>

@@ -55,7 +55,7 @@ const WithHandler = (WrappedComponent, axios) => {
           message = "Please login, login status is expired";
           break;
         case 400:
-          message = "Data not found, please contact us!";
+          message = "Data not found. The author may have deleted the post. If you have questions, please contact us!";
           break;
         case 500:
           message = "Server breaks, please contact us";

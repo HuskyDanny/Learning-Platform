@@ -45,7 +45,12 @@ class FloatingFilter extends React.Component {
             unfilteredPostsDetail = this.props.myPostsDetail;
         }
         let filteredPostsDetail = unfilteredPostsDetail.filter((post) => {
-            let title = post.title.toLowerCase();
+            let title;
+            if (post === null || post === undefined) {
+                title = "";
+            } else {
+                title = post.title.toLowerCase();
+            }
             return title.indexOf(this.state.searchKeyWords.toLowerCase()) != -1;
         })
         console.log(this.state.searchKeyWords)
