@@ -60,8 +60,8 @@ class Comment extends Component {
   showReplyBox = () => {
     if (this.state.replyBox) {
       return (
-        <div className="field has-addons">
-          <div className="control" style={{ width: "100%" }}>
+        <div className="field has-addons" style={{ paddingTop:"5px" }}>
+          <div className="control" style={{ width: "100%"}}>
             <input
               className="input is-rounded"
               type="text"

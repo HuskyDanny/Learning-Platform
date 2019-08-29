@@ -95,6 +95,24 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+#brand {
+  padding-top: 5px;
+  max-height: 2.3rem;
+}
+
+#contactButton {
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
+#contactButton:hover {
+  background-color: #fafafa;
+  color: #3273dc;
+}
+
 #changableButton > i {
   margin-right: 5px;
   display: inline-block;
@@ -103,9 +121,11 @@
   display: inline-block;
 }
 
-#changableButton:hover {
-  cursor: pointer;
-  box-shadow: 1px 1px 5px #bbbbbb, -1px -1px 5px #bbbbbb;
+@media screen and (min-width: 1090px) {
+  #changableButton:hover {
+    cursor: pointer;
+    box-shadow: 1px 1px 5px #bbbbbb, -1px -1px 5px #bbbbbb;
+  }
 }
 
 @media screen and (max-width: 1090px) {
@@ -181,10 +201,18 @@
     margin-top: -10px;
   }
 
+  #contactButton {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    padding-top: 10px;
+    width: 1090px
+  }
+
   #changableButton:hover {
     cursor: pointer;
-    background-color: #f8f8f8;
-    color: #0696f7;
+    background-color: #fafafa;
+    color: #3273dc;
   }
 
   .top-menu.toggled *:not(.top-menu-lead):not(.top-menu-icon) {

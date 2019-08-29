@@ -61,7 +61,7 @@ const Navbar = props => {
         role="navigation"
         aria-label="main navigation"
       >
-        <div className="navbar-brand">
+        <div className="navbar-brand" id="brand">
           <Link
             className="navbar-item"
             style={{ width: "150px", height: "52px", position: "fix" }}
@@ -77,9 +77,14 @@ const Navbar = props => {
               About
             </a>
 
-            <a className="navbar-item" onClick={props.onSwitchContactModal}>
+            <button 
+              type="button" 
+              className="navbar-item" 
+              id="contactButton"
+              onClick={props.onSwitchContactModal}
+            >
               Contact Us
-            </a>
+            </button>
           </div>
           <div className="right">{status}</div>
         </div>
