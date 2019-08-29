@@ -42,11 +42,13 @@ const About = props => {
             developer at SAP Shanghai
           </li>
           <li>
-            <a href="https://​linkedin.com/in/jcp18">Hantao Liu:</a>Master in
-            Computer Science at Northeastern University
+            <a href="https://www.linkedin.com/in/hantao-liu-6722b6115/">
+              Hantao Liu:
+            </a>
+            Master in Computer Science at Northeastern University
           </li>
           <li>
-            <a href="https://​linkedin.com/in/jcp18">Qihua Yang:</a>
+            <a href="https://linkedin.com/in/garret-qihua-yang">Qihua Yang:</a>
             Master in Software Engineering at University of Texas at Austin
           </li>
         </ul>
