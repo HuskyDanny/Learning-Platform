@@ -21,8 +21,7 @@ class Login extends Component {
     this.setState({ [type]: e.target.value });
   };
 
-  handleResetPassword = (e) => {
-    e.preventDefault();
+  handleResetPassword = () => {
     this.props.onSwitchLoginModal();
   }
 
@@ -185,7 +184,11 @@ class Login extends Component {
           </div>
           {userError()}
           <div className="forgetPwd">
-            <button  onClick={e => this.handleResetPassword(e)}>
+            <button 
+              type="button"
+              className="button is-small is-light"
+              onClick={this.handleResetPassword}
+            >
               <Link to="/reset-password">
                 <p>Forget Password?</p>
               </Link>

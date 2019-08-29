@@ -239,6 +239,8 @@ export default class ResetPasswordPage extends Component {
                 placeholder="Plase enter new password..."
                 required
                 value={this.state.password}
+                minLength="8"
+                maxLength="20"
               />
               <label className="label">Re-enter Password</label>
               <input
@@ -249,6 +251,8 @@ export default class ResetPasswordPage extends Component {
                 placeholder="Plase re-enter the password..."
                 required
                 value={this.state.passwordAgain}
+                minLength="8"
+                maxLength="20"
               />
               {this.MatchedPassword()}
               <label className="label">Confirmation Code</label>
