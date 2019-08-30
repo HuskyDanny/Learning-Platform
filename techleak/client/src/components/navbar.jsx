@@ -31,6 +31,15 @@ const Navbar = props => {
     </div>
   );
 
+  const handleScroll = e => {
+    new Promise(resolve => setTimeout(resolve, 200)).then(() => {
+      window.scroll({
+        top: 550,
+        behavior: "auto"
+      });
+    });
+  };
+
   if (props.logIn) {
     status = (
       <div className="navbar-end">
@@ -73,9 +82,9 @@ const Navbar = props => {
 
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start left">
-            <a className="navbar-item" href="#about">
+            <Link className="navbar-item" to="/" onClick={handleScroll}>
               About
-            </a>
+            </Link>
 
             <a className="navbar-item" onClick={props.onSwitchContactModal}>
               Contact Us
