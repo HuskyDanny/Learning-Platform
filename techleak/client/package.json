@@ -23,6 +23,7 @@
     "react-compound-timer": "^1.1.4",
     "react-custom-confirm-alert": "^2.0.7",
     "react-dom": "^16.8.6",
+    "react-draggable": "^3.3.2",
     "react-froala-wysiwyg": "^3.0.0-rc.1",
     "react-html-parser": "^2.0.2",
     "react-icons": "^3.7.0",
