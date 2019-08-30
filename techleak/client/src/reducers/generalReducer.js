@@ -97,8 +97,10 @@ const reducer = (state = initialState, action) => {
       const { replies, ...clone } = comment;
       tempComments.push({ ...clone });
 
-      if (replies[0]) {
-        tempReplies.push({ ...replies[0], commentRef: comment._id });
+      for (const reply of replies) {
+        if (reply) {
+          tempReplies.push({ ...reply, commentRef: comment._id });
+        }
       }
       return null;
     });
@@ -121,7 +123,6 @@ const reducer = (state = initialState, action) => {
 
   if (action.type === "HANDLELIKE") {
     let temp = { ...state.likes };
-
     action.hits.map(hit => {
       if (temp[hit.objectID] === undefined) {
         temp[hit.objectID] = hit.likes;

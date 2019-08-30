@@ -82,8 +82,8 @@ UsersSchema.methods.generateJWT = function() {
       username: this.email,
       password: this.password
     },
-    "nowaytocheatonthisdouchybag",
-    { expiresIn: "1h" }
+    process.env.JWT_SECRET,
+    { expiresIn: "2h" }
   );
 };
 
