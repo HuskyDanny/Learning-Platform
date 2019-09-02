@@ -9,7 +9,6 @@ class Login extends Component {
   state = {
     password: "",
     email: "",
-    errStatus: "",
     username: "",
     loading: false
   };
@@ -23,7 +22,7 @@ class Login extends Component {
 
   handleResetPassword = () => {
     this.props.onSwitchLoginModal();
-  }
+  };
 
   handleSubmit = async e => {
     e.preventDefault();
@@ -103,14 +102,13 @@ class Login extends Component {
     try {
       let userDetail = await axios.get(`/api/posts/${postID}`, { headers: "" });
       let userData = userDetail.data;
-      console.log(userData)
       userData.deleted = false;
       return userData;
     } catch (error) {
       return {
         _id: postID,
         deleted: true
-      }
+      };
     }
   };
 
@@ -183,7 +181,7 @@ class Login extends Component {
           </div>
           {userError()}
           <div className="forgetPwd">
-            <button 
+            <button
               type="button"
               className="button is-small is-light"
               onClick={this.handleResetPassword}

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from "../../../axios/axios-blogs";
 import profile from "../../../assets/img/Portrait_Placeholder.png";
+import getReputation from "../../../utils/getSumFromArray";
 
 class HeadingSection extends React.Component {
   state = {
@@ -110,6 +111,10 @@ class HeadingSection extends React.Component {
         </div>
       </div>
     );
+    const knowledge = this.props.myPostsDetail.length;
+    const reputation =
+      getReputation(this.props.myPostsDetail, "likes") + knowledge;
+
     return (
       <div className="section profile-heading">
         <div className="columns is-mobile is-multiline">
@@ -195,12 +200,16 @@ class HeadingSection extends React.Component {
           </div>
           <div className="column is-1-tablet is-2-mobile has-text-centered" />
           <div className="column is-1-tablet is-4-mobile has-text-centered">
-            <p className="stat-val">30</p>
-            <p className="stat-key">reputation</p>
+            <p className="stat-val">{knowledge || 0}</p>
+            <p className="stat-key" style={{ fontSize: "1em" }}>
+              knowledge
+            </p>
           </div>
           <div className="column is-1-tablet is-4-mobile has-text-centered">
-            <p className="stat-val">10</p>
-            <p className="stat-key">likes</p>
+            <p className="stat-val">{reputation || 0}</p>
+            <p className="stat-key" style={{ fontSize: "1em" }}>
+              reputation
+            </p>
           </div>
         </div>
       </div>
@@ -213,7 +222,8 @@ const mapStateToProps = state => {
     username: state.persistedReducer.username,
     userId: state.persistedReducer.userID,
     avatar: state.persistedReducer.avatar,
-    bio: state.persistedReducer.bio
+    bio: state.persistedReducer.bio,
+    myPostsDetail: state.persistedReducer.myPostsDetail
   };
 };
 const mapDispatchToProps = dispatch => {
