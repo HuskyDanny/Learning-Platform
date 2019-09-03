@@ -22,27 +22,27 @@ class SearchBuilder extends Component {
   };
 
   //refresh periodically
-  componentDidMount() {
-    this.interval = setInterval(
-      () =>
-        this.setState({ refresh: true }, () => {
-          this.setState({ refresh: false });
-        }),
-      1000 * 60 * 5
-    );
-    this.props.refreshLikes();
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  // componentDidMount() {
+  //   this.interval = setInterval(
+  //     () =>
+  //       this.setState({ refresh: true }, () => {
+  //         this.setState({ refresh: false });
+  //       }),
+  //     1000 * 60 * 5
+  //   );
+  //   this.props.refreshLikes();
+  // }
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
 
   //refresh by click
-  // refresh = () => {
-  //   this.setState({ refresh: true }, () => {
-  //     this.setState({ refresh: false });
-  //   });
-  //   this.props.refreshLikes();
-  // };
+  refresh = () => {
+    this.setState({ refresh: true }, () => {
+      this.setState({ refresh: false });
+    });
+    this.props.refreshLikes();
+  };
   render() {
     return (
       <div>
@@ -79,7 +79,19 @@ class SearchBuilder extends Component {
               ]}
             />
             <SearchBox />
-            {/* <button onClick={this.refresh}> Refresh</button> */}
+            <button
+              className="button"
+              onClick={this.refresh}
+              style={{
+                color: "black",
+                backgroundColor: "#ecf0f1",
+                border: "1px solid grey",
+                fontSize: "0.84em"
+              }}
+            >
+              {" "}
+              Refresh Content
+            </button>
           </div>
           <CustomHits />
           <Pagination
