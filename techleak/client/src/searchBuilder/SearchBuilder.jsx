@@ -22,24 +22,27 @@ class SearchBuilder extends Component {
   };
 
   //refresh periodically
-  // componentDidMount() {
-  //   this.interval = setInterval(
-  //     () =>
-  //       this.setState({ refresh: true }, () => {
-  //         this.setState({ refresh: false });
-  //       }),
-  //     5000
-  //   );
-  // }
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
+  componentDidMount() {
+    this.interval = setInterval(
+      () =>
+        this.setState({ refresh: true }, () => {
+          this.setState({ refresh: false });
+        }),
+      1000 * 60 * 5
+    );
+    this.props.refreshLikes();
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
-  refresh = () => {
-    this.setState({ refresh: true }, () => {
-      this.setState({ refresh: false });
-    });
-  };
+  //refresh by click
+  // refresh = () => {
+  //   this.setState({ refresh: true }, () => {
+  //     this.setState({ refresh: false });
+  //   });
+  //   this.props.refreshLikes();
+  // };
   render() {
     return (
       <div>
@@ -76,7 +79,7 @@ class SearchBuilder extends Component {
               ]}
             />
             <SearchBox />
-            <button onClick={this.refresh}> Refresh</button>
+            {/* <button onClick={this.refresh}> Refresh</button> */}
           </div>
           <CustomHits />
           <Pagination
@@ -99,5 +102,13 @@ const mapStateToProps = state => {
     piginationNumber: state.persistedReducer.piginationNumber
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    refreshLikes: () => dispatch({ type: "REFRESHLIKES" })
+  };
+};
 
-export default connect(mapStateToProps)(SearchBuilder);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchBuilder);

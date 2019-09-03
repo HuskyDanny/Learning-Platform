@@ -121,6 +121,14 @@ const reducer = (state = initialState, action) => {
     };
   }
 
+  if (action.type === "REFRESHLIKES") {
+    let temp = {};
+    return {
+      ...state,
+      likes: temp
+    };
+  }
+
   if (action.type === "HANDLELIKE") {
     let temp = { ...state.likes };
     action.hits.map(hit => {
