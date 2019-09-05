@@ -1,3 +1,5 @@
+import getReputation from "../utils/getSumFromArray";
+
 const initialState = {
   loggedIn: false,
   signupOpen: false,
@@ -18,7 +20,9 @@ const initialState = {
   avatar: "",
   likes: {},
   piginationNumber: 1,
-  bio: ""
+  bio: "",
+  reputation: -1,
+  knowledge: -1
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,7 +37,9 @@ const reducer = (state = initialState, action) => {
       avatar: action.avatar,
       likedPostsDetail: action.likedPostsDetail,
       myPostsDetail: action.myPostsDetail,
-      bio: action.bio
+      bio: action.bio,
+      reputation: getReputation(action.myPostsDetail, "likes"),
+      knowledge: action.myPosts.length
     };
   }
   if (action.type === "LOGOUT") {

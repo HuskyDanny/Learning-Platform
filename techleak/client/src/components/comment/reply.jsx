@@ -34,15 +34,17 @@ const Reply = props => {
 
   return (
     <div className="content">
-      <div className="level" style={{ marginBottom: "0px" }}>
-        <strong>{props.reply.username}</strong>
+      <div className="level" style={{ marginBottom: "0px", fontSize: "0.8em" }}>
+        <strong>
+          <h5 style={{ display: "inline" }}>{props.reply.username}</h5>
+        </strong>
         {props.reply.userID === props.userId ? deleteButton : null}
       </div>
       <span>
         {props.reply.body}
         <br />
         <small>
-          <button className="button is-small is-light">{`Like ${props.reply.like}`}</button> ·{" "}
+          {" "}
           {elapsed(new Date().getTime() - props.reply.post_date_timestamp)} Ago
         </small>
       </span>

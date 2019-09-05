@@ -60,8 +60,8 @@ class Comment extends Component {
   showReplyBox = () => {
     if (this.state.replyBox) {
       return (
-        <div className="field has-addons" style={{ paddingTop:"5px" }}>
-          <div className="control" style={{ width: "100%"}}>
+        <div className="field has-addons" style={{ paddingTop: "5px" }}>
+          <div className="control" style={{ width: "100%" }}>
             <input
               className="input is-rounded"
               type="text"
@@ -102,16 +102,31 @@ class Comment extends Component {
           <div className="content">
             <div>
               <div className="level" style={{ marginBottom: "0px" }}>
-                <strong>{this.props.comment.username}</strong>
+                <div style={{ fontSize: "0.8em", display:'inline-block'}}>
+                  <strong>
+                    <h5 style={{ display: "inline" }}>
+                      {this.props.comment.username + " "}
+                    </h5>
+                  </strong>
+                  <i class="fas fa-book"> {this.props.comment.knowledge} </i>{" "}
+                  <i class="fas fa-award"> {this.props.comment.reputation}</i>
+                </div>
                 {this.props.comment.userId === this.props.userId
                   ? deleteButton
                   : null}
               </div>
               {this.props.comment.body}
               <br />
+
               <small>
-                <button class="button is-small is-light">{`Like ${this.props.comment.like}`}</button> ·{" "}
-                <button class="button is-small is-light" onClick={this.openReply}>Reply</button> ·{" "}
+                {" "}
+                <button
+                  class="button is-small is-light"
+                  onClick={this.openReply}
+                >
+                  Reply
+                </button>{" "}
+                ·{" "}
                 {elapsed(
                   new Date().getTime() - this.props.comment.post_date_timestamp
                 )}{" "}
@@ -138,7 +153,8 @@ const mapStateToProps = state => {
   return {
     replies: state.persistedReducer.replies,
     userId: state.persistedReducer.userID,
-    username: state.persistedReducer.username
+    username: state.persistedReducer.username,
+    reputation: state.persistedReducer.reputation
   };
 };
 

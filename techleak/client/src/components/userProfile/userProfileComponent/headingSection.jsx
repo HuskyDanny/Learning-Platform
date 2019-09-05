@@ -111,9 +111,6 @@ class HeadingSection extends React.Component {
         </div>
       </div>
     );
-    const knowledge = this.props.myPostsDetail.length;
-    const reputation =
-      getReputation(this.props.myPostsDetail, "likes") + knowledge;
 
     return (
       <div className="section profile-heading">
@@ -132,11 +129,8 @@ class HeadingSection extends React.Component {
                   alt="profile"
                 />
               </figure>
-              <div
-                className="file is-small"
-                style={{ display: "flex", float: "left", width: "70%" }}
-              >
-                <label class="file-label" style={{ width: "100%" }}>
+              <div className="file is-small" style={{ float: "left" }}>
+                <label class="file-label">
                   <input
                     class="file-input"
                     ode
@@ -144,19 +138,18 @@ class HeadingSection extends React.Component {
                     name="resume"
                     onChange={this.fileHandler}
                   />
-                  <span class="file-cta" style={{ width: "70%" }}>
+                  <span class="file-cta">
                     <span class="file-icon">
                       <i class="fas fa-upload" />
                     </span>
                     <span
                       class="file-label"
                       style={{
-                        display: "inline-block",
-                        textOverflow: "ellipsis",
-                        marginLeft: "10%"
+                        display: "inline-flex",
+                        textOverflow: "ellipsis"
                       }}
                     >
-                      Select
+                      Select Image
                     </span>
                   </span>
                 </label>
@@ -167,13 +160,12 @@ class HeadingSection extends React.Component {
                 }`}
                 style={{
                   display: "inline-block",
-                  width: "30%",
                   backgroundColor: "whitesmoke",
                   color: "#4a4a4a",
                   borderColor: "#dbdbdb",
                   borderRadius: "4px",
                   fontSize: "0.75em",
-                  whiteSpace: "nowrap",
+
                   overflow: "hidden",
                   textOverflow: "ellipsis"
                 }}
@@ -200,13 +192,13 @@ class HeadingSection extends React.Component {
           </div>
           <div className="column is-1-tablet is-2-mobile has-text-centered" />
           <div className="column is-1-tablet is-4-mobile has-text-centered">
-            <p className="stat-val">{knowledge || 0}</p>
+            <p className="stat-val">{this.props.knowledge || 0}</p>
             <p className="stat-key" style={{ fontSize: "1em" }}>
               knowledge
             </p>
           </div>
           <div className="column is-1-tablet is-4-mobile has-text-centered">
-            <p className="stat-val">{reputation || 0}</p>
+            <p className="stat-val">{this.props.reputation || 0}</p>
             <p className="stat-key" style={{ fontSize: "1em" }}>
               reputation
             </p>
@@ -223,7 +215,9 @@ const mapStateToProps = state => {
     userId: state.persistedReducer.userID,
     avatar: state.persistedReducer.avatar,
     bio: state.persistedReducer.bio,
-    myPostsDetail: state.persistedReducer.myPostsDetail
+    myPostsDetail: state.persistedReducer.myPostsDetail,
+    reputation: state.persistedReducer.reputation,
+    knowledge: state.persistedReducer.knowledge
   };
 };
 const mapDispatchToProps = dispatch => {

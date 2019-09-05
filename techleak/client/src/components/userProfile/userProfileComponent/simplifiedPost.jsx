@@ -4,13 +4,13 @@ import axios from "../../../axios/axios-blogs";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { confirmAlert } from "react-custom-confirm-alert";
-import 'react-custom-confirm-alert/src/react-confirm-alert.css'
+import "react-custom-confirm-alert/src/react-confirm-alert.css";
 
 class SimplifiedPost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      openComment: false,
+      openComment: false
     };
     this.handleComment = this.handleComment.bind(this);
     this.handleStopPropagation = this.handleStopPropagation.bind(this);
@@ -61,47 +61,38 @@ class SimplifiedPost extends React.Component {
     const liked = this.props.likedPosts.includes(objectID);
 
     // delete likedPost for users
-    const likePostPromise =
-      axios.delete(
-        `/api/users/likes/${
-        this.props.userID
-        }?postID=${objectID}`,
-        headers
-      );
+    const likePostPromise = axios.delete(
+      `/api/users/likes/${this.props.userID}?postID=${objectID}`,
+      headers
+    );
 
     //handling like# in Post route
-    const likeNumberPromise =
-      axios.patch(
-        `/api/posts/likes/${objectID}`,
-        { liked: liked },
-        headers
-      )
+    const likeNumberPromise = axios.patch(
+      `/api/posts/likes/${objectID}`,
+      { liked: liked },
+      headers
+    );
     Promise.all([likeNumberPromise, likePostPromise]).catch(err => {
-      this.props.handleLike(
-        objectID,
-        "",
-        !liked
-      );
+      this.props.handleLike(objectID, "", !liked);
     });
-    this.props.handleLike(
-      objectID,
-      "",
-      liked);
+    this.props.handleLike(objectID, "", liked);
   }
 
   deleteControl = () => {
     const { objectID, postType, userID } = this.props;
     if (postType === "MyPosts") {
       return (
-        <button className="level-item button is-white"
+        <button
+          className="level-item button is-white"
           aria-label="cancel"
-          onClick={(e) => {
+          onClick={e => {
             e.persist();
             confirmAlert({
-              message: 'Your post will be deleted permanently, are you sure to do this?',
+              message:
+                "Your post will be deleted permanently, are you sure to do this?",
               buttons: [
                 {
-                  label: 'Yes',
+                  label: "Yes",
                   onClick: async () => {
                     const token = localStorage.getItem("token");
                     const headers = {
@@ -113,16 +104,18 @@ class SimplifiedPost extends React.Component {
                     try {
                       // delete the post in the "Post" pool backend
                       let deletedPostData = axios.delete(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/${objectID}`,
+                        `${
+                          process.env.REACT_APP_BACKEND_SERVER
+                        }/api/posts/${objectID}`,
                         headers
-                      )
+                      );
                       // delete the post in the author's "myPost" backend
                       let deletedmyPostID = axios.delete(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/api/users/myPosts/${
-                        userID
-                        }?postID=${objectID}`,
+                        `${
+                          process.env.REACT_APP_BACKEND_SERVER
+                        }/api/users/myPosts/${userID}?postID=${objectID}`,
                         headers
-                      )
+                      );
                       // waiting for the above two promise to finish
                       await Promise.all([deletedPostData, deletedmyPostID]);
                       // handle the front end rendering after one "myPost" was deleted
@@ -133,7 +126,7 @@ class SimplifiedPost extends React.Component {
                   }
                 },
                 {
-                  label: 'No',
+                  label: "No",
                   onClick: () => {
                     console.log(objectID);
                   }
@@ -143,7 +136,6 @@ class SimplifiedPost extends React.Component {
             e.preventDefault();
           }}
         >
-
           <span className="icon is-small">
             <i className="fas fa-times" />
           </span>
@@ -167,12 +159,12 @@ class SimplifiedPost extends React.Component {
         </button>
       );
     }
-  }
+  };
 
   render() {
     const { title, views, comments, img, objectID } = this.props;
     const { openComment } = this.state;
-    const simPostFormat =
+    const simPostFormat = (
       <article className="media">
         <div
           className="media-left"
@@ -205,38 +197,54 @@ class SimplifiedPost extends React.Component {
               <p style={{ float: "right" }}>
                 <small>{views} Views</small>
                 {this.spaceDividor()}
-                <small>{comments === "-" ? "-" : comments.length} Replies</small>
+                <small>
+                  {comments === "-" ? "-" : comments.length} Replies
+                </small>
               </p>
             </div>
           </div>
         </div>
       </article>
+    );
 
     // determine whether the simpost should be clickable based on the objectID
     const simpPostClick =
-      this.props.deleted === true ?
-        <span>{simPostFormat}</span> :
+      this.props.deleted === true ? (
+        <span>{simPostFormat}</span>
+      ) : (
         <Link to={`/blog/${objectID}`}>{simPostFormat}</Link>
+      );
     return (
-      <div className="box" style={{ marginBottom: "0.5rem", padding: "0.8rem" }}>
+      <div
+        className="box"
+        style={{ marginBottom: "0.5rem", padding: "0.8rem" }}
+      >
         {simpPostClick}
         <Modal open={openComment} onClose={e => this.handleComment(e)} center>
           <article className="media">
             <figure className="media-left">
               <p className="image is-64x64">
-                <img src="https://versions.bulma.io/0.7.0/images/placeholders/128x128.png" alt=""/>
+                <img
+                  src="https://versions.bulma.io/0.7.0/images/placeholders/128x128.png"
+                  alt=""
+                />
               </p>
             </figure>
             <div className="media-content">
               <div className="field">
                 <p className="control">
-                  <textarea className="textarea" placeholder="Add a comment..." />
+                  <textarea
+                    className="textarea"
+                    placeholder="Add a comment..."
+                  />
                 </p>
               </div>
               <nav className="level">
                 <div className="level-left">
                   <div className="level-item">
-                    <button className="button is-info button is-white">Submit</button>
+                    <button className="button is-info button is-white">
+                      Submit
+                    </button>
                   </div>
                 </div>
                 <div className="level-right">
