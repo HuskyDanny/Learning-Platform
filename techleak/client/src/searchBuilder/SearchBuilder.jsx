@@ -43,6 +43,11 @@ class SearchBuilder extends Component {
     });
     this.props.refreshLikes();
   };
+
+  componentDidMount() {
+    this.refresh();
+  }
+
   render() {
     return (
       <div>
@@ -111,7 +116,7 @@ class SearchBuilder extends Component {
 
 const mapStateToProps = state => {
   return {
-    piginationNumber: state.persistedReducer.piginationNumber
+    piginationNumber: state.persistedReducer.piginationNumber,
   };
 };
 const mapDispatchToProps = dispatch => {
