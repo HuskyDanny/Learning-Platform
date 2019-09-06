@@ -115,7 +115,7 @@ class SimplifiedPosts extends React.Component {
             if (simPost.deleted === true) {
               return (
                 <SimplifiedPost
-                  title={"Deleted Post"}
+                  title={"【Deleted Post】"}
                   views={"-"}
                   comments={"-"}
                   tags={[]}
