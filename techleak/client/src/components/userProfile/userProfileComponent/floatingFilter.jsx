@@ -67,10 +67,21 @@ class FloatingFilter extends React.Component {
                 onStart={this.handleStart}
                 onDrag={this.handleDrag}
                 onStop={this.handleStop}>
-                <div className="handle">
+                <div>
                     <div className="column" style={{ flex: "30%" }}>
                         <div className="container" style={containerStyle}>
                             <div className="box content" style={boxStyle}>
+                                <div className="handle"
+                                    style={{
+                                        border: "1px dashed black",
+                                        cursor: "grab",
+                                        textAlign: "center"
+                                    }}
+                                >
+                                    <i class="fas fa-bars"></i>
+                                    <i class="fas fa-bars"></i>
+                                    <i class="fas fa-bars"></i>
+                                </div>
                                 <div className="boxwrapper" style={{ padding: "10px" }}>
                                     <section style={{ paddingBottom: "30px" }}>
                                         <h4>Posts Filter:</h4>
@@ -148,88 +159,7 @@ class FloatingFilter extends React.Component {
                         </div>
                     </div>
                 </div>
-            </Draggable>
-
-
-            // <div className="column" style={{ flex: "30%" }}>
-            //     <div className="container" style={containerStyle}>
-            //         <div className="box content" style={boxStyle}>
-            //             <div className="boxwrapper" style={{ padding: "10px" }}>
-            //                 <section style={{ paddingBottom: "30px" }}>
-            //                     <h4>Posts Filter:</h4>
-            //                     <div className="field is-grouped">
-            //                         <p className="control is-expanded">
-            //                             <input
-            //                                 className="input is-primary"
-            //                                 type="text"
-            //                                 placeholder="Find a post"
-            //                                 value={this.state.searchKeyWords}
-            //                                 onChange={e => this.handleFilterInputChange(e.target.value)} />
-            //                         </p>
-            //                         <p className="control">
-            //                             <button className="button is-success">
-            //                                 Search
-            //                             </button>
-            //                         </p>
-            //                     </div>
-            //                 </section>
-
-            //                 <section style={{ paddingBottom: "30px" }}>
-            //                     <h4>Tags:</h4>
-            //                     <div className="field">
-            //                         <div className="form-group" style={{ marginBottom: "5px" }}>
-            //                             <input
-            //                                 className="contact-input"
-            //                                 placeholder="Enter tags here"
-            //                                 type="text"
-            //                             ></input>
-            //                         </div>
-            //                         <p>suggested:
-            //                         <div style={{ margin: "5px", display: "inline-block" }}></div>
-            //                             <button className="button is-primary is-small">
-            //                                 <span>Java</span>
-            //                             </button>
-            //                             <div style={{ margin: "5px", display: "inline-block" }}></div>
-            //                             <button className="button is-primary is-small">
-            //                                 <span>Python</span>
-            //                             </button>
-            //                         </p>
-            //                     </div>
-            //                 </section>
-
-            //                 <section style={{ paddingBottom: "30px" }}>
-            //                     <h4>Sorted by:</h4>
-            //                     <div className="control">
-            //                         <section style={{ alignItems: "center" }}>
-            //                             <label className="radio">
-            //                                 <input type="radio" name="foobar" />
-            //                                 time (from oldest to newest)
-            //                     </label>
-            //                         </section>
-            //                         <section>
-            //                             <label className="radio">
-            //                                 <input type="radio" name="foobar" />
-            //                                 time (from newest to oldest)
-            //                     </label>
-            //                         </section>
-            //                         <section>
-            //                             <label className="radio">
-            //                                 <input type="radio" name="foobar" />
-            //                                 views
-            //                     </label>
-            //                         </section>
-            //                         <section>
-            //                             <label className="radio">
-            //                                 <input type="radio" name="foobar" />
-            //                                 answers
-            //                     </label>
-            //                         </section>
-            //                     </div>
-            //                 </section>
-            //             </div>
-            //         </div>
-            //     </div>
-            // </div>
+            </Draggable >
         )
     }
 }
