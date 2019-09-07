@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Comment from "./comment";
 import axios from "../../axios/axios-blogs";
 import { connect } from "react-redux";
+import getReputation from "../../utils/getSumFromArray";
 
 class Comments extends Component {
   state = {
@@ -32,8 +33,8 @@ class Comments extends Component {
             avatar:
               this.props.avatar ||
               "https://bulma.io/images/placeholders/128x128.png",
-            knowledge: this.props.knowledge,
-            reputation: this.props.reputation
+            knowledge: this.props.myPosts.length,
+            reputation: getReputation(this.props.myPosts, "likes")
           }
         },
         headers
@@ -99,8 +100,7 @@ const mapStateToProps = state => {
     username: state.persistedReducer.username,
     userId: state.persistedReducer.userID,
     avatar: state.persistedReducer.avatar,
-    reputation: state.persistedReducer.reputation,
-    knowledge: state.persistedReducer.knowledge
+    myPosts: state.persistedReducer.myPostsDetail
   };
 };
 

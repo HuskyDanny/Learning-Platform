@@ -21,8 +21,8 @@ const initialState = {
   likes: {},
   piginationNumber: 1,
   bio: "",
-  reputation: -1,
-  knowledge: -1
+  reputation: 0,
+  knowledge: 0
 };
 
 const reducer = (state = initialState, action) => {
