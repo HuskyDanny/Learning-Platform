@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-responsive-modal";
+import { Link } from "react-router-dom";
 
 const WithHandler = (WrappedComponent, axios) => {
   return class extends Component {
@@ -41,8 +42,8 @@ const WithHandler = (WrappedComponent, axios) => {
       const modalBg = {
         modal: {
           background: "white ",
-          borderRadius: "10%",
-          maxHeight: "20%",
+          borderRadius: "3%",
+          maxHeight: "25%",
           height: "100%",
           maxWidth: "30%",
           width: "100%"
@@ -89,8 +90,29 @@ const WithHandler = (WrappedComponent, axios) => {
             styles={modalBg}
             onExited={onExited}
           >
-            {message}{" "}
-            <i className="fas fa-exclamation" style={{ color: "red" }} />
+            <div>
+              <section style={{ display: "flex", flexDirection: "column" }}>
+                <span style={{ fontFamily: "sans-serif", fontWeight: "700", fontSize: "20px", textAlign: "center" }}>
+                  <i class="fas fa-exclamation-triangle" style={{ color: "red", fontWeight: "0.5rem", paddingRight: "0.5rem" }}> </i>
+                  Error
+                </span>
+                <br />
+                <div style={{ fontSize: "1.2rem", textAlign: "center", fontWeight: "450" }}>
+                  {message}{" "}
+                </div>
+                <br />
+                <Link
+                  to="/"
+                  className="button is-success"
+                  style={{
+                    width: "30%",
+                    alignSelf: "center"
+                  }}
+                >
+                  OK
+                </Link>
+              </section>
+            </div>
           </Modal>
           <WrappedComponent {...this.props} />
         </div>

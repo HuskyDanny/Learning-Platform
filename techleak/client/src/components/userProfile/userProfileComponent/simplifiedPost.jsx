@@ -105,14 +105,14 @@ class SimplifiedPost extends React.Component {
                       // delete the post in the "Post" pool backend
                       let deletedPostData = axios.delete(
                         `${
-                          process.env.REACT_APP_BACKEND_SERVER
+                        process.env.REACT_APP_BACKEND_SERVER
                         }/api/posts/${objectID}`,
                         headers
                       );
                       // delete the post in the author's "myPost" backend
                       let deletedmyPostID = axios.delete(
                         `${
-                          process.env.REACT_APP_BACKEND_SERVER
+                        process.env.REACT_APP_BACKEND_SERVER
                         }/api/users/myPosts/${userID}?postID=${objectID}`,
                         headers
                       );
@@ -171,12 +171,21 @@ class SimplifiedPost extends React.Component {
           onClick={e => this.handleStopPropagation(e)}
         >
           <figure className="image is-64x64">
-            <img src={img} alt="Image" />
+            <img
+              src={img} alt="Image"
+              style={{
+                display: "block",
+                maxHeight: "100%",
+                maxWidth: "100%",
+                height: "auto",
+                width: "auto"
+              }}
+            />
           </figure>
         </div>
         <div className="media-content">
           <div className="content">
-            <nav className="level is-mobile" style={{ float: "right" }}>
+            <nav className="level is-mobile" style={{ float: "right", marginBottom: "0px" }}>
               <div className="level-left">
                 <a
                   className="level-item"
@@ -212,8 +221,8 @@ class SimplifiedPost extends React.Component {
       this.props.deleted === true ? (
         <span>{simPostFormat}</span>
       ) : (
-        <Link to={`/blog/${objectID}`}>{simPostFormat}</Link>
-      );
+          <Link to={`/blog/${objectID}`}>{simPostFormat}</Link>
+        );
     return (
       <div
         className="box"
