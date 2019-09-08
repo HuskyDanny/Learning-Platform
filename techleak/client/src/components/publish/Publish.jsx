@@ -27,6 +27,7 @@ class Publish extends Component {
       content: "",
       title: "",
       tagError: false,
+      titleError: false,
       updateTime: ""
     };
 
@@ -109,6 +110,7 @@ class Publish extends Component {
 
   handlePostCheck = e => {
     e.preventDefault();
+    const title = this.state.title.trim();
     if (
       this.props.tagReducer.tags.length === 0 ||
       this.props.tagReducer.tags.length >= 4
@@ -116,6 +118,14 @@ class Publish extends Component {
       this.setState({
         ...this.state,
         tagError: true
+      });
+    } else if (
+      title.length < 8 ||
+      title.length > 50
+    ) {
+      this.setState({
+        ...this.state,
+        titleError: true
       });
     } else {
       this.handleFinalPost();
@@ -138,7 +148,8 @@ class Publish extends Component {
     this.setState({
       ...this.state,
       warning: false,
-      tagError: false
+      tagError: false,
+      titleError: false
     });
   };
 
@@ -237,8 +248,6 @@ class Publish extends Component {
                     type="text"
                     required
                     placeholder="Title..."
-                    minLength="8"
-                    maxLength="50"
                     value={this.state.title}
                     onChange={this.handleTitle}
                   />
@@ -326,6 +335,24 @@ class Publish extends Component {
             </h1>
             <p style={{ color: "red" }}>
               Please limit the number of the input tags from 1 to 3
+            </p>
+            <button className="button is-link" onClick={this.onCloseModal}>
+              Okay, I Got It
+            </button>
+          </div>
+        </Modal>
+        <Modal
+          className="modal-lg"
+          open={this.state.titleError}
+          onClose={this.onCloseModal}
+          center
+        >
+          <div>
+            <h1>
+              <strong>Warning</strong>
+            </h1>
+            <p style={{ color: "red" }}>
+              Title should have at least 8 characters and at most 50 characters
             </p>
             <button className="button is-link" onClick={this.onCloseModal}>
               Okay, I Got It
