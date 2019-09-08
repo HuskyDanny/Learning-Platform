@@ -17,7 +17,7 @@ class HeadingSection extends React.Component {
       selectedFile: e.target.files[0]
     });
     var reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
       var dataURL = reader.result;
       var output = document.getElementById("profile");
       output.src = dataURL;
@@ -77,7 +77,7 @@ class HeadingSection extends React.Component {
           this.props.updateAvatar(res.data.avatar);
           axios.patch(
             `${process.env.REACT_APP_BACKEND_SERVER}/api/posts/avatar/${
-              this.props.userId
+            this.props.userId
             }`,
             { avatar: this.props.avatar },
             headers
@@ -124,8 +124,11 @@ class HeadingSection extends React.Component {
                 <img
                   id="profile"
                   src={this.props.avatar || profile}
-                  style={{ filter: `blur(${this.state.loading ? 2 : 0}px)` }}
-                  width="128px"
+                  style={{
+                    filter: `blur(${this.state.loading ? 2 : 0}px)`,
+                    maxWidth: "100%",
+                    maxHeight: "100%"
+                  }}
                   alt="profile"
                 />
               </figure>
@@ -157,7 +160,7 @@ class HeadingSection extends React.Component {
               <button
                 class={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
-                }`}
+                  }`}
                 style={{
                   display: "inline-block",
                   backgroundColor: "whitesmoke",
