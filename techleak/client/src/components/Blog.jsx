@@ -80,10 +80,7 @@ class Blog extends Component {
       `/api/posts/likes/${this.props.match.params.id}`,
       { liked: LIKED },
       headers
-    ).then(res => {
-      console.log(res)
-    }
-    );
+    )
 
     Promise.all([likeNumberPromise, likePostPromise]).catch(err => {
       this.props.handleLike(
@@ -181,14 +178,11 @@ class Blog extends Component {
                   </div>
                   <hr />
                 </div>
-                <div
-                  id="comment"
-                  style={{
-                    paddingRight: "3%",
-                    paddingLeft: "3%",
-                    paddingBottom: "2%"
-                  }}
-                >
+                <div id="comment" style={{
+                  paddingRight: "3%",
+                  paddingLeft: "3%",
+                  paddingBottom: "2%"
+                }}>
                   <Comments blogID={this.props.match.params.id} />
                 </div>
               </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from "../../../axios/axios-blogs";
 import profile from "../../../assets/img/Portrait_Placeholder.png";
-import getReputation from "../../../utils/getSumFromArray";
+// import getReputation from "../../../utils/getSumFromArray";
 
 class HeadingSection extends React.Component {
   state = {
@@ -133,20 +133,19 @@ class HeadingSection extends React.Component {
                 />
               </figure>
               <div className="file is-small" style={{ float: "left" }}>
-                <label class="file-label">
+                <label className="file-label">
                   <input
-                    class="file-input"
-                    ode
+                    className="file-input"
                     type="file"
                     name="resume"
                     onChange={this.fileHandler}
                   />
-                  <span class="file-cta">
-                    <span class="file-icon">
-                      <i class="fas fa-upload" />
+                  <span className="file-cta">
+                    <span className="file-icon">
+                      <i className="fas fa-upload" />
                     </span>
                     <span
-                      class="file-label"
+                      className="file-label"
                       style={{
                         display: "inline-flex",
                         textOverflow: "ellipsis"
@@ -158,7 +157,7 @@ class HeadingSection extends React.Component {
                 </label>
               </div>
               <button
-                class={`button is-active is-small ${
+                className={`button is-active is-small ${
                   this.state.loading ? "is-loading" : ""
                   }`}
                 style={{
