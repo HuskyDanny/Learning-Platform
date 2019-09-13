@@ -78,9 +78,9 @@ class FloatingFilter extends React.Component {
                                         textAlign: "center"
                                     }}
                                 >
-                                    <i class="fas fa-bars"></i>
-                                    <i class="fas fa-bars"></i>
-                                    <i class="fas fa-bars"></i>
+                                    <i className="fas fa-bars"></i>
+                                    <i className="fas fa-bars"></i>
+                                    <i className="fas fa-bars"></i>
                                 </div>
                                 <div className="boxwrapper" style={{ padding: "10px" }}>
                                     <section style={{ paddingBottom: "30px" }}>
@@ -112,8 +112,8 @@ class FloatingFilter extends React.Component {
                                                     type="text"
                                                 ></input>
                                             </div>
-                                            <p>suggested:
-                                    <div style={{ margin: "5px", display: "inline-block" }}></div>
+                                            <div>suggested:
+                                            <div style={{ margin: "5px", display: "inline-block" }}></div>
                                                 <button className="button is-primary is-small">
                                                     <span>Java</span>
                                                 </button>
@@ -121,7 +121,7 @@ class FloatingFilter extends React.Component {
                                                 <button className="button is-primary is-small">
                                                     <span>Python</span>
                                                 </button>
-                                            </p>
+                                            </div>
                                         </div>
                                     </section>
 

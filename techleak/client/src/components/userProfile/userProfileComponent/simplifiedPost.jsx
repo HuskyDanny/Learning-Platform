@@ -24,8 +24,8 @@ class SimplifiedPost extends React.Component {
     const { tags } = this.props;
     return (
       <React.Fragment>
-        {tags.map(tag => (
-          <React.Fragment>
+        {tags.map((tag, index) => (
+          <React.Fragment key={index}>
             <button className="button is-primary is-small">
               <span>{tag}</span>
             </button>
@@ -172,7 +172,8 @@ class SimplifiedPost extends React.Component {
         >
           <figure className="image is-64x64">
             <img
-              src={img} alt="Image"
+              alt=""
+              src={img}
               style={{
                 display: "block",
                 maxHeight: "100%",
@@ -187,7 +188,8 @@ class SimplifiedPost extends React.Component {
           <div className="content">
             <nav className="level is-mobile" style={{ float: "right", marginBottom: "0px" }}>
               <div className="level-left">
-                <a
+                <div
+                  href=""
                   className="level-item"
                   aria-label="comment"
                   onClick={e => this.handleComment(e)}
@@ -196,20 +198,20 @@ class SimplifiedPost extends React.Component {
                   <span className="icon is-small">
                     <i className="fas fa-comment" />
                   </span>
-                </a>
+                </div>
                 {this.deleteControl()}
               </div>
             </nav>
             <div>
               <h3>{title}</h3>
               <div style={{ float: "left" }}>{this.createTagGroup()}</div>
-              <p style={{ float: "right" }}>
+              <div style={{ float: "right" }}>
                 <small>{views} Views</small>
                 {this.spaceDividor()}
                 <small>
                   {comments === "-" ? "-" : comments.length} Replies
                 </small>
-              </p>
+              </div>
             </div>
           </div>
         </div>

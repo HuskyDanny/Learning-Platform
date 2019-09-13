@@ -112,11 +112,13 @@ class SimplifiedPosts extends React.Component {
       <React.Fragment>
         {simpPosts
           .map(simPost => {
-            if (simPost == undefined || simPost == "" || simPost.deleted == undefined) return false;
+            console.log(simPost)
+            if (!simPost) return false;
             if (simPost.deleted === true) {
               return (
                 <SimplifiedPost
-                  title={"【Deleted Post】"}
+                  key={simPost._id}
+                  title={"[Deleted Post]"}
                   views={"-"}
                   comments={"-"}
                   tags={[]}
@@ -132,6 +134,7 @@ class SimplifiedPosts extends React.Component {
             } else {
               return (
                 <SimplifiedPost
+                  key={simPost._id}
                   title={simPost.title}
                   views={faker.random.number()}
                   comments={simPost.comments}
