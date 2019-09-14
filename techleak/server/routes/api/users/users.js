@@ -1,6 +1,5 @@
 const { userValidator, User } = require("../../../models/Users");
-const { OTC, OTCValidator } = require("../../../models/OTC");
-const MongoClient = require("mongodb").MongoClient;
+const { OTC } = require("../../../models/OTC");
 const { Router } = require("express");
 const passport = require("passport");
 const auth = require("../../auth");
@@ -11,7 +10,6 @@ const s3 = require("../../../config/aws");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const randomize = require("randomatic");
-var url = "mongodb://127.0.0.1:27017/";
 
 var upload = multer({
   storage: multerS3({
@@ -146,7 +144,6 @@ router.post("/signup", auth.optional, async (req, res) => {
   //save to mongodb
   try {
     newUser = await newUser.save();
-    res.status(201).json({ message: "Created Account" });
 
     const url = `${
       process.env.BACKEND_SERVER
@@ -164,7 +161,9 @@ router.post("/signup", auth.optional, async (req, res) => {
       }
     };
 
-    await sgMail.send(msg);
+    sgMail.send(msg);
+
+    return res.json(newUser.toAuthJSON());
   } catch (error) {
     //duplicate error return to user
     console.log(error);
@@ -329,9 +328,9 @@ router.post("/login", (req, res) => {
     if (!user) {
       return res.status(458).json(new Error());
     }
-    if (!user.confirmed) {
-      return res.status(478).json(new Error());
-    }
+    // if (!user.confirmed) {
+    //   return res.status(478).json(new Error());
+    // }
     return res.json(user.toAuthJSON());
   })(req, res);
 });

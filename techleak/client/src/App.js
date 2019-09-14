@@ -12,6 +12,7 @@ import ResetPasswordPage from "./components/resetpassword/ResetPasswordPage";
 import IdleTimer from "react-idle-timer";
 import { connect } from "react-redux";
 import NavBar from "./components/navbar";
+import Warning from "./components/UI/Warning/warning";
 
 class App extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class App extends Component {
     return (
       <div>
         <NavBar />
+        <Warning />
         <IdleTimer
           ref={ref => {
             this.idleTimer = ref;

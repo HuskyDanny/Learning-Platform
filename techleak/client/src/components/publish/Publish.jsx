@@ -16,6 +16,7 @@ import {
   handlePosted
 } from "../../actions/tagActions";
 
+
 class Publish extends Component {
   constructor(props) {
     super(props);
@@ -54,7 +55,6 @@ class Publish extends Component {
       }
     };
     axios.get(`/api/users/draft/${this.props.userID}`, headers).then(res => {
-      console.log(res.data);
       this.setState({ content: res.data.content });
     });
   };
@@ -119,10 +119,7 @@ class Publish extends Component {
         ...this.state,
         tagError: true
       });
-    } else if (
-      title.length < 8 ||
-      title.length > 50
-    ) {
+    } else if (title.length < 8 || title.length > 50) {
       this.setState({
         ...this.state,
         titleError: true
@@ -222,9 +219,18 @@ class Publish extends Component {
         </div>
       );
     }
-
+    const stylesRemainder = {
+      textAlign: "center",
+      background: "linear-gradient(to left top, #B2EBF2, #B2DFDB)",
+      marginBottom: "0.5rem"
+    };
     return (
       <React.Fragment>
+
+        <p style={stylesRemainder}>
+        <i className="fab fa-angellist" style={{ color: "#02b875" }}></i>
+        {"Your draft is automatically saved, check out \"More Options\" to see more functionalities"}{" "}
+        </p>
         <div style={{ width: "80%", margin: "auto auto" }}>
           {this.state.loading ? (
             <div
@@ -240,66 +246,68 @@ class Publish extends Component {
             this.successPosted()
           ) : (
             <React.Fragment>
-              <form onSubmit={this.handlePostCheck}>
-                <label>Title</label>
-                <div className="level">
-                  <input
-                    className="input is-rounded"
-                    type="text"
-                    required
-                    placeholder="Title..."
-                    value={this.state.title}
-                    onChange={this.handleTitle}
-                  />
-
-                  <DropDown
-                    lists={["Get Last Draft"]}
-                    funcs={[this.getContent]}
-                  />
-                </div>
-                <div>
-                  <Editor
-                    updateContent={this.updateContent}
-                    value={this.state.content}
-                    userID={this.props.userID}
-                    showUpdateTime={this.showUpdateTime}
-                  />
-                  <span style={{ fontSize: "13px" }}>
-                    {this.state.updateTime
-                      ? `Saved at ${this.state.updateTime}`
-                      : ""}
-                  </span>
-                </div>
-                <br />
-                {selection}
-                <hr />
-                <label>Tags</label>
-                <TagSearch
-                  hitsDisplay={this.props.tagReducer.hitsDisplay}
-                  tags={this.props.tagReducer.tags}
-                  handleSelect={tag => this.props.addTag(tag)}
-                  handleRemoveItem={tag => this.props.removeTag(tag)}
-                  openDisplay={() => this.props.openDisplay()}
-                  closeDisplay={() => this.props.closeDisplay()}
-                  styles={styles}
+              <label>Title</label>
+              <div className="level">
+                <input
+                  className="input is-rounded"
+                  type="text"
+                  required
+                  placeholder="Title..."
+                  value={this.state.title}
+                  onChange={this.handleTitle}
                 />
-                <br />
-                <div className="level-left">
-                  <button
-                    className="button is-primary level-item"
-                    type="submit"
-                  >
-                    Post
-                  </button>
-                  <button
-                    className="button is-primary level-item"
-                    type="button"
-                    onClick={this.handleCancel}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
+
+                <DropDown
+                  lists={["Get Saved Draft"]}
+                  funcs={[this.getContent]}
+                />
+              </div>
+              <div>
+                <Editor
+                  updateContent={this.updateContent}
+                  value={this.state.content}
+                  userID={this.props.userID}
+                  showUpdateTime={this.showUpdateTime}
+                />
+                <span style={{ fontSize: "13px" }}>
+                  {this.state.updateTime
+                    ? `Saved at ${this.state.updateTime}`
+                    : ""}
+                </span>
+              </div>
+              <br />
+              {selection}
+              <hr />
+              <label>Tags</label>
+              <TagSearch
+                hitsDisplay={this.props.tagReducer.hitsDisplay}
+                tags={this.props.tagReducer.tags}
+                handleSelect={tag => this.props.addTag(tag)}
+                handleRemoveItem={tag => this.props.removeTag(tag)}
+                openDisplay={() => this.props.openDisplay()}
+                closeDisplay={() => this.props.closeDisplay()}
+                styles={styles}
+              />
+              <br />
+              <div className="level" style={{ marginBottom: "2rem" }}>
+                <button
+                  type="submit"
+                  className="button is-primary level-item"
+                  style={{ marginRight: "0.5rem" }}
+                  onClick={this.handlePostCheck}
+                >
+                  Post
+                </button>
+
+                <button
+                  className="button is-primary level-item"
+                  type="button"
+                  style={{ marginLeft: "0.5rem" }}
+                  onClick={this.handleCancel}
+                >
+                  Cancel
+                </button>
+              </div>
             </React.Fragment>
           )}
         </div>
@@ -327,6 +335,7 @@ class Publish extends Component {
           className="modal-lg"
           open={this.state.tagError}
           onClose={this.onCloseModal}
+          blockScroll={false}
           center
         >
           <div>
@@ -345,6 +354,7 @@ class Publish extends Component {
           className="modal-lg"
           open={this.state.titleError}
           onClose={this.onCloseModal}
+          blockScroll={false}
           center
         >
           <div>

@@ -22,7 +22,9 @@ const initialState = {
   piginationNumber: 1,
   bio: "",
   reputation: 0,
-  knowledge: 0
+  knowledge: 0,
+  warning: false,
+  warningContent: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -40,6 +42,14 @@ const reducer = (state = initialState, action) => {
       bio: action.bio,
       reputation: getReputation(action.myPostsDetail, "likes"),
       knowledge: action.myPosts.length
+    };
+  }
+  if (action.type === "SIGNUP") {
+    return {
+      ...state,
+      loggedIn: true,
+      userID: action.userID,
+      username: action.username
     };
   }
   if (action.type === "LOGOUT") {
@@ -68,7 +78,6 @@ const reducer = (state = initialState, action) => {
 
     return {
       ...state,
-      loginOpen: state.signupOpen,
       signupOpen: !state.signupOpen
     };
   }
@@ -257,6 +266,20 @@ const reducer = (state = initialState, action) => {
     return {
       ...state,
       bio: action.bio
+    };
+  }
+  if (action.type === "GETWARNING") {
+    return {
+      ...state,
+      warning: true,
+      warningContent: action.warning
+    };
+  }
+  if (action.type === "CANCELWARNING") {
+    return {
+      ...state,
+      warning: false,
+      warningContent: ""
     };
   }
   return state;

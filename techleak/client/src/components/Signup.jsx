@@ -46,9 +46,14 @@ class Singup extends Component {
             passwordAgain: "",
             email: ""
           });
-          localStorage.setItem("token", res.data.token);
           this.props.onSwitchModal();
-          this.props.handleLogIn();
+          this.props.getWarning(
+            "A verification email has been sent to your email account, you cannot post before verification"
+          );
+          const data = res.data;
+          console.log(res);
+          this.props.handleLogIn(data.username, data.id);
+          localStorage.setItem("token", data.token);
         })
         .catch(err => {
           if (err.response) {
@@ -222,7 +227,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSwitchModal: () => dispatch({ type: "SIGNUPMODAL" })
+    onSwitchModal: () => dispatch({ type: "SIGNUPMODAL" }),
+    getWarning: warning => dispatch({ type: "GETWARNING", warning: warning }),
+    handleLogIn: (username, userID) =>
+      dispatch({
+        type: "SIGNUP",
+        username: username,
+        userID: userID
+      })
   };
 };
 
