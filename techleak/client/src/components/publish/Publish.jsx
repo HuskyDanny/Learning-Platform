@@ -219,18 +219,8 @@ class Publish extends Component {
         </div>
       );
     }
-    const stylesRemainder = {
-      textAlign: "center",
-      background: "linear-gradient(to left top, #B2EBF2, #B2DFDB)",
-      marginBottom: "0.5rem"
-    };
     return (
       <React.Fragment>
-
-        <p style={stylesRemainder}>
-        <i className="fab fa-angellist" style={{ color: "#02b875" }}></i>
-        {"Your draft is automatically saved, check out \"More Options\" to see more functionalities"}{" "}
-        </p>
         <div style={{ width: "80%", margin: "auto auto" }}>
           {this.state.loading ? (
             <div

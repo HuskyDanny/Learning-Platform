@@ -39,13 +39,16 @@ const Navbar = props => {
       });
     });
   };
+  const toNewPost = () => {
+    props.getWarning("Your draft is automatically saved, check out \"More Options\" to see more functionalities")
+  }
 
   if (props.logIn) {
     status = (
       <div className="navbar-end">
         <div className="navbar-item">
           <div className="buttons">
-            <Link id="changableButton" to="/publish">
+            <Link id="changableButton" to="/publish" onClick={toNewPost}>
               <i className="fas fa-plus-circle" />
               <p>New Post</p>
             </Link>
@@ -126,7 +129,8 @@ const mapDispatchToProps = dispatch => {
     onSwitchSignupModal: () => dispatch({ type: "SIGNUPMODAL" }),
     onSwitchLoginModal: () => dispatch({ type: "LOGINMODAL" }),
     onSwitchContactModal: () => dispatch({ type: "CONTACTMODAL" }),
-    handleToggleMenu: () => dispatch({ type: "TOGGLEMENUCLASS" })
+    handleToggleMenu: () => dispatch({ type: "TOGGLEMENUCLASS" }),
+    getWarning: (warning) => dispatch({type:"GETWARNING", warning : warning})
   };
 };
 
