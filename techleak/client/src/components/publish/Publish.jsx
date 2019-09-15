@@ -220,6 +220,7 @@ class Publish extends Component {
         </div>
       );
     }
+
     const modalBg = {
       modal: {
         background: "white ",
