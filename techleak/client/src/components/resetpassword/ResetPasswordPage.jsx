@@ -21,7 +21,8 @@ export default class ResetPasswordPage extends Component {
       userNotFound: false,
       PwdError: false,
       resent: false,
-      errStatus: ""
+      errStatus: "",
+      inputWidth: "30%"
     };
   }
 
@@ -35,8 +36,8 @@ export default class ResetPasswordPage extends Component {
   }
 
   handleCloseModal = (type) => {
-    this.setState({[type]: false})
-  } 
+    this.setState({ [type]: false })
+  }
 
   handleEmailSubmit = e => {
     e.preventDefault();
@@ -104,13 +105,18 @@ export default class ResetPasswordPage extends Component {
     this.handleEmailSubmit(e);
   }
 
-  getData(){
+  getData() {
     setTimeout(() => {
       console.log('Our data is fetched');
       this.setState({
         resent: false
       })
     }, 59000)
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.resize.bind(this));
+    this.resize()
   }
 
   componentDidUpdate(prevStates) {
@@ -127,6 +133,14 @@ export default class ResetPasswordPage extends Component {
       return <p className="help is-success">Passwords match</p>;
     }
   };
+
+  resize() {
+    if (window.innerWidth <= 850) {
+      this.setState({ inputWidth: "50%" })
+    } else {
+      this.setState({ inputWidth: "30%" })
+    }
+  }
 
   render() {
 
@@ -147,9 +161,9 @@ export default class ResetPasswordPage extends Component {
     }
 
     let resent = (
-      <button 
-        className="button is-primary" 
-        onClick={e => this.handleResent(e)} 
+      <button
+        className="button is-primary"
+        onClick={e => this.handleResent(e)}
         style={{
           marginLeft: "5px",
           fontSize: "1rem"
@@ -170,11 +184,11 @@ export default class ResetPasswordPage extends Component {
             initialTime={59000}
             direction="backward"
           >
-              {() => (
-                  <React.Fragment>
-                      Resend Confirmation (<Timer.Seconds />)
+            {() => (
+              <React.Fragment>
+                Resend Confirmation (<Timer.Seconds />)
                   </React.Fragment>
-              )}
+            )}
           </Timer>
         </span>
       )
@@ -184,7 +198,7 @@ export default class ResetPasswordPage extends Component {
     if (this.state.sent % 3 === 0) {
       display = (
         <div className="row justify-content-center">
-          <div className="col-10 col-sm-7 col-md-5 col-lg-4" style={{ paddingRight: "1.2%", paddingLeft:"1%" }}>
+          <div className="col-10 col-sm-7 col-md-5 col-lg-4" style={{ paddingRight: "1.2%", paddingLeft: "1%" }}>
             <p>
               If you‘d like to reset your password, please enter your email here
               and a link to do so will be sent to the address you enter.
@@ -199,12 +213,13 @@ export default class ResetPasswordPage extends Component {
                 placeholder="Please enter your email address..."
                 required
                 value={this.state.email}
+                style={{ width: this.state.inputWidth }}
               />
               <div style={{ paddingTop: "15px" }}>
                 <button type="submit" className="button is-primary" style={{ fontSize: "1rem" }}>
                   Reset Password
                 </button>
-                <Link 
+                <Link
                   to="/"
                   className="button is-primary"
                   style={{
@@ -223,7 +238,7 @@ export default class ResetPasswordPage extends Component {
     } else if (this.state.sent % 3 === 1) {
       display = (
         <div className="row justify-content-center">
-          <div className="col-10 col-sm-7 col-md-5 col-lg-4" style={{ paddingRight: "1.2%", paddingLeft:"1%" }}>
+          <div className="col-10 col-sm-7 col-md-5 col-lg-4" style={{ paddingRight: "1.2%", paddingLeft: "1%" }}>
             <form onSubmit={this.handlePasswordSubmit} >
               <p>
                 Please enter the new password you want to set as well as the
@@ -241,6 +256,7 @@ export default class ResetPasswordPage extends Component {
                 value={this.state.password}
                 minLength="8"
                 maxLength="20"
+                style={{ width: this.state.inputWidth }}
               />
               <label className="label">Re-enter Password</label>
               <input
@@ -253,6 +269,7 @@ export default class ResetPasswordPage extends Component {
                 value={this.state.passwordAgain}
                 minLength="8"
                 maxLength="20"
+                style={{ width: this.state.inputWidth }}
               />
               {this.MatchedPassword()}
               <label className="label">Confirmation Code</label>
@@ -265,13 +282,14 @@ export default class ResetPasswordPage extends Component {
                 required
                 type="text"
                 value={this.state.confirmation}
+                style={{ width: this.state.inputWidth }}
               />
               <div style={{ paddingTop: "15px" }}>
                 <button type="submit" className="button is-primary" style={{ fontSize: "1rem" }}>
                   Reset Password
                 </button>
                 {resent}
-                <Link 
+                <Link
                   to="/"
                   className="button is-primary"
                   style={{
@@ -330,9 +348,9 @@ export default class ResetPasswordPage extends Component {
     const modalBg = {
       modal: {
         borderRadius: "2%",
-        height:"50px",
+        height: "50px",
         padding: "5px 5px 5px 5px",
-        display: "inpline-block", 
+        display: "inpline-block",
         textAlign: "center"
       }
     };
@@ -347,7 +365,7 @@ export default class ResetPasswordPage extends Component {
             center
             styles={modalBg}
           >
-            <h2 style={{ padding:"0.5% 60px 10px 50px" }}>
+            <h2 style={{ padding: "0.5% 60px 10px 50px" }}>
               We Can't Find User According to the Input Email Address, Please Double Check!
             </h2>
           </Modal>
@@ -359,7 +377,7 @@ export default class ResetPasswordPage extends Component {
             center
             styles={modalBg}
           >
-            <h2 style={{ padding:"0.5% 60px 10px 50px" }}>
+            <h2 style={{ padding: "0.5% 60px 10px 50px" }}>
               {error}
             </h2>
           </Modal>

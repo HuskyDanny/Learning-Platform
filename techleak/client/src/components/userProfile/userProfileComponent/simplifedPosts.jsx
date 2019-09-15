@@ -112,7 +112,6 @@ class SimplifiedPosts extends React.Component {
       <React.Fragment>
         {simpPosts
           .map(simPost => {
-            console.log(simPost)
             if (!simPost) return false;
             if (simPost.deleted === true) {
               return (
