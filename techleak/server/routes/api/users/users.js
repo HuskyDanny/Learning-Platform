@@ -74,7 +74,8 @@ router.patch(
 
 router.get("/comfirmation/:token", auth.optional, async (req, res) => {
   const secret = process.env.JWT_SECRET;
-  const redirectUrl = process.env.REDIRECTURL || "http://localhost:3001";
+  const redirectUrl =
+    process.env.REDIRECTURL || "http://localhost:3001/confirmation";
   try {
     const { _id } = jwt.verify(req.params.token, secret);
     await User.findOneAndUpdate({ _id: _id }, { confirmed: true });

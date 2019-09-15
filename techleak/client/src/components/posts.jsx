@@ -6,11 +6,10 @@ const Posts = props => {
   let rows = Math.ceil(posts.length / 3);
   rows = [...Array(rows)].map((val, index) => index);
 
-  console.log(posts);
   return (
     <React.Fragment>
       {rows.map(index => (
-        < div
+        <div
           key={index}
           className="columns"
           style={{
@@ -20,15 +19,11 @@ const Posts = props => {
         >
           {posts.slice(index * 3, index * 3 + 3).map((post, position) => {
             // if (!post.tags) return false
-            return (
-              <Post key={position + rows} post={post} />
-            )
-          }
-          )}
+            return <Post key={position + rows} post={post} />;
+          })}
         </div>
-      ))
-      }
-    </React.Fragment >
+      ))}
+    </React.Fragment>
   );
 };
 
