@@ -46,10 +46,10 @@ class FloatingFilter extends React.Component {
             unfilteredPostsDetail = this.props.myPostsDetail;
         }
         let filteredPostsDetail = unfilteredPostsDetail.filter((post) => {
+            if (!post.title) return -1;
             let title = post.title.toLowerCase();
             return title.indexOf(this.state.searchKeyWords.toLowerCase()) !== -1;
         })
-        console.log(this.state.searchKeyWords)
         this.props.handleFilter(filteredPostsDetail)
     }
 
@@ -59,16 +59,17 @@ class FloatingFilter extends React.Component {
             <Draggable
                 axis="y"
                 handle=".handle"
-                defaultPosition={{ x: 0, y: -70 }}
+                defaultPosition={{ x: 0, y: -10 }}
                 position={null}
                 grid={[25, 25]}
                 scale={1}
-                bounds={{ top: -70 }}
+                bounds={{ top: -50 }}
                 onStart={this.handleStart}
                 onDrag={this.handleDrag}
-                onStop={this.handleStop}>
+                onStop={this.handleStop}
+            >
                 <div>
-                    <div className="column" style={{ flex: "30%" }}>
+                    <div className="column" id="FloatingFilter" style={{ flex: "30%" }}>
                         <div className="container" style={containerStyle}>
                             <div className="box content" style={boxStyle}>
                                 <div className="handle"

@@ -97,85 +97,109 @@ class ContactUs extends React.Component {
             We look forward to your message!
           </span>
         </section>
-
         <form className="contact-form" onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">Family Name:</label>
-            <input
-              className="contact-input"
-              placeholder="Enter your surname"
-              type="text"
-              required
-              onChange={e => this.handleChange(e, "familyname")}
-              value={this.state.familyname}
-            />
-          </div>
+          <article className="media media-contact" id="QueryInput">
+            <div className="media-left form-label">Family Name<i style={{ color: "red" }}>*</i> :</div>
+            <div className="form-group">
+              <div className="media-content">
+                <input
+                  className="contact-input"
+                  placeholder="Enter your surname"
+                  type="text"
+                  required
+                  onChange={e => this.handleChange(e, "familyname")}
+                  value={this.state.familyname}
+                />
+              </div>
+            </div>
+          </article>
 
-          <div className="form-group">
-            <label className="form-label">Given Name:</label>
-            <input
-              className="contact-input"
-              placeholder="Enter your given name"
-              type="text"
-              required
-              onChange={e => this.handleChange(e, "firstname")}
-              value={this.state.firstname}
-            />
-          </div>
+          <article className="media media-contact" id="QueryInput">
+            <div className="media-left form-label">Given Name<i style={{ color: "red" }}>*</i> :</div>
+            <div className="form-group">
+              <div className="media-content">
+                <input
+                  className="contact-input"
+                  placeholder="Enter your given name"
+                  type="text"
+                  required
+                  onChange={e => this.handleChange(e, "firstname")}
+                  value={this.state.firstname}
+                />
+              </div>
+            </div>
+          </article>
 
-          <div className="form-group">
-            <label className="form-label">Email:</label>
-            <input
-              className="contact-input"
-              placeholder="Enter your email address"
-              type="email"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-              required
-              onChange={e => this.handleChange(e, "email")}
-              value={this.state.email}
-            />
-          </div>
+          <article className="media media-contact" id="QueryInput">
+            <div className="media-left form-label">Email<i style={{ color: "red" }}>*</i> :</div>
+            <div className="form-group">
+              <div className="media-content">
+                <input
+                  className="contact-input"
+                  placeholder="Enter your email address"
+                  type="email"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  required
+                  onChange={e => this.handleChange(e, "email")}
+                  value={this.state.email}
+                />
+              </div>
+            </div>
+          </article>
 
-          <div className="form-group">
-            <label className="form-label">Phone:</label>
-            <input
-              className="contact-input"
-              placeholder="Enter your phone number (Optional)"
-              type="tel"
-              onChange={e => this.handleChange(e, "phone")}
-              value={this.state.phone}
-            />
-          </div>
+          <article className="media media-contact" id="QueryInput">
+            <div className="media-left form-label">Phone:</div>
+            <div className="form-group">
+              <div className="media-content">
+                <input
+                  className="contact-input"
+                  placeholder="Enter your phone number"
+                  type="tel"
+                  onChange={e => this.handleChange(e, "phone")}
+                  value={this.state.phone}
+                />
+              </div>
+            </div>
+          </article>
 
-          <div className="form-group">
-            <label className="form-label">Title:</label>
-            <input
-              className="contact-input"
-              placeholder="Enter a title of the message"
-              type="text"
-              required
-              onChange={e => this.handleChange(e, "title")}
-              value={this.state.title}
-            />
-          </div>
+          <article className="media media-contact" id="QueryInput">
+            <div className="media-left form-label">Title<i style={{ color: "red" }}>*</i> :</div>
+            <div className="form-group">
+              <div className="media-content">
+                <input
+                  className="contact-input"
+                  placeholder="Enter a title of the message"
+                  type="text"
+                  required
+                  onChange={e => this.handleChange(e, "title")}
+                  value={this.state.title}
+                />
+              </div>
+            </div>
+          </article>
 
-          <div className="form-group" style={{ marginBottom: "40px" }}>
-            <label className="form-label">Message:</label>
-            <textarea
-              className="contact-input contact-input-textarea"
-              placeholder="Comment here.."
-              type="text"
-              required
-              onChange={e => this.handleChange(e, "message")}
-              value={this.state.message}
-              style={{ resize: "vertical" }}
-            />
-          </div>
+          <article className="media media-contact" id="QueryInput">
+            <div className="media-left form-label">Message<i style={{ color: "red" }}>*</i> :</div>
+            <div className="form-group">
+              <div className="media-content">
+                <textarea
+                  className="contact-input contact-input-textarea"
+                  placeholder="Comment here.."
+                  type="text"
+                  required
+                  onChange={e => this.handleChange(e, "message")}
+                  value={this.state.message}
+                  style={{ resize: "vertical" }}
+                />
+              </div>
+            </div>
+          </article>
 
-          <div style={{ paddingLeft: "17%" }}>
+          <div style={{ width: "100%", textAlign: "center" }}>
             <button
               type="submit"
               className="button is-primary is-rounded is-medium"
+              style={{ display: "inline-block" }}
             >
               Submit
             </button>
