@@ -116,7 +116,7 @@ class HeadingSection extends React.Component {
       <div className="section profile-heading">
         <div className="columns is-mobile is-multiline">
           <div
-            className="column is-2-tablet is-6-mobile name"
+            className="column is-2-desktop is-2-tablet is-6-mobile"
             style={{ textAlign: "center" }}
           >
             <span className="header-icon user-profile-image">
@@ -177,7 +177,7 @@ class HeadingSection extends React.Component {
               </button>
             </span>
           </div>
-          <div className="column is-6-tablet is-6-mobile name">
+          <div className="column is-5-desktop is-5-tablet is-6-mobile name">
             <p>
               <span className="title is-bold">{this.props.username}</span>
               <br />
@@ -192,14 +192,15 @@ class HeadingSection extends React.Component {
             </p>
             {this.state.editing ? editInput : <p>{this.props.bio}</p>}
           </div>
-          <div className="column is-1-tablet is-2-mobile has-text-centered" />
-          <div className="column is-1-tablet is-4-mobile has-text-centered">
+          <div className="column is-2-desktop is-2-tablet is-2-mobile has-text-centered" />
+          <div className="column is-1-desktpp is-1-tablet is-4-mobile has-text-centered"
+            style={{ borderLeft: "0px" }} >
             <p className="stat-val">{this.props.knowledge || 0}</p>
             <p className="stat-key" style={{ fontSize: "1em" }}>
               knowledge
             </p>
           </div>
-          <div className="column is-1-tablet is-4-mobile has-text-centered">
+          <div className="column is-2-desktop is-2-tablet is-4-mobile has-text-centered">
             <p className="stat-val">{this.props.reputation || 0}</p>
             <p className="stat-key" style={{ fontSize: "1em" }}>
               reputation
