@@ -91,8 +91,20 @@ router.post("/", auth.required, async (req, res, next) => {
 
     res.status(201).json(post);
   } catch (error) {
-    console.log(error);
     return res.status(412).json(error.message);
+  }
+});
+
+router.patch("/:id", auth.required, (req, res) => {
+  if (typeof req.body.content === "string" && req.body.content.length > 0) {
+    Post.findByIdAndUpdate(
+      { _id: req.params.id },
+      { content: req.body.content }
+    )
+      .then(updated => res.status(200).json({ content: updated }))
+      .catch(e => res.status(500).json({ message: "server breaks" }));
+  } else {
+    res.status(400).json({ message: "invalid input" });
   }
 });
 

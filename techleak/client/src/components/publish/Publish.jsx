@@ -22,6 +22,7 @@ class Publish extends Component {
     super(props);
 
     this.state = {
+      edit: false,
       warning: false,
       loading: false,
       posted: false,
@@ -39,6 +40,20 @@ class Publish extends Component {
     this.getContent = this.getContent.bind(this);
     this.showUpdateTime = this.showUpdateTime.bind(this);
   }
+
+  componentDidMount = () => {
+    const title = sessionStorage.getItem("title") || "";
+    const content = sessionStorage.getItem("content") || "";
+    const blogId = sessionStorage.getItem("blogId") || "";
+    if (title && content && blogId) {
+      this.setState({ edit: true });
+    }
+
+    sessionStorage.removeItem("title");
+    sessionStorage.removeItem("content");
+
+    this.setState({ content: content, title: title });
+  };
 
   showUpdateTime = () => {
     const currTime = new Date().toTimeString();
@@ -59,6 +74,30 @@ class Publish extends Component {
     });
   };
 
+  handleFinalEdit = async () => {
+    const blogId = sessionStorage.getItem("blogId");
+    sessionStorage.removeItem("blogId");
+
+    const edit = {
+      title: this.state.title,
+      content: this.state.content
+    };
+    this.setState({ loading: true });
+    const token = localStorage.getItem("token");
+    const headers = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+        withCredentials: true
+      }
+    };
+    axios
+      .patch(`/api/posts/${blogId}`, edit, headers)
+      .then(res => {
+        this.setState({ loading: false, posted: true });
+      })
+      .catch(e => this.setState({ loading: false }));
+  };
   handleFinalPost = async () => {
     const post = {
       author: this.props.username,
@@ -92,7 +131,6 @@ class Publish extends Component {
             this.setState({ loading: false, posted: true });
           })
           .catch(err => {
-            console.log(err);
             this.setState({ loading: false });
           });
         var updatedMyPosts = [...this.props.myPosts];
@@ -111,10 +149,19 @@ class Publish extends Component {
   handlePostCheck = e => {
     e.preventDefault();
     const title = this.state.title.trim();
-    if (
-      this.props.tagReducer.tags.length === 0 ||
-      this.props.tagReducer.tags.length >= 4
-    ) {
+
+    let sessionTags = sessionStorage.getItem("tags");
+
+    sessionTags = sessionTags.split(",");
+    sessionTags = sessionTags.splice(1, sessionTags.length);
+
+    if (sessionTags) {
+      sessionStorage.removeItem("tags");
+    }
+
+    const tags = sessionTags || this.props.tagReducer.tags;
+
+    if (tags.length === 0 || tags.length >= 4) {
       this.setState({
         ...this.state,
         tagError: true
@@ -125,7 +172,7 @@ class Publish extends Component {
         titleError: true
       });
     } else {
-      this.handleFinalPost();
+      this.state.edit ? this.handleFinalEdit() : this.handleFinalPost();
     }
   };
 
@@ -296,7 +343,7 @@ class Publish extends Component {
                   style={{ marginRight: "0.5rem" }}
                   onClick={this.handlePostCheck}
                 >
-                  Post
+                  {this.state.edit ? "Edit" : "Post"}
                 </button>
 
                 <button

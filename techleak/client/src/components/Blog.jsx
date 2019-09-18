@@ -8,6 +8,7 @@ import { withRouter } from "react-router";
 import errorBoundary from "./UI/ErrorHandler/ErrorHandler";
 import Share from "./share/share";
 import Flexbox from "flexbox-react";
+import { Link } from "react-router-dom";
 
 class Blog extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class Blog extends Component {
           comments: res.data.comments,
           post_date: getTimeFormat(res.data.post_date_timestamp),
           username: res.data.username,
-          userID: res.data.userID,
+          userID: res.data.userId,
           content: res.data.content,
           title: res.data.title,
           pageID: this.props.match.params.id,
@@ -47,6 +48,17 @@ class Blog extends Component {
         });
         this.props.getBlog(res.data);
       });
+  };
+
+  handleEdit = () => {
+    const tags = this.state.tags.reduce(
+      (result, tag) => result + "," + tag,
+      ""
+    );
+    sessionStorage.setItem("tags", tags);
+    sessionStorage.setItem("title", this.state.title);
+    sessionStorage.setItem("blogId", this.state.pageID);
+    sessionStorage.setItem("content", this.state.content);
   };
 
   handleLike = () => {
@@ -65,22 +77,20 @@ class Blog extends Component {
     //handling likeposts in User route
     const likePostPromise = LIKED
       ? axios.delete(
-        `/api/users/likes/${this.props.userID}?postID=${
-        this.props.match.params.id
-        }`,
-        headers
-      )
+          `/api/users/likes/${this.props.userID}?postID=${this.props.match.params.id}`,
+          headers
+        )
       : axios.post(
-        `/api/users/likes/${this.props.userID}`,
-        { postID: this.props.match.params.id },
-        headers
-      );
+          `/api/users/likes/${this.props.userID}`,
+          { postID: this.props.match.params.id },
+          headers
+        );
     //handling like# in Post route
     const likeNumberPromise = axios.patch(
       `/api/posts/likes/${this.props.match.params.id}`,
       { liked: LIKED },
       headers
-    )
+    );
 
     Promise.all([likeNumberPromise, likePostPromise]).catch(err => {
       this.props.handleLike(
@@ -110,13 +120,29 @@ class Blog extends Component {
       }
     }
     const LIKED = this.props.likedPosts.includes(this.props.match.params.id);
-    console.log(this.state.tags);
 
     let tagsDisplay = this.state.tags.map(tag => (
       <li key={tag} style={styles.items}>
         <Flexbox>{tag}</Flexbox>
       </li>
     ));
+
+    const edit = () => {
+      if (this.props.userID === this.state.userID) {
+        return (
+          <Link
+            className="button level-item is-primary"
+            style={{ color: "white" }}
+            onClick={this.handleEdit}
+            to="/publish"
+          >
+            {" "}
+            Edit Content{" "}
+          </Link>
+        );
+      }
+      return null;
+    };
     return (
       <React.Fragment>
         <section className="hero is-info is-medium is-bold">
@@ -162,12 +188,12 @@ class Blog extends Component {
                         <i className="far fa-share-square" aria-hidden="true" />
                       </span>
                     </button>
-
+                    {edit()}
                     <button
                       id="likeBtn"
                       className={`level-item has-text-centered button ${
                         LIKED ? " is-success" : ""
-                        }`}
+                      }`}
                       aria-label="like"
                       onClick={this.state.enableLike ? this.handleLike : null}
                     >
@@ -178,11 +204,14 @@ class Blog extends Component {
                   </div>
                   <hr />
                 </div>
-                <div id="comment" style={{
-                  paddingRight: "3%",
-                  paddingLeft: "3%",
-                  paddingBottom: "2%"
-                }}>
+                <div
+                  id="comment"
+                  style={{
+                    paddingRight: "3%",
+                    paddingLeft: "3%",
+                    paddingBottom: "2%"
+                  }}
+                >
                   <Comments blogID={this.props.match.params.id} />
                 </div>
               </div>
