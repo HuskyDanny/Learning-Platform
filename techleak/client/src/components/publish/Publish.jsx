@@ -9,10 +9,11 @@ import { connect } from "react-redux";
 import TagSearch from "../searchTags/tagsearch";
 import withHandler from "../UI/ErrorHandler/ErrorHandler";
 import WarningWindow from "./WarningWindow";
+import Flexbox from "flexbox-react";
 import {
   openDisplay,
   closeDisplay,
-  addTag,
+  selectTag,
   removeTag,
   handlePosted
 } from "../../actions/tagActions";
@@ -30,7 +31,8 @@ class Publish extends Component {
       title: "",
       tagError: false,
       titleError: false,
-      updateTime: ""
+      updateTime: "",
+      oldTags: []
     };
 
     this.handlePostCheck = this.handlePostCheck.bind(this);
@@ -45,14 +47,21 @@ class Publish extends Component {
     const title = sessionStorage.getItem("title") || "";
     const content = sessionStorage.getItem("content") || "";
     const blogId = sessionStorage.getItem("blogId") || "";
+    let sessionTags = sessionStorage.getItem("tags");
+
+    if (sessionTags) {
+      sessionTags = sessionTags.split(",");
+      sessionTags = sessionTags.slice(1);
+      sessionStorage.removeItem("tags");
+    }
     if (title && content && blogId) {
       this.setState({ edit: true });
     }
-
+    console.log(sessionTags);
     sessionStorage.removeItem("title");
     sessionStorage.removeItem("content");
 
-    this.setState({ content: content, title: title });
+    this.setState({ content: content, title: title, oldTags: sessionTags });
   };
 
   showUpdateTime = () => {
@@ -149,24 +158,14 @@ class Publish extends Component {
   handlePostCheck = e => {
     e.preventDefault();
     const title = this.state.title.trim();
+    const tags = this.props.tagReducer.tags;
 
-    let sessionTags = sessionStorage.getItem("tags");
-
-    sessionTags = sessionTags.split(",");
-    sessionTags = sessionTags.splice(1, sessionTags.length);
-
-    if (sessionTags) {
-      sessionStorage.removeItem("tags");
-    }
-
-    const tags = sessionTags || this.props.tagReducer.tags;
-
-    if (tags.length === 0 || tags.length >= 4) {
+    if (this.state.oldTags === "" && (tags.length === 0 || tags.length >= 4)) {
       this.setState({
         ...this.state,
         tagError: true
       });
-    } else if (title.length < 8 || title.length > 50) {
+    } else if (this.state.oldTags === "" && (title.length < 8 || title.length > 50)) {
       this.setState({
         ...this.state,
         titleError: true
@@ -243,15 +242,95 @@ class Publish extends Component {
   }
 
   render() {
+
+    let titleBox = (
+      <div>
+        <label>Title</label>
+        <div className="level">
+          <input
+            className="input is-rounded"
+            type="text"
+            required
+            placeholder="Title..."
+            value={this.state.title}
+            onChange={this.handleTitle}
+          />
+
+          <DropDown
+            lists={["Get Saved Draft"]}
+            funcs={[this.getContent]}
+          />
+        </div>
+      </div>
+    )
+
+    let searchbox = (
+      <div>
+        <label>Tags</label>
+        <TagSearch
+        hitsDisplay={this.props.tagReducer.hitsDisplay}
+        tags={this.props.tagReducer.tags}
+        handleSelect={tag => this.props.selectTag(tag)}
+        handleRemoveItem={tag => this.props.removeTag(tag)}
+        openDisplay={() => this.props.openDisplay()}
+        closeDisplay={() => this.props.closeDisplay()}
+        styles={styles}
+        />
+        <br />
+      </div>
+    )
+
     let inputTags = this.props.tagReducer.tags.map(tag => (
       <li key={tag} style={styles.items}>
         {tag}
-        <button onClick={() => this.props.removeTag(tag)}>(x)</button>
+        <button 
+          onClick={() => this.props.removeTag(tag)}
+          style={{
+            maxHeight: "50%",
+            maxWidth: "30%",
+            marginLeft: "5px",
+            textAlign: "center",
+          }}
+        >
+          x
+        </button>
       </li>
     ));
 
-    let selection = <div />;
+    let oldSection = <div />;
+    if (this.state.oldTags) {
+      let selectedTags = this.state.oldTags.map(tag => (
+        <li key={tag} style={styles.oldItems}>
+          <Flexbox>{tag}</Flexbox>
+        </li>
+      ));
+      oldSection = (
+        <div>
+          {selectedTags}
+        </div>
+      )
+      searchbox = <div />
+      titleBox = (
+        <div>
+          <label>Title</label>
+          <div className="level" style={{
+            paddingBottom:"10px"
+          }}>
+            <input
+              className="input is-rounded readonly"
+              type="text"
+              required
+              value={this.state.title}
+              onChange={this.handleTitle}
+              readOnly
+            />
+          </div>
+        </div>
+        
+      )
+    }
 
+    let selection = <div />;
     if (this.props.tagReducer.tags.length === 0) {
       selection = (
         <div>
@@ -293,22 +372,7 @@ class Publish extends Component {
             this.successPosted()
           ) : (
             <React.Fragment>
-              <label>Title</label>
-              <div className="level">
-                <input
-                  className="input is-rounded"
-                  type="text"
-                  required
-                  placeholder="Title..."
-                  value={this.state.title}
-                  onChange={this.handleTitle}
-                />
-
-                <DropDown
-                  lists={["Get Saved Draft"]}
-                  funcs={[this.getContent]}
-                />
-              </div>
+              {titleBox}
               <div>
                 <Editor
                   updateContent={this.updateContent}
@@ -323,19 +387,10 @@ class Publish extends Component {
                 </span>
               </div>
               <br />
+              {oldSection}
               {selection}
               <hr />
-              <label>Tags</label>
-              <TagSearch
-                hitsDisplay={this.props.tagReducer.hitsDisplay}
-                tags={this.props.tagReducer.tags}
-                handleSelect={tag => this.props.addTag(tag)}
-                handleRemoveItem={tag => this.props.removeTag(tag)}
-                openDisplay={() => this.props.openDisplay()}
-                closeDisplay={() => this.props.closeDisplay()}
-                styles={styles}
-              />
-              <br />
+              {searchbox}
               <div className="level" style={{ marginBottom: "2rem" }}>
                 <button
                   type="submit"
@@ -421,8 +476,8 @@ const mapDispatchToProps = dispatch => {
     closeDisplay: () => {
       dispatch(closeDisplay());
     },
-    addTag: tag => {
-      dispatch(addTag(tag));
+    selectTag: tag => {
+      dispatch(selectTag(tag));
     },
     removeTag: tag => {
       dispatch(removeTag(tag));
@@ -460,10 +515,11 @@ const styles = {
   items: {
     display: "inline-block",
     padding: "2px",
-    border: "1px solid blue",
+    backgroundColor: "lightblue",
     fontFamily: "Helvetica, sans-serif",
     borderRadius: "5px",
-    marginRight: "5px",
+    paddingRight: "5px",
+    paddingLeft: "10px",
     cursor: "pointer"
   },
 
@@ -478,6 +534,16 @@ const styles = {
     boxShadow: "0 0 3px #f6f6f6",
     position: "relative",
     fontSize: "14px"
+  },
+  oldItems: {
+    display: "inline-block",
+    padding: "5px",
+    border: "none",
+    backgroundColor: "#cfcece",
+    fontFamily: "Helvetica, sans-serif",
+    borderRadius: "5px",
+    marginRight: "5px",
+    cursor: "default"
   }
 };
 
