@@ -12,7 +12,7 @@ export function closeDisplay() {
   }
 }
 
-export function addTag(tag) {
+export function selectTag(tag) {
   return {
     type: "HANDLE_SELECT",
     payload: tag

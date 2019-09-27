@@ -79,6 +79,10 @@
   display: none;
 }
 
+.readonly:hover {
+  cursor: no-drop
+}
+
 #changableButton {
   display: inline-block;
   white-space: nowrap;
