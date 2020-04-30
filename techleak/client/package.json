@@ -15,7 +15,7 @@
     "faker": "^4.1.0",
     "flexbox-react": "^4.4.0",
     "instantsearch.css": "^7.3.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.11",
     "normalizr": "^3.4.0",
     "prop-passer": "^1.1.1-3",
