@@ -10,7 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "@opuscapita/react-responsive-navbar": "^3.3.2",
     "algoliasearch": "^3.33.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bulma": "^0.7.4",
     "faker": "^4.1.0",
     "flexbox-react": "^4.4.0",
